@@ -47,9 +47,7 @@ namespace WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger ShopThoiTrang v1"));
+                
             }
             
             app.UseHttpsRedirection();
@@ -60,7 +58,9 @@ namespace WebAPI
             app.UseStaticFiles();
 
             app.UseAuthorization();
-           
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger ShopThoiTrang v1"));
 
             app.UseEndpoints(endpoints =>
             {
