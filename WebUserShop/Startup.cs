@@ -50,7 +50,7 @@ namespace WebUserShop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=TheWayShop}/{action=Index}/{id?}");
             });
         }
     }
