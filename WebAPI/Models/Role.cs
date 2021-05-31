@@ -7,7 +7,7 @@ namespace WebAPI.Models
 {
     public class Role
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string NameRole { get; set; }
         public string Detail { get; set; }
     }

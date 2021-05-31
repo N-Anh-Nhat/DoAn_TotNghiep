@@ -28,6 +28,11 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ICategory, CategoryServices>();
+            services.AddTransient<IContent, ContentServices>();
+            services.AddTransient<IADS, ADSServices>();
+            services.AddTransient<IUser, UserServices>();
+            services.AddTransient<INews, NewsServices>();
+            services.AddTransient<IRole, RoleServices>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopThoiTrangAPI", Version = "v1" });
