@@ -14,5 +14,7 @@ namespace WebAPI.Services.Interface
         Task<IEnumerable<Category>> GetCategory();
         Task<Category> GetCategoryByID(string Id);
         Task<DataResults<object>> InsertCategory(Category data, string user);
+        Task<DataResults<object>> UpdateCategory(Category data, string user);
+        Task<DataResults<object>> DeleteCategory(Category data, string user);
     }
 }

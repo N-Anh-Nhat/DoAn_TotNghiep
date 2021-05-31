@@ -46,5 +46,31 @@ namespace WebAPI.Services.DataServices
             };
             return await _servicesBase.Insert("Category", obj, conString);
         }
+        public async Task<DataResults<object>> UpdateCategory(Category data, string user)
+        {
+            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
+            object obj = new
+            {
+                data.Name,
+                data.Image,
+                data.Detail,
+                CreatedBy = user,
+                
+            };
+            return await _servicesBase.Update("Category", obj, conString);
+        }
+        public async Task<DataResults<object>> DeleteCategory(Category data, string user)
+        {
+            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
+            object obj = new
+            {
+                CreatedBy = user,
+                ModifiedDate = DateTime.Now,
+                Status = false,
+            };
+
+            return await _servicesBase.Update("Category", obj, conString,"ID",data.ID);
+        }
     }
+    
 }
