@@ -1,0 +1,151 @@
+﻿        <!-- top bar navigation -->
+<div class="headerbar">
+
+    <!-- LOGO -->
+    <div class="headerbar-left">
+        <a href="index.html" class="logo">
+            <img alt="Logo" src="~/assets/images/apple-touch-icon.png" />
+            <span>TheWayShop</span>
+        </a>
+    </div>
+
+    <nav class="navbar-custom">
+        <ul class="list-inline float-right mb-0">
+            <li class="list-inline-item dropdown notif">
+                <a class="nav-link dropdown-toggle arrow-none">
+                    <i class="far fa-envelope color_font_custom"></i>
+                    <span class="notif-bullet"></span>
+                </a>
+                <div class="dropdown-content">
+                    <div class="dropdown-list">
+                        <div class="header-mess">
+                            <h5>
+                                <small>Messages</small>
+                            </h5>
+                        </div>
+                        <a href="" class="list-mess">
+                            <p class="custom-list-mess">
+                                <b>Tên ng gửi</b>
+                                <span>aaaa</span>
+                                <small>5 phút trc</small>
+                            </p>
+                        </a>
+                        <a href="" class="list-mess">
+                            <p class="custom-list-mess">
+                                <b>Tên ng gửi</b>
+                                <span>aaaa</span>
+                                <small>5 phút trc</small>
+                            </p>
+                        </a>
+                        <a href="" class="list-mess">
+                            <p class="custom-list-mess">
+                                <b>Tên ng gửi</b>
+                                <span>aaaa</span>
+                                <small>5 phút trc</small>
+                            </p>
+                        </a>
+                        <div class="header-mess">
+                            <a href="@Url.Action("Mail_All","Mail_All")">
+                                <h5>
+                                    <small>Xem tất cả</small>
+                                </h5>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+
+            <li class="list-inline-item dropdown notif">
+                <a class="nav-link dropdown-toggle nav-user">
+                    <img src="~/assets/images/avatars/admin.png" alt="Profile image" class="avatar-rounded">
+                </a>
+                <div class="dropdown-content">
+                    <div class="dropdown-list-user">
+                        <div class="header-mess">
+                            <h5>
+                                <small>Hello, Admin</small>
+                            </h5>
+                        </div>
+                        <a href="@Url.Action("Profile","Profile")" class="list-mess">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <a href="" class="list-mess">
+                            <i class="fas fa-power-off"></i>
+                            <span>LogOut</span>
+                        </a>
+                    </div>
+                </div>
+
+
+
+            </li>
+
+        </ul>
+
+
+
+    </nav>
+
+</div>
+<!-- End Navigation -->
+<!-- Left Sidebar -->
+<div class="left main-sidebar">
+
+    <div class="sidebar-inner leftscroll">
+
+        <div id="sidebar-menu">
+
+            <ul>
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Index"? "active":"")" href="@Url.Action("Index","Index")">
+                        <i class="fas fa-bars"></i>
+                        <span> Home </span>
+                    </a>
+                </li>
+
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="User"? "active":"")" href="@Url.Action("User","User")">
+                        <i class="fas fa-user"></i>
+                        <span> Users </span>
+                    </a>
+                </li>
+
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Blog"? "active":"")" href="@Url.Action("Blog","Blog")">
+                        <i class="fas fa-file-alt"></i>
+                        <span> Blog </span>
+                    </a>
+                </li>
+
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Mail_All"? "active":"")" href="@Url.Action("Mail_All","Mail_All")">
+                        <span class="label radius-circle bg-danger float-right">18</span>
+                        <i class="fas fa-envelope"></i>
+                        <span> Mailbox </span>
+                    </a>
+                </li>
+
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Slide"? "active":"")" href="@Url.Action("Slide","Slide")">
+                        <i class="fas fa-photo-video"></i>
+                        <span> Slider </span>
+                    </a>
+                </li>
+
+
+
+
+            </ul>
+
+
+
+        </div>
+
+
+
+    </div>
+
+</div>
+<!-- End Sidebar -->

@@ -1,0 +1,226 @@
+
+/** ADD YOUR AWESOME CODES HERE **/
+/**CSS NEWS**/
+.section_news
+{
+    width: 100%;
+    margin-bottom: 50px;
+
+}
+.section_news h3{
+    font-size: 2em;
+    padding: 0!important;
+    font-weight: 600;
+    color: #000;
+    display: inline-block;
+    position: relative;
+    text-transform: uppercase;
+    padding: 0 15px 0 20px;
+    margin: 6px 0 4px 0;
+    font-family: 'Vollkorn', serif !important;
+    
+}
+.container .title_catelogy{
+    padding: 0;
+    border-bottom: 3px solid #d33b33;
+    margin-bottom: 30px;
+}
+section .news_list
+{
+    padding-bottom: 10px;
+
+    margin-bottom: 16px;
+    border-bottom: 2px dashed #eee;
+}
+section .img_news
+{
+    width: 100%;
+}
+section .picture_option
+{
+    padding: 0;
+}
+section .title_content_news h3
+{
+
+    font-size: 1.2rem;
+    padding: 0;
+    font-weight: 500;
+    font-family: 'Vollkorn', serif !important;
+}
+section .datetime_news
+{
+    margin-top: 10px;
+}
+/***/
+/**new detail**/
+
+.container .custom_tetail_new
+{
+    font-family: 'Noto Serif',serif;    
+    color: #000;
+    font-size: 3.4em;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    margin: 10px 0;
+}
+.container .tac_gia_datetime
+{
+    margin: 15px 0 8px;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 0.85em;
+    color: #888;
+    display: inline-flex;
+}
+.container .tac_gia_datetime .Tac_gia
+{
+    
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 15px;
+    width: 100%;
+    margin: 0px 3px 0 0;
+    width: auto;
+}
+.container .tac_gia_datetime .datetime
+{
+    color: #888;
+    margin-left: 10px;;
+  
+}
+
+.container .title_catelogy h3{
+    padding: 0!important;
+    font-weight: 600;
+    color: #000;
+    display: inline-block;
+    position: relative;
+    text-transform: uppercase;
+    padding: 0 15px 0 20px;
+    margin: 6px 0 4px 0;
+    font-family: 'Vollkorn', serif !important;
+}
+.container  .Danh_muc_lien_quan
+{
+    margin: 3px auto;
+}
+.container  .sp_lien_quan
+{
+    color: #d70018;
+}
+
+/***/
+/**cmt **/
+
+.row ._text_total_cmt
+{
+    padding: 12px 0 10px;
+    font-size: 16px!important;
+    color: #333!important;
+    font-weight: bold!important;
+    text-transform: capitalize;
+    font: 14px/18px Arial,Helvetica,sans-serif;
+}
+.row .total_cmt
+{
+    margin: 12px 0;
+}
+
+.input_cmt
+{
+    margin: 5px 0;
+    padding: 5px 25px;
+
+    color: #fff;
+    text-transform: uppercase;
+    border: 1px solid #288ad6;
+    border-radius: 4px;
+    background: #288ad6;
+
+}
+.row .list_cmt .name_user_cmt
+{
+    padding: 12px 0 10px;
+    color: #333!important;
+    font-weight: bold!important;
+    text-transform: capitalize;
+    font: 14px/18px Arial,Helvetica,sans-serif;
+}
+.row .list_cmt .info_cmt
+{
+    margin: 15px 0px;
+    border-bottom: 1px dashed #d5082c;
+    padding: 10px 0px;
+}
+.row .list_cmt .datetime_user_cmt
+{
+    margin: 0 10px;
+    font-size: 13px;
+    color: #999;
+}
+
+
+
+/*** */
+/**index sp dac biet* */
+.products-box .accordion
+{
+    margin-top: 10px;
+    background-color: #e3dcdc;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  
+}
+.products-box .accordion .text_sp_index
+{
+    font-size: 20px;
+    font-style: italic;
+    text-transform: uppercase;
+    color: #ef3f23;
+    background: -webkit-linear-gradient(left,#ef3f23,#ff8a00);
+    background: -o-linear-gradient(right,#ef3f23,#ff8a00);
+    background: -moz-linear-gradient(right,#ef3f23,#ff8a00);
+    background: linear-gradient(to right,#ef3f23,#ff8a00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+  background-color: red;
+  position: relative;
+  animation-name: example;
+  animation-duration: 11s;
+  animation-iteration-count: 4;
+}
+.products-box .panel
+{
+    background-color: white;
+    border: 1px solid red;
+}
+
+@keyframes example {
+    0%   {left:0px; top:0px;}
+    25%  {left:800px; top:0px;}
+    100% {left:0px; top:0px;}
+  }
+  .Description_title_text
+  {
+    font-weight: bold;
+  }
+  .container .row .content_new
+  {
+    line-height: 1.618;
+    font-size: 1.1em;
+    font-family: 'Noto Serif',serif;
+    margin: 25px 0px;
+  }
+/*** */
+.desgin-img-checkout {
+    width: 10%;
+    margin-right: 15px;
+}
