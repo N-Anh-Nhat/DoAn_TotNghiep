@@ -221,11 +221,21 @@
 
 /* Navbar Inverse =================================*/
  nav.navbar.navbar-inverse{
-     background-color: #222;
+     background-color: #222;    
      border-bottom: solid 1px #303030;
 }
- nav.navbar.navbar-inverse ul.cart-list > li.total > .btn{
-     border-bottom: solid 1px #222 !important;
+.custom-li-menu {
+    width: 200px;
+    border-bottom: solid 1px #eee;
+    padding: 10px 15px;
+}
+ul .custom-li-menu:hover
+{
+    background-color:#eee;
+    color:black;
+}
+nav.navbar.navbar-inverse ul.cart-list > li.total > .btn {
+    border-bottom: solid 1px #222 !important;
 }
  nav.navbar.navbar-inverse ul.cart-list > li.total .pull-right{
      color: #fff;
@@ -304,12 +314,8 @@
  nav.navbar.bootsnav ul.nav li.active > a{
      color: #d33b33;
 }
- nav.navbar.bootsnav ul.nav li.active > a:hover{
-     color: #d33b33;
-}
- nav.navbar.bootsnav ul.nav li > a:hover{
-     color: #d33b33;
-}
+
+
  nav.navbar.bootsnav ul.nav li.megamenu-fw > a:hover{
      color: #d33b33;
 }
