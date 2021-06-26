@@ -43,24 +43,53 @@ namespace WebAPI.Services.DataServices
             {
                 data.Name,
                 data.Image,
-
+                data.Detai_Name,
+                data.Content_news,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("News", obj, conString);
         }
         public async Task<DataResults<object>> UpdateNews(News data, string user)
         {
-            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
                 data.Name,
                 data.Image,
+                data.Detai_Name,
                 data.Content_news,
-                CreatedBy = user,
-
             };
-            return await _servicesBase.Update("News", obj, conString);
+            DataResults<object> result = new DataResults<object>();
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    var results = await db.Query("Feedback").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    if (results == 1)
+                    {
+                        result.Message = "successed";
+                        result.Status = 1;
+                        result.Data = data;
+                    }
+                    else
+                    {
+                        result.Message = "failed";
+                        result.Status = -1;
+                        result.Data = data;
+                    }
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+
+                result.Message = e.Message;
+                result.Status = -1;
+                result.Data = data; ;
+            }
+            return result;
         }
+    
         public async Task<DataResults<object>> DeleteNews(News data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);

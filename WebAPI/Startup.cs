@@ -30,6 +30,11 @@ namespace WebAPI
             services.AddTransient<ICategory, CategoryServices>();
             services.AddTransient<IADS, ADSServices>();
             services.AddTransient<ICMT, CMTServices>();
+            services.AddTransient<IFeedback, FeedbackServices>();
+            services.AddTransient<IOrder, OrderServices>();
+            services.AddTransient<IOder_detail, Order_DetailServices>();
+            services.AddTransient<IProduct, ProductServices>();
+            services.AddTransient<IProduct_detail, Product_DetailServices>();
             services.AddTransient<IUser, UserServices>();
             services.AddTransient<INews, NewsServices>();
             services.AddTransient<IRole, RoleServices>();

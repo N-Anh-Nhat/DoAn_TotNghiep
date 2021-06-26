@@ -12,46 +12,50 @@ using WebAPI.Services.Interface;
 using LIB.Base;
 using LIB.BaseModels;
 using LIB.Common;
-
 namespace WebAPI.Services.DataServices
 {
-    public class RoleServices : IRole
+    public class FeedbackServices:IFeedback
     {
         private readonly IConfiguration _config;
         private string conString;
         private BaseServices _servicesBase;
-        public RoleServices(IConfiguration config)
+        public FeedbackServices(IConfiguration config)
         {
             _config = config;
             conString = _config.GetConnectionString("CN");
             _servicesBase = new BaseServices();
         }
-        public async Task<IEnumerable<Role>> GetRole()
+        public async Task<IEnumerable<Feedback>> GetFeedback()
         {
-            return await _servicesBase.GetList<Role>("Role", conString);
+            return await _servicesBase.GetList<Feedback>("Feedback", conString);
         }
-        public async Task<Role> GetRoleByID(string Id)
+        public async Task<Feedback> GetFeedbackByID(string Id)
         {
-            var results = await _servicesBase.GetById<Role>("Role", "ID", Id, conString);
+            var results = await _servicesBase.GetById<Feedback>("Feedback", "ID", Id, conString);
             return results;
         }
-        public async Task<DataResults<object>> InsertRole(Role data, string user)
+        public async Task<DataResults<object>> InsertFeedback(Feedback data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.NameRole,
-                data.Detail
-                
+                data.Address,
+                data.Content,
+                data.Name,
+                data.Phone,
+                CreatedBy = user,
             };
-            return await _servicesBase.Insert("Role", obj, conString);
+            return await _servicesBase.Insert("Feedback", obj, conString);
         }
-        public async Task<DataResults<object>> UpdateRole(Role data, string user)
+        public async Task<DataResults<object>> UpdateFeedback(Feedback data, string user)
         {
+            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.NameRole,
-                data.Detail
+                data.Address,
+                data.Content,
+                data.Name,
+                data.Phone
             };
             DataResults<object> result = new DataResults<object>();
             try
@@ -84,15 +88,17 @@ namespace WebAPI.Services.DataServices
             }
             return result;
         }
-        public async Task<DataResults<object>> DeleteRole(Role data, string user)
+        public async Task<DataResults<object>> DeleteFeedback(Feedback data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
-            {              
+            {
+                CreatedBy = user,
+                ModifiedDate = DateTime.Now,
                 Status = false,
             };
 
-            return await _servicesBase.Update("Role", obj, conString, "ID", data.ID);
+            return await _servicesBase.Update("Feedback", obj, conString, "ID", data.ID);
         }
     }
 }

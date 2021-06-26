@@ -54,10 +54,37 @@ namespace WebAPI.Services.DataServices
                 data.Name,
                 data.Image,
                 data.Detail,
-                CreatedBy = user,
-                
             };
-            return await _servicesBase.Update("Category", obj, conString);
+            DataResults<object> result = new DataResults<object>();
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    var results = await db.Query("CMT").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    if (results == 1)
+                    {
+                        result.Message = "successed";
+                        result.Status = 1;
+                        result.Data = data;
+                    }
+                    else
+                    {
+                        result.Message = "failed";
+                        result.Status = -1;
+                        result.Data = data;
+                    }
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+
+                result.Message = e.Message;
+                result.Status = -1;
+                result.Data = data; ;
+            }
+            return result;
         }
         public async Task<DataResults<object>> DeleteCategory(Category data, string user)
         {

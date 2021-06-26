@@ -12,46 +12,45 @@ using WebAPI.Services.Interface;
 using LIB.Base;
 using LIB.BaseModels;
 using LIB.Common;
-
 namespace WebAPI.Services.DataServices
 {
-    public class RoleServices : IRole
+    public class Product_DetailServices:IProduct_detail
     {
-        private readonly IConfiguration _config;
+         private readonly IConfiguration _config;
         private string conString;
         private BaseServices _servicesBase;
-        public RoleServices(IConfiguration config)
+        public Product_DetailServices(IConfiguration config)
         {
             _config = config;
             conString = _config.GetConnectionString("CN");
             _servicesBase = new BaseServices();
         }
-        public async Task<IEnumerable<Role>> GetRole()
+        public async Task<IEnumerable<Product_Detail>> GetProduct_Detail()
         {
-            return await _servicesBase.GetList<Role>("Role", conString);
+            return await _servicesBase.GetList<Product_Detail>("Product_Detail", conString);
         }
-        public async Task<Role> GetRoleByID(string Id)
+        public async Task<Product_Detail> GetProduct_DetailByID(string Id)
         {
-            var results = await _servicesBase.GetById<Role>("Role", "ID", Id, conString);
+            var results = await _servicesBase.GetById<Product_Detail>("Product_Detail", "ID", Id, conString);
             return results;
         }
-        public async Task<DataResults<object>> InsertRole(Role data, string user)
+        public async Task<DataResults<object>> InsertProduct_Detail(Product_Detail data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.NameRole,
-                data.Detail
-                
+                data.Size,
+                data.Quality,
+                CreatedBy = user,
             };
-            return await _servicesBase.Insert("Role", obj, conString);
+            return await _servicesBase.Insert("Product_Detail", obj, conString);
         }
-        public async Task<DataResults<object>> UpdateRole(Role data, string user)
+        public async Task<DataResults<object>> UpdateProduct_Detail(Product_Detail data, string user)
         {
             object obj = new
             {
-                data.NameRole,
-                data.Detail
+                data.Size,
+                data.Quality,
             };
             DataResults<object> result = new DataResults<object>();
             try
@@ -84,16 +83,6 @@ namespace WebAPI.Services.DataServices
             }
             return result;
         }
-        public async Task<DataResults<object>> DeleteRole(Role data, string user)
-        {
-            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
-            object obj = new
-            {              
-                Status = false,
-            };
-
-            return await _servicesBase.Update("Role", obj, conString, "ID", data.ID);
-        }
+        
     }
 }
-

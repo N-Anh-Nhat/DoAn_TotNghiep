@@ -53,7 +53,7 @@ namespace WebAPI.Services.DataServices
         }
         public async Task<DataResults<object>> UpdateUser(User data, string user)
         {
-            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
+          
             object obj = new
             {
                 data.UserName,
@@ -62,11 +62,38 @@ namespace WebAPI.Services.DataServices
                 data.Frist_Name,
                 data.Address,
                 data.Email,
-                data.Phone,
-                CreatedBy = user,
-
+                data.Phone
             };
-            return await _servicesBase.Update("User", obj, conString);
+            DataResults<object> result = new DataResults<object>();
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    var results = await db.Query("Feedback").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    if (results == 1)
+                    {
+                        result.Message = "successed";
+                        result.Status = 1;
+                        result.Data = data;
+                    }
+                    else
+                    {
+                        result.Message = "failed";
+                        result.Status = -1;
+                        result.Data = data;
+                    }
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+
+                result.Message = e.Message;
+                result.Status = -1;
+                result.Data = data; ;
+            }
+            return result;
         }
         //public async Task<DataResults<object>> DeleteUser(User data, string user)
         //{
