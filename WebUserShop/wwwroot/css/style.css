@@ -1133,7 +1133,7 @@ nav.navbar.navbar-inverse ul.cart-list > li.total > .btn {
 }
  .title-left{
      font-size: 16px;
-     border-bottom: 3px solid #010101;
+     border-bottom: 2px solid #eee;
      margin-bottom: 20px;
 }
  .title-left h3{
@@ -1397,7 +1397,7 @@ nav.navbar.navbar-inverse ul.cart-list > li.total > .btn {
  .my-account-box-main{
      padding: 70px 0px;
 }
- .shopping-box a{
+ .shopping-box button{
      font-size: 18px;
      color: #ffffff;
      border: none;

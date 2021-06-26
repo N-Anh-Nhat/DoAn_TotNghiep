@@ -205,7 +205,7 @@ section .datetime_news
 
 @keyframes example {
     0%   {left:0px; top:0px;}
-    25%  {left:800px; top:0px;}
+    25%  {left:950px; top:0px;}
     100% {left:0px; top:0px;}
   }
   .Description_title_text

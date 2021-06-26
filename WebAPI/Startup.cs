@@ -28,8 +28,8 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ICategory, CategoryServices>();
-            services.AddTransient<IContent, ContentServices>();
             services.AddTransient<IADS, ADSServices>();
+            services.AddTransient<ICMT, CMTServices>();
             services.AddTransient<IUser, UserServices>();
             services.AddTransient<INews, NewsServices>();
             services.AddTransient<IRole, RoleServices>();

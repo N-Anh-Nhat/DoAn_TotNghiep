@@ -24,10 +24,6 @@ namespace WebUserShop.Controllers
         {
             return View();
         }
-        public IActionResult CheckOut()
-        {
-            return View();
-        }
         public IActionResult Contact_Us()
         {
             return View();

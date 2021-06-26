@@ -15,52 +15,50 @@ using LIB.Common;
 
 namespace WebAPI.Services.DataServices
 {
-    public class ContentServices : IContent
+    public class CMTServices:ICMT
     {
         private readonly IConfiguration _config;
         private string conString;
         private BaseServices _servicesBase;
-        public ContentServices(IConfiguration config)
+        public CMTServices(IConfiguration config)
         {
             _config = config;
             conString = _config.GetConnectionString("CN");
             _servicesBase = new BaseServices();
         }
-        public async Task<IEnumerable<Content>> GetContent()
+        public async Task<IEnumerable<CMT>> GetCMT()
         {
-            return await _servicesBase.GetList<Content>("Content", conString);
+            return await _servicesBase.GetList<CMT>("CMT", conString);
         }
-        public async Task<Content> GetContentByID(string Id)
+        public async Task<CMT> GetCMTByID(string Id)
         {
-            var results = await _servicesBase.GetById<Content>("Content", "ID", Id, conString);
+            var results = await _servicesBase.GetById<CMT>("CMT", "ID", Id, conString);
             return results;
         }
-        public async Task<DataResults<object>> InsertContent(Content data, string user)
+        public async Task<DataResults<object>> InsertCMT(CMT data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.Name,
                 data.Content_CMT,
-               
+                data.Name,
                 CreatedBy = user,
             };
-            return await _servicesBase.Insert("Content", obj, conString);
+            return await _servicesBase.Insert("CMT", obj, conString);
         }
-        public async Task<DataResults<object>> UpdateContent(Content data, string user)
+        public async Task<DataResults<object>> UpdateCMT(CMT data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.Name,
                 data.Content_CMT,
-                ModifiedDate = DateTime.Now,
+                data.Name,
                 CreatedBy = user,
 
             };
-            return await _servicesBase.Update("Content", obj, conString);
+            return await _servicesBase.Update("CMT", obj, conString);
         }
-        public async Task<DataResults<object>> DeleteContent(Content data, string user)
+        public async Task<DataResults<object>> DeleteCMT(CMT data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
@@ -70,7 +68,7 @@ namespace WebAPI.Services.DataServices
                 Status = false,
             };
 
-            return await _servicesBase.Update("Content", obj, conString, "ID", data.ID);
+            return await _servicesBase.Update("CMT", obj, conString, "ID", data.ID);
         }
     }
 }

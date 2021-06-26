@@ -43,6 +43,7 @@ namespace WebAPI.Services.DataServices
                 data.Name_ADS,
                 data.Content_ADS,
                 data.Thoi_Han,
+                data.Image,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("ADS", obj, conString);
@@ -55,6 +56,7 @@ namespace WebAPI.Services.DataServices
                 data.Name_ADS,
                 data.Content_ADS,
                 data.Thoi_Han,
+                data.Image,
                 CreatedBy = user,
 
             };
