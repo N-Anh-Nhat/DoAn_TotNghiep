@@ -58,7 +58,7 @@ namespace WebAPI.Services.DataServices
                 using (var sqlConnection = new SqlConnection(conString))
                 {
                     var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
-                    var results = await db.Query("Feedback").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    var results = await db.Query("Product_Detail").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
                     if (results == 1)
                     {
                         result.Message = "successed";

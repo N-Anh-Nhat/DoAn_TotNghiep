@@ -39,6 +39,7 @@ namespace WebAPI.Services.DataServices
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
+                data.ID,
                 data.Image,
                 data.Name,
                 data.Total_Quality,
@@ -70,7 +71,7 @@ namespace WebAPI.Services.DataServices
                 using (var sqlConnection = new SqlConnection(conString))
                 {
                     var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
-                    var results = await db.Query("Feedback").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    var results = await db.Query("Product").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
                     if (results == 1)
                     {
                         result.Message = "successed";

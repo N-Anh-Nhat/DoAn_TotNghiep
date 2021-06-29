@@ -37,12 +37,12 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.InsertUser(users, user));
         }
-        //[HttpPost("DeleteUser")]
+        [HttpPost("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(User users, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateUser(users, user));
+        }
 
-        //public async Task<IActionResult> DeleteUser(User users, string user)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
-        //    return Ok(await dbContext.DeleteUser(users, user));
-        //}
     }
 }

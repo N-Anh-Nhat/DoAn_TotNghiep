@@ -44,5 +44,11 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.DeleteCategory(category, user));
         }
+        [HttpPost("UpdateCategory")]
+        public async Task<IActionResult> UpdateCategory(Category category, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateCategory(category, user));
+        }
     }
 }

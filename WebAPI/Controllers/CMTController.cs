@@ -44,5 +44,11 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.DeleteCMT(CMT, user));
         }
+        [HttpPost("UpdateCMT")]
+        public async Task<IActionResult> UpdateCMT(CMT cmt, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateCMT(cmt, user));
+        }
     }
 }

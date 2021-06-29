@@ -44,5 +44,11 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.DeleteOrder_Detail(Order_Detail, user));
         }
+        [HttpPost("UpdateOrder_Detail")]
+        public async Task<IActionResult> UpdateOrder_Detail(Order_Detail Order_Detail, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateOrder_Detail(Order_Detail, user));
+        }
     }
 }

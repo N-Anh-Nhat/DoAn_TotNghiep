@@ -44,5 +44,11 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.DeleteADS(ads, user));
         }
+        [HttpPost("UpdateADS")]
+        public async Task<IActionResult> UpdateADS(ADS ads, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateADS(ads, user));
+        }
     }
 }

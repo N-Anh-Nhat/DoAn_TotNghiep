@@ -44,5 +44,11 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.DeleteFeedback(Feedback, user));
         }
+        [HttpPost("UpdateFeedback")]
+        public async Task<IActionResult> UpdateFeedback(Feedback feedback, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateFeedback(feedback, user));
+        }
     }
 }

@@ -38,11 +38,16 @@ namespace WebAPI.Controllers
             return Ok(await dbContext.InsertRole(role, user));
         }
         [HttpPost("DeleteRole")]
-
         public async Task<IActionResult> DeleteRole(Role role, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.DeleteRole(role, user));
+        }
+        [HttpPost("UpdateRole")]
+        public async Task<IActionResult> UpdateRole(Role role, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateRole(role, user));
         }
     }
 }

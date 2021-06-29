@@ -38,5 +38,11 @@ namespace WebAPI.Controllers
             return Ok(await dbContext.InsertProduct(Product, user));
         }
 
+        [HttpPost("UpdateProduct")]
+        public async Task<IActionResult> UpdateProduct(Product Product,string user )  
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateProduct(Product, user));
+        }
     }
 }
