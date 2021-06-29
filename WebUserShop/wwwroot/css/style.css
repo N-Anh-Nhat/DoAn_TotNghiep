@@ -531,14 +531,21 @@ nav.navbar.navbar-inverse ul.cart-list > li.total > .btn {
      padding: 8px 0px;
 }
 /*------------------------------------------------------------------ Products -------------------------------------------------------------------*/
- .title-all{
-     margin-bottom: 30px;
+ .show_all{
+    color:red;
 }
- .title-all h1{
-     font-size: 20px;
-     font-weight: 700;
-     color: #010101;
-}
+ .show_all:hover{
+     color:red;
+ }
+ 
+    .title-all h1 {
+        display: inline-block;
+        font-size: 24px;
+        text-transform: uppercase;
+        font-size: 25px;
+        font-weight: 700;
+        color: #c2272d;
+    }
  .title-all p{
      color: #999999;
      font-size: 16px;

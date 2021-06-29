@@ -205,7 +205,7 @@ section .datetime_news
 
 @keyframes example {
     0%   {left:0px; top:0px;}
-    25%  {left:950px; top:0px;}
+    25%  {left:810px; top:0px;}
     100% {left:0px; top:0px;}
   }
   .Description_title_text
@@ -224,3 +224,25 @@ section .datetime_news
     width: 10%;
     margin-right: 15px;
 }
+/**doi tra bao hanh**/
+.title-doi-tra {
+    text-align: center;
+}
+
+.content-doi-tra {
+    line-height: 45px;
+}
+
+.ul-content-doi-tra {
+    margin-left: 45px
+}
+
+.list-style {
+    list-style: disc;
+}
+.color_contact_bao_hang
+{
+    color:red;
+}
+/****/
+

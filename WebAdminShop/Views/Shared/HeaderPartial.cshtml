@@ -3,7 +3,7 @@
 
     <!-- LOGO -->
     <div class="headerbar-left">
-        <a href="index.html" class="logo">
+        <a href="@Url.Action("Index","Index")" class="logo">
             <img alt="Logo" src="~/assets/images/apple-touch-icon.png" />
             <span>TheWayShop</span>
         </a>
@@ -20,26 +20,26 @@
                     <div class="dropdown-list">
                         <div class="header-mess">
                             <h5>
-                                <small>Messages</small>
+                                <small>Tin nhắn</small>
                             </h5>
                         </div>
                         <a href="" class="list-mess">
                             <p class="custom-list-mess">
-                                <b>Tên ng gửi</b>
+                                <b>Tên người gửi</b>
                                 <span>aaaa</span>
                                 <small>5 phút trc</small>
                             </p>
                         </a>
                         <a href="" class="list-mess">
                             <p class="custom-list-mess">
-                                <b>Tên ng gửi</b>
+                                <b>Tên người gửi</b>
                                 <span>aaaa</span>
                                 <small>5 phút trc</small>
                             </p>
                         </a>
                         <a href="" class="list-mess">
                             <p class="custom-list-mess">
-                                <b>Tên ng gửi</b>
+                                <b>Tên người gửi</b>
                                 <span>aaaa</span>
                                 <small>5 phút trc</small>
                             </p>
@@ -64,16 +64,16 @@
                     <div class="dropdown-list-user">
                         <div class="header-mess">
                             <h5>
-                                <small>Hello, Admin</small>
+                                <small>Xin Chào, Admin</small>
                             </h5>
                         </div>
                         <a href="@Url.Action("Profile","Profile")" class="list-mess">
                             <i class="fas fa-user"></i>
-                            <span>Profile</span>
+                            <span>Thông tin</span>
                         </a>
                         <a href="" class="list-mess">
                             <i class="fas fa-power-off"></i>
-                            <span>LogOut</span>
+                            <span>Đăng xuất</span>
                         </a>
                     </div>
                 </div>
@@ -108,14 +108,14 @@
                 <li class="submenu">
                     <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="User"? "active":"")" href="@Url.Action("User","User")">
                         <i class="fas fa-user"></i>
-                        <span> Users </span>
+                        <span> Tài khoản </span>
                     </a>
                 </li>
 
                 <li class="submenu">
                     <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Blog"? "active":"")" href="@Url.Action("Blog","Blog")">
                         <i class="fas fa-file-alt"></i>
-                        <span> Blog </span>
+                        <span> Tin tức </span>
                     </a>
                 </li>
 
@@ -123,7 +123,7 @@
                     <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Mail_All"? "active":"")" href="@Url.Action("Mail_All","Mail_All")">
                         <span class="label radius-circle bg-danger float-right">18</span>
                         <i class="fas fa-envelope"></i>
-                        <span> Mailbox </span>
+                        <span> Hộp thư </span>
                     </a>
                 </li>
 

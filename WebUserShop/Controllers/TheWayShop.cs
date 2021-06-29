@@ -52,5 +52,13 @@ namespace WebUserShop.Controllers
         {
             return View();
         }
+        public IActionResult Chinh_sach_doi_tra()
+        {
+            return View();
+        }
+        public IActionResult Chinh_sach_bao_hanh()
+        {
+            return View();
+        }
     }
 }
