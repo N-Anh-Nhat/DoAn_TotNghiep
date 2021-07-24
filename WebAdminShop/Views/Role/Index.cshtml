@@ -1,0 +1,251 @@
+﻿<div class="content-page">
+
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row content-box">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-8 button_nav_record">
+                    <div id="btnAdd" class="btnAdd"></div>
+                    <div id="btnSave" class="btnSave"></div>
+                    <div id="btnLoadData" class="btnLoadData"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 content-box">
+                    <div id="gridList"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- END content -->
+
+</div>
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("#btnAdd").dxButton({
+            text: "Thêm",
+            icon: "inserttable",
+            onClick: function () {
+                //Add action
+                $("#gridList").dxDataGrid("instance").addRow();
+            }
+        });
+
+        $("#btnSave").dxButton({
+            text: " Lưu ",
+            icon: "save",
+            onClick: function () {
+                //Save action
+                $("#gridList").dxDataGrid("instance").saveEditData();
+            }
+        });
+
+
+        $("#btnLoadData").dxButton({
+            text: "Nạp dữ liệu",
+            icon: "refresh",
+            onClick: function () {
+                //loadData();
+                loadGrid();
+            }
+        });
+
+    });
+
+    $(document).ready(function () {
+        //loadData();
+        loadGrid();
+    });
+
+
+
+
+    function loadGrid(jsonData) {
+
+        var transportStore = new DevExpress.data.CustomStore({
+            key: ["ID", "NameRole", "Detail"],
+            load: function () {
+                return sendRequest("Role/GetlstRole", "GET", "")
+            },
+            insert: function (values) {
+
+                return sendRequest("Role/InsertlstRole", "POST", JSON.stringify(values));
+            },
+            update: function (key, values) {
+
+                return sendRequest("Role/UpdatelstRole?value=" + JSON.stringify(values), "POST", JSON.stringify(key));
+            },
+            //remove: function (key) {
+            //    return sendRequest("Category/DeletelstCategory?id=" + key, "DELETE", "");
+            //}
+        });
+
+        //Pref: https://js.devexpress.com/Documentation/Guide/UI_Components/DataGrid/Editing/
+
+        //Load grid
+        $("#gridList").dxDataGrid({
+            //dataSource: jsonData,
+            dataSource: transportStore,
+            repaintChangesOnly: true,
+            showColumnLines: true,
+            showRowLines: true,
+            allowColumnReordering: true,
+            allowColumnResizing: true,
+            columnAutoWidth: true,
+            showBorders: true,
+            width: "auto",
+            columnsAutoWidth: true,
+            hoverStateEnabled: true,
+            paging: {
+                pageSize: 100
+            },
+            pager: {
+                visible: true,
+                allowedPageSizes: ['ALL'],
+                showPageSizeSelector: false,
+                showInfo: false,
+                showNavigationButtons: false
+            },
+            scrolling: {
+                mode: "virtual"
+            },
+            filterRow: {
+                visible: true,
+                applyFilter: "auto"
+            },
+            editing: {
+                //refreshMode: "full",
+                mode: "popup",
+                allowAdding: true,
+                allowUpdating: true,
+                selectTextOnEditStart: true,
+                startEditAction: "click",
+                useIcons: true,
+                popup: {
+                    title: "Dept info",
+                    showTitle: true,
+                    width: 700,
+                    height: 300
+                },
+                form: {
+                    items: ["NameRole", "Detail"],
+                }
+
+            },
+            onToolbarPreparing: function (e) {
+                e.toolbarOptions.visible = false;
+            },
+            onInitialized: function (e) {
+                dataGrid = e.component;
+            },
+            headerFilter: {
+                visible: true
+            },
+            columnFixing: {
+                enabled: true
+            },
+            columnChooser: {
+                enabled: true,
+                mode: "select"
+            },
+            onContextMenuPreparing: function (e) {
+                if (e.target == "header") {
+                    if (!e.items) e.items = [];
+
+                    //custom menu item in header
+                    e.items.push({
+                        text: "Hide",
+                        onItemClick: function () {
+                            $("#gridList").dxDataGrid("columnOption", e.column.name, "visible", false);
+                        }
+                    });
+
+                    e.items.push({
+                        text: "Unhide",
+                        onItemClick: function () {
+                            $("#gridList").dxDataGrid("instance").showColumnChooser()
+                        }
+                    });
+                }
+            },
+
+            //Data type: Accepted Values: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime'
+            columns: [
+
+                {
+                    dataField: "NameRole",
+                    dataType: "string",
+                    alignment: "left",
+                    caption: "NameRole",
+                },
+                {
+                    dataField: "Detail",
+                    dataType: "string",
+                    alignment: "left",
+                    caption: "Detail",
+                },
+               
+
+
+
+            ],
+            onEditorPreparing: function (e) {
+                if (e.parentType == "dataRow" && e.isOnForm == true) {
+                    if (e.dataField == "ID" && typeof e.row.isNewRow == "undefined")
+                        e.editorOptions.readOnly = true
+                }
+            }
+
+        }).dxDataGrid("instance");
+    };
+
+    function sendRequest(url, method, data) {
+        var d = $.Deferred();
+        $.ajax({
+            type: method,
+            url: url,
+            data: data,
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (res) {
+                d.resolve(res);
+            },
+
+        });
+
+        return d.promise().done(function (result) {
+            if (result.IsSuccess == 1) {
+                if (result.Data.Status == 1) {
+
+                    DevExpress.ui.notify(result.Data.Message, "success", 3000);
+                }
+                else {
+                    DevExpress.ui.notify("Fail: " + result.Data.Message, "error", 3000);
+
+                }
+            }
+            if (result.Status == 1) {
+                DevExpress.ui.notify(result.Message, "success", 3000);
+            }
+            else if (result.Status == -1) {
+                DevExpress.ui.notify("Fail: " + result.Message, "error", 3000);
+            }
+
+
+
+        });
+    };
+</script>

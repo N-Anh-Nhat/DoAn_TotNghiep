@@ -1,9 +1,11 @@
+using LIB.BaseModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,18 @@ namespace WebAdminShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.Configure<MySettingsModel>(Configuration.GetSection("my_setting"));
+           
+            services.AddSingleton(Configuration);
+
+
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            {
+                // Return JSON responses in LowerCase?
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            }
+            ); ;
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

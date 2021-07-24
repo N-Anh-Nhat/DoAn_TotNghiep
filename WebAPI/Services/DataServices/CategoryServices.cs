@@ -39,6 +39,7 @@ namespace WebAPI.Services.DataServices
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
+                data.ID,
                 data.Name,
                 data.Image,
                 data.Detail,
@@ -82,9 +83,10 @@ namespace WebAPI.Services.DataServices
 
                 result.Message = e.Message;
                 result.Status = -1;
-                result.Data = data; ;
+                result.Data = data;
+                return result;
             }
-            return result;
+           
         }
         public async Task<DataResults<object>> DeleteCategory(Category data, string user)
         {

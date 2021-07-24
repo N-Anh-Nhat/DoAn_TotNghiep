@@ -13,15 +13,15 @@ using WebAPI.Models;
 
 namespace WebAdminShop.Controllers
 {
-    public class CategoryController : Controller
-    { 
-      
+    public class ADSController : Controller
+    {
+
         private IOptionsSnapshot<MySettingsModel> appSettings;
         private IOptionsSnapshot<AuthenInfo> authenSettings;
         private readonly UserInfo userInfo;
-        public CategoryController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen)
+        public ADSController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen)
         {
-          
+
             appSettings = app;
             authenSettings = authen;
             ApplicationSettings.WebApiUrl = app.Value.WebApiBaseUrl;
@@ -31,37 +31,37 @@ namespace WebAdminShop.Controllers
         {
             return View();
         }
-       
-        
+
+
         [HttpGet]
-        public async Task<IActionResult> GetlstCategory()
+        public async Task<IActionResult> GetlstADS()
         {
 
-            var res = await ApiClientFactory.Instance.GetCategory("");
+            var res = await ApiClientFactory.Instance.GetADS("");
 
             return Json(res);
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertlstCategory([FromBody] Category data)
+        public async Task<IActionResult> InsertlstADS([FromBody] ADS data)
         {
             //string json = userInfo.GetUserInfo(HttpContext);
 
             //if (json != null)
             //{
-                //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+            //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
-                //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+            //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-                var res = await ApiClientFactory.Instance.InsertCategory(data, "", "");
+            var res = await ApiClientFactory.Instance.InsertADS(data, "", "");
 
-                return Json(res);
+            return Json(res);
             ////}
             //return null;
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatelstCategory([FromBody] Category data, [FromQuery] string value)
+        public async Task<IActionResult> UpdatelstADS([FromBody] ADS data, [FromQuery] string value)
         {
             //string json = userInfo.GetUserInfo(HttpContext);
             JsonConvert.PopulateObject(value, data);
@@ -71,15 +71,15 @@ namespace WebAdminShop.Controllers
 
             //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-                var res = await ApiClientFactory.Instance.UpdateCategory(data, "", "");
+            var res = await ApiClientFactory.Instance.UpdateADS(data, "", "");
 
-                return Json(res);
+            return Json(res);
 
             //}
             //return null;
         }
         //[HttpDelete]
-        //public async Task<IActionResult> DeletelstCategory(string id)
+        //public async Task<IActionResult> DeletelstADS(string id)
         //{
         //    string json = userInfo.GetUserInfo(HttpContext);
 
@@ -89,7 +89,7 @@ namespace WebAdminShop.Controllers
 
         //        curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-        //        var res = await ApiClientFactory.Instance.DeletelstCategory(id, curUser.token);
+        //        var res = await ApiClientFactory.Instance.DeletelstADS(id, curUser.token);
 
         //        return Json(res);
         //    }
