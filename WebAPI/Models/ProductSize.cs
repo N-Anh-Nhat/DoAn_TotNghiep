@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Models
 {
-    public class Product_Detail
+    public class ProductSize
     {
         public string ID { get; set; }
         public string Size { get; set; }
@@ -15,5 +15,6 @@ namespace WebAPI.Models
         public DateTime ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public bool Status { get; set; }
+        public int ID_Product { get; set; }
     }
 }

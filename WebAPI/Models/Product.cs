@@ -21,5 +21,6 @@ namespace WebAPI.Models
         public DateTime ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public bool Status { get; set; }
+        public int ID_Catelogy { get; set; }
     }
 }

@@ -13,13 +13,13 @@ using WebAPI.Models;
 
 namespace WebAdminShop.Controllers
 {
-    public class UserController : Controller
+    public class ProductController : Controller
     {
 
         private IOptionsSnapshot<MySettingsModel> appSettings;
         private IOptionsSnapshot<AuthenInfo> authenSettings;
         private readonly UserInfo userInfo;
-        public UserController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen)
+        public ProductController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen)
         {
 
             appSettings = app;
@@ -34,16 +34,16 @@ namespace WebAdminShop.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetlstUser()
+        public async Task<IActionResult> GetlstProduct()
         {
 
-            var res = await ApiClientFactory.Instance.GetUser("");
+            var res = await ApiClientFactory.Instance.GetProduct("");
 
             return Json(res);
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertlstUser([FromBody] User data)
+        public async Task<IActionResult> InsertlstProduct([FromBody] Product data)
         {
             //string json = userInfo.GetUserInfo(HttpContext);
 
@@ -53,7 +53,7 @@ namespace WebAdminShop.Controllers
 
             //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-            var res = await ApiClientFactory.Instance.InsertUser(data, "", "");
+            var res = await ApiClientFactory.Instance.InsertProduct(data, "", "");
 
             return Json(res);
             ////}
@@ -61,7 +61,7 @@ namespace WebAdminShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatelstUser([FromBody] User data, [FromQuery] string value)
+        public async Task<IActionResult> UpdatelstProduct([FromBody] Product data, [FromQuery] string value)
         {
             //string json = userInfo.GetUserInfo(HttpContext);
             JsonConvert.PopulateObject(value, data);
@@ -71,7 +71,7 @@ namespace WebAdminShop.Controllers
 
             //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-            var res = await ApiClientFactory.Instance.UpdateUser(data, "", "");
+            var res = await ApiClientFactory.Instance.UpdateProduct(data, "", "");
 
             return Json(res);
 
@@ -79,7 +79,7 @@ namespace WebAdminShop.Controllers
             //return null;
         }
         //[HttpDelete]
-        //public async Task<IActionResult> DeletelstUser(string id)
+        //public async Task<IActionResult> DeletelstProduct(string id)
         //{
         //    string json = userInfo.GetUserInfo(HttpContext);
 
@@ -89,7 +89,7 @@ namespace WebAdminShop.Controllers
 
         //        curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-        //        var res = await ApiClientFactory.Instance.DeletelstUser(id, curUser.token);
+        //        var res = await ApiClientFactory.Instance.DeletelstProduct(id, curUser.token);
 
         //        return Json(res);
         //    }

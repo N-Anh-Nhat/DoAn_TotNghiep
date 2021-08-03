@@ -34,7 +34,7 @@ namespace WebAPI
             services.AddTransient<IOrder, OrderServices>();
             services.AddTransient<IOder_detail, Order_DetailServices>();
             services.AddTransient<IProduct, ProductServices>();
-            services.AddTransient<IProduct_detail, Product_DetailServices>();
+            services.AddTransient<IProductSize, ProductSizeServices>();
             services.AddTransient<IUser, UserServices>();
             services.AddTransient<INews, NewsServices>();
             services.AddTransient<IRole, RoleServices>();

@@ -99,36 +99,52 @@
 
             <ul>
                 <li class="submenu">
-                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Index"? "active":"")" href="@Url.Action("Index","Index")">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Index"? "active":"")" href="@Url.Action("Index","Index")">
                         <i class="fas fa-bars"></i>
                         <span> Home </span>
                     </a>
                 </li>
 
                 <li class="submenu">
-                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="User"? "active":"")" href="@Url.Action("User","User")">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Product"? "active":"")" href="@Url.Action("Index","Product")">
                         <i class="fas fa-user"></i>
-                        <span> Tài khoản </span>
+                        <span> Tất cả sản phẩm </span>
                     </a>
                 </li>
 
                 <li class="submenu">
-                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Blog"? "active":"")" href="@Url.Action("Blog","Blog")">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="ProductSize"? "active":"")" href="@Url.Action("Index","ProductSize")">
+                        <i class="fas fa-file-alt"></i>
+                        <span> Loại sản phẩm </span>
+                    </a>
+                </li>
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="News"? "active":"")" href="@Url.Action("Index","News")">
                         <i class="fas fa-file-alt"></i>
                         <span> Tin tức </span>
                     </a>
                 </li>
-
                 <li class="submenu">
-                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Mail_All"? "active":"")" href="@Url.Action("Mail_All","Mail_All")">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="User"? "active":"")" href="@Url.Action("Index","User")">
+                        <i class="fas fa-file-alt"></i>
+                        <span> Tài khoản </span>
+                    </a>
+                </li>
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Mail_All"? "active":"")" href="@Url.Action("Mail_All","Mail_All")">
                         <span class="label radius-circle bg-danger float-right">18</span>
                         <i class="fas fa-envelope"></i>
                         <span> Hộp thư </span>
                     </a>
                 </li>
-
                 <li class="submenu">
-                    <a class="@(ViewContext.RouteData.Values["Action"].ToString() =="Slide"? "active":"")" href="@Url.Action("Slide","Slide")">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="ADS"? "active":"")" href="@Url.Action("Index","ADS")">
+                        <i class="fas fa-photo-video"></i>
+                        <span> Quảng Cáo </span>
+                    </a>
+                </li>
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Slide"? "active":"")" href="@Url.Action("Slide","Slide")">
                         <i class="fas fa-photo-video"></i>
                         <span> Slider </span>
                     </a>

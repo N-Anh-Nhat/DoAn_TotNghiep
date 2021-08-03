@@ -14,27 +14,27 @@ using LIB.BaseModels;
 using LIB.Common;
 namespace WebAPI.Services.DataServices
 {
-    public class Product_DetailServices:IProduct_detail
+    public class ProductSizeServices:IProductSize
     {
          private readonly IConfiguration _config;
         private string conString;
         private BaseServices _servicesBase;
-        public Product_DetailServices(IConfiguration config)
+        public ProductSizeServices(IConfiguration config)
         {
             _config = config;
             conString = _config.GetConnectionString("CN");
             _servicesBase = new BaseServices();
         }
-        public async Task<IEnumerable<Product_Detail>> GetProduct_Detail()
+        public async Task<IEnumerable<ProductSize>> GetProductSize()
         {
-            return await _servicesBase.GetList<Product_Detail>("Product_Detail", conString);
+            return await _servicesBase.GetList<ProductSize>("ProductSize", conString);
         }
-        public async Task<Product_Detail> GetProduct_DetailByID(string Id)
+        public async Task<ProductSize> GetProductSizeByID(string Id)
         {
-            var results = await _servicesBase.GetById<Product_Detail>("Product_Detail", "ID", Id, conString);
+            var results = await _servicesBase.GetById<ProductSize>("ProductSize", "ID", Id, conString);
             return results;
         }
-        public async Task<DataResults<object>> InsertProduct_Detail(Product_Detail data, string user)
+        public async Task<DataResults<object>> InsertProductSize(ProductSize data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
@@ -43,9 +43,9 @@ namespace WebAPI.Services.DataServices
                 data.Quality,
                 CreatedBy = user,
             };
-            return await _servicesBase.Insert("Product_Detail", obj, conString);
+            return await _servicesBase.Insert("ProductSize", obj, conString);
         }
-        public async Task<DataResults<object>> UpdateProduct_Detail(Product_Detail data, string user)
+        public async Task<DataResults<object>> UpdateProductSize(ProductSize data, string user)
         {
             object obj = new
             {
@@ -58,7 +58,7 @@ namespace WebAPI.Services.DataServices
                 using (var sqlConnection = new SqlConnection(conString))
                 {
                     var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
-                    var results = await db.Query("Product_Detail").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    var results = await db.Query("ProductSize").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
                     if (results == 1)
                     {
                         result.Message = "successed";
