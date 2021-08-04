@@ -12,8 +12,10 @@
                 </div>
                 <div class="col-md-8 button_nav_record">
                     <div id="btnAdd" class="btnAdd"></div>
+
                     <div id="btnSave" class="btnSave"></div>
                     <div id="btnLoadData" class="btnLoadData"></div>
+                    <div id="popup"></div>
                 </div>
             </div>
 
@@ -29,7 +31,11 @@
     <!-- END content -->
 
 </div>
-
+<style>
+    img{
+        width: 100%
+    }
+</style>
 
 <script type="text/javascript">
 
@@ -40,8 +46,10 @@
             text: "Thêm",
             icon: "inserttable",
             onClick: function () {
-                //Add action
-                $("#gridList").dxDataGrid("instance").addRow();
+                
+                popupAdd.show();
+                document.getElementById("IM").src = "";
+                document.getElementById("photoUrl").value = "";
             }
         });
 
@@ -70,8 +78,81 @@
         //loadData();
         loadGrid();
     });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#IM')
+                    .attr('src', e.target.result)
+                    
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    var popupAdd = $("#popup").dxPopup({
+        width: 700,
+        height: 450,
+        toolbarItems: [{
+            widget: "dxButton",
+            location: "after",
+            toolbar: "bottom",
+            options: {
+                text: "Lưu",
+              
+            }
+        }, {
+            widget: "dxButton",
+            location: "after",
+            toolbar: "bottom",
+            options: {
+                text: "Thoát",
+                onClick: function (e) {
+                    popupAdd.hide();
+                    document.getElementById("IM").src ="";
+                    document.getElementById("photoUrl").value = "";
+                       
+                }
+            }
+            },
+        ],
+        contentTemplate: function (container) {
+            var view = $("<div>").append(
+                $("<div class='row p-1' />").append(
+                    $("<div class='col-3 mt-2'>Tên loại sản phẩm: </div>"),
+                    $("<div class='col-9 mt-2' id='input-Name'>").dxTextBox({
+                        showClearButton: true,
+                        placeholder: "Nhập tên loại sản phẩm"
+                    }),
+                    $("<div class='col-3 mt-2'>Hình Ảnh: </div>"),
+                    $("<div class='col-9 mt-2'><form id='form-data'  method = 'post' enctype = 'multipart/form-data' > <input class= '' style = '' type = 'file' name='file' id = 'photoUrl' onchange='readURL(this)'  /><br><img id='IM' src='#' alt='your image' /></form></div > "),
 
 
+                    $("<div class='col-3 mt-2'>Chi tiết: </div>"),
+                    $("<div class='col-9 mt-2' id='input-Detail'>").dxTextBox({
+                        showClearButton: true,
+                        placeholder: "Nhập chi tiết"
+                    }),
+                    $("<div class='col-3  mt-2'>Trạng thái: </div>"),
+                    $("<div class='col-9 mt-2' id='input-Status'>").dxCheckBox({
+                        value: false,
+                        text: "Đã xóa"
+                    })
+                )
+            );
+            view.dxScrollView({
+                width: '100%',
+                height: '100%',
+                useNative: true,
+                scrollByContent: true,
+            });
+            return view;
+        },
+        showTitle: true,
+        title: "Thêm Loại sản phẩm",
+        dragEnabled: false,        
+    }).dxPopup("instance");
 
 
     function loadGrid(jsonData) {

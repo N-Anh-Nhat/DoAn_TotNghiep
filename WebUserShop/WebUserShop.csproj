@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -10,9 +10,17 @@
     <PackageReference Include="SqlKata" Version="2.2.0" />
     <PackageReference Include="SqlKata.Execution" Version="2.2.0" />
   </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\WebAPI\WebAPI.csproj" />
+	</ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LIB">
+      <HintPath>..\..\..\CTY\AppMT-RMV\DLL\LIB.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
