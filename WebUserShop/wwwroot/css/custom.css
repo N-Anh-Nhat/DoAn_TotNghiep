@@ -246,3 +246,12 @@ section .datetime_news
 }
 /****/
 
+.container .empty {
+    background-size: 100% auto;
+    width: 379px;
+    height: 266px;
+    background-image: url(https://cdn.tgdd.vn/mwgcart/mwg-site/ContentMwg/images/no-result.gif);
+    background-repeat: no-repeat;
+    display: block;
+    margin:auto;
+}

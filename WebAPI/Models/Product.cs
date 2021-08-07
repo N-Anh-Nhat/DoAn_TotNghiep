@@ -7,7 +7,7 @@ namespace WebAPI.Models
 {
     public class Product
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public int Total_Quality { get; set; }
         public string Image { get; set; }

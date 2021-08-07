@@ -104,7 +104,12 @@
                         <span> Home </span>
                     </a>
                 </li>
-
+                <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Category"? "active":"")" href="@Url.Action("Index","Category")">
+                        <i class="fas fa-file-alt"></i>
+                        <span> Loại sản phẩm </span>
+                    </a>
+                </li>
                 <li class="submenu">
                     <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Product"? "active":"")" href="@Url.Action("Index","Product")">
                         <i class="fas fa-user"></i>
@@ -115,7 +120,7 @@
                 <li class="submenu">
                     <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="ProductSize"? "active":"")" href="@Url.Action("Index","ProductSize")">
                         <i class="fas fa-file-alt"></i>
-                        <span> Loại sản phẩm </span>
+                        <span> Kích thước </span>
                     </a>
                 </li>
                 <li class="submenu">
