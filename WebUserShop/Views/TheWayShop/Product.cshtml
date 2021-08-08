@@ -45,7 +45,7 @@
                         <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
                             @foreach (var item in totalspCa)
                             {
-                                <a href="" class="list-group-item list-group-item-action">
+                                <a asp-action="Product" asp-route-sort="@ViewData["NameSortParm"]" class="list-group-item list-group-item-action">
                                     @item
                                     @*<small class="text-muted">ddd </small>*@
                                 </a>
@@ -131,7 +131,7 @@
                                                         <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
                                                         <div class="mask-icon">
                                                             <ul>
-                                                                <li><a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                                                <li><a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
                                                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                             </ul>
                                                             <a class="cart" href="#">Thêm vào giỏ hàng</a>

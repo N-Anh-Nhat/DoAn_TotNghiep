@@ -108,17 +108,22 @@ namespace WebUserShop.Controllers
             }
 
             //sắp xếp
-            //ViewBag.NameSort = String.IsNullOrEmpty(sort) ? "PriceLowToHigh" : "PriceHighToLow";
+            //ViewData["NameSortParm"] = String.IsNullOrEmpty(sort) ? "PriceHighToLow" : "PriceLowToHigh";
+
+            //var  sortPrice = from m in res
+            //                 where m.Status == true
+            //                 select m;
             //switch (sort)
             //{
             //    case "PriceLowToHigh":
-            //        ViewBag.posts = datalistpage.ToPagedList(PageNumber, pageSize).OrderBy(s => s.Price).Take(pageSize);
+            //        sortPrice = sortPrice.OrderByDescending(s => s.Price);
             //        break;
             //    case "PriceHighToLow":
-            //        ViewBag.posts = datalistpage.ToPagedList(PageNumber, pageSize).OrderByDescending(x => x.Price).Take(pageSize);
+            //        sortPrice = sortPrice.OrderBy(s => s.Price);
+            //        ViewBag.posts = sortPrice.ToList();
             //        break;
             //    default:
-            //        ViewBag.posts = res.ToPagedList(PageNumber, pageSize).OrderBy(x => x.ID);
+            //        ViewBag.posts = res.ToPagedList(PageNumber, pageSize);
             //        break;
             //}
 
@@ -126,7 +131,7 @@ namespace WebUserShop.Controllers
 
             return View();
         }
-        public async Task<IActionResult> Product_detail(int? id)
+        public async Task<IActionResult> Product_detail(int? id,int? category)
         {
             if (id == null)
             {
@@ -139,7 +144,12 @@ namespace WebUserShop.Controllers
             //lấy kích thước sp
             var b = await ApiClientFactory.Instance.GetProductSize("");
             var prosize = b.Where(s => s.ID_Product == id);
+            ViewBag.TotalSize = prosize.Count();
             ViewBag.ProSize = prosize.Where(s => s.Status == true).ToList();
+
+            //sản phẩm cùng danh mục
+            var ProOfCategory = a.Where(s => s.ID_Catelogy == category && !(s.ID==id));                        
+            ViewBag.ProOfCategory = ProOfCategory.Where(s => s.Status == true).ToList();
             return View(proDetail);
         }
         public IActionResult Wish_List()

@@ -1,9 +1,13 @@
 ﻿   <!-- Start All Title Box -->
 @model WebAPI.Models.Product
 @{ 
+    TimeSpan time = DateTime.Now - Model.CreatedDate;
     decimal giaChSale = Model.Price * Model.PromotionPrice / 100;
     decimal GiaSpDaSale = Model.Price - giaChSale;
+    String ConvGiaSpDaSale = String.Format("{0:#,#.##}", GiaSpDaSale);
+    String ConvPrivcie = String.Format("{0:#,#.##}",Model.Price);
     var ProSize = (List<WebAPI.Models.ProductSize>)ViewBag.ProSize;
+    var ProOfCategory = (IEnumerable<WebAPI.Models.Product>) ViewBag.ProOfCategory;
 }
 <div class="all-title-box">
     <div class="container">
@@ -55,7 +59,7 @@
                 
                 <div class="single-product-details">
                     <h2>@Model.Name</h2>
-                    <h5> <del>@Model.Price</del> @GiaSpDaSale</h5>
+                    <h5> <del>@ConvPrivcie</del> @ConvGiaSpDaSale</h5>
                     <p class="available-stock"><span> Còn hơn @Model.Total_Quality sản phẩm / <a>8 đã bán </a></span>
                     <p>
                         <h4>Mô tả sản phẩm: </h4>
@@ -64,18 +68,19 @@
                     </p>
                     <ul>
                         <li>
-                            <div class="form-group size-st">
-                                <label class="size-label">Size</label>
-                                <select id="basic" class="selectpicker show-tick form-control">
-                                    @foreach (var item in ProSize)
-                                    {
-                                        <option value="@item.Size">@item.Size</option>
-                                    }
-
-
-                                </select>
-                            </div>
-                        </li>
+                            @if (ProSize.Count > 0)
+                            {
+                                <div class="form-group size-st">
+                                    <label class="size-label">Size</label>
+                                    <select id="basic" class="selectpicker show-tick form-control">
+                                        @foreach (var item in ProSize)
+                                        {
+                                            <option value="@item.Size">@item.Size</option>
+                                        }
+                                    </select>                                  
+                                </div>
+                            }
+                            </li>
                         <li>
                             <div class="form-group quantity-box">
                                 <label class="control-label">Số lượng</label>
@@ -94,13 +99,6 @@
                         <div class="add-comp">
                             <a class="btn hvr-hover" href="#"><i class="fas fa-heart"></i>Yêu thích</a>
                         </div>
-                        @*<div class="share-bar">
-                    <a class="btn hvr-hover" href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-                    <a class="btn hvr-hover" href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a>
-                    <a class="btn hvr-hover" href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                    <a class="btn hvr-hover" href="#"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
-                    <a class="btn hvr-hover" href="#"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
-                </div>*@
                     </div>
                 </div>
             </div>
@@ -111,8 +109,42 @@
                 <div class="title-all text-center">
                     <h1>Các sản phẩm cùng danh mục</h1>
                 </div>
-                <div class="row">
-                    sda
+                <div class="row testttttt">
+                    @foreach (var item in ProOfCategory)
+                    {                    
+                        <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+
+                                    @if (item.PromotionPrice > 0)
+                                    {
+                                        <div class="type-lb">
+                                            <p class="sale">Giảm giá @item.PromotionPrice%</p>
+                                        </div>
+                                    }
+                                    @if (time.Days < 7)
+                                    {
+                                        <div class="type-lb1">
+                                            <p class="sale">Mới ra mắt</p>
+                                        </div>
+                                    }
+                                    <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <ul>
+                                            <li><a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                        </ul>
+                                        <a class="cart" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>@item.Name</h4>
+                                    <h5>@ConvGiaSpDaSale</h5>
+                                    <h6>@ConvPrivcie</h6>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
