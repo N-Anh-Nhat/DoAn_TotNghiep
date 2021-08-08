@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAdminShop.ApiCaller;
 using WebAPI.Models;
-using PagedList;
+using X.PagedList;
 
 namespace WebUserShop.Controllers
 {
@@ -64,7 +64,7 @@ namespace WebUserShop.Controllers
         }
         public async Task<IActionResult> Product(string txtSearch, int? page, string sort)
         {
-            Product product = new Product();
+
             //danh sách sp
             var res = await ApiClientFactory.Instance.GetProduct("");
             ViewBag.TotalSp = res.Where(s => s.Status == true).Count();
@@ -73,7 +73,6 @@ namespace WebUserShop.Controllers
             //danh sách loại sp
             var category = await ApiClientFactory.Instance.GetCategory("");
             ViewBag.ListCategory = category.Where(s => s.Status == true).ToList();
-            //ViewBag.ListSp = category.Where(s => s.Status == true && s.ID==product.ID_Catelogy).GroupBy(s=>s.Name).Count();
 
             //tổng sản phẩm của loại sản phẩm
             var taisan = from s in category
@@ -86,63 +85,46 @@ namespace WebUserShop.Controllers
                          );
             ViewBag.totalSPCate = taisan;
 
-            //tìm kiếm
+            //
             var datasp = from m in res
                          where m.Status == true
                          select m;
 
+
+            var pageSize = 6;
+            var PageNumber = page ?? 1;
+            var datalistpage = res.Where(s => s.Status == true).ToList();
+
+            //tìm kiếm
             if (!String.IsNullOrWhiteSpace(txtSearch))
             {
                 datasp = datasp.Where(s => s.Name.Contains(txtSearch));
-                ViewBag.posts = datasp;              
-            }
-            
-            //phân trang
-            
-            if (page > 0)
-            {
-                page = page;
+                ViewBag.totalSpSearch = datasp.Count();              
+                ViewBag.posts = datasp.ToPagedList(PageNumber, pageSize);
             }
             else
             {
-                page = 1;
+                ViewBag.posts = datalistpage.ToPagedList(PageNumber, pageSize);
             }
-            int pageSize = 6;
-            int start = (int)(page - 1) * pageSize;
-
-            ViewBag.pageCurrent = page;
-            int totalPage = ViewBag.TotalSp;
-            float totalNumsize = (totalPage / (float)pageSize);
-            int numSize = (int)Math.Ceiling(totalNumsize);
-            ViewBag.numSize = numSize;
-            ViewBag.posts = datasp.OrderBy(x => x.ID).Skip(start).Take(pageSize);
-            
-
 
             //sắp xếp
-
-            
-                //ViewBag.NameSort = String.IsNullOrEmpty(sort) ? "PriceLowToHigh" : "PriceHighToLow";
+            //ViewBag.NameSort = String.IsNullOrEmpty(sort) ? "PriceLowToHigh" : "PriceHighToLow";
             //switch (sort)
             //{
             //    case "PriceLowToHigh":
-            //        ViewBag.posts = datasp.OrderBy(x => x.Price).Skip(start).Take(pageSize);
+            //        ViewBag.posts = datalistpage.ToPagedList(PageNumber, pageSize).OrderBy(s => s.Price).Take(pageSize);
             //        break;
             //    case "PriceHighToLow":
-            //        ViewBag.posts = datasp.OrderByDescending(x => x.Price).Skip(start).Take(pageSize);
+            //        ViewBag.posts = datalistpage.ToPagedList(PageNumber, pageSize).OrderByDescending(x => x.Price).Take(pageSize);
             //        break;
             //    default:
-            //        ViewBag.posts = datasp.OrderBy(x => x.ID).Skip(start).Take(pageSize);
+            //        ViewBag.posts = res.ToPagedList(PageNumber, pageSize).OrderBy(x => x.ID);
             //        break;
             //}
 
-                
-            
-            return View();
-        }
-       public void Search()
-        {
 
+
+            return View();
         }
         public async Task<IActionResult> Product_detail(int? id)
         {
