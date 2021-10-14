@@ -281,3 +281,20 @@ section .datetime_news
     color: #007bff;
     border: 1px solid #dee2e6;
 }
+.title-sort {
+    margin-bottom: 13px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+}
+.border-sort {
+    background-color: #ddffff2e !important;
+}
+.noSearchResult {
+    padding-left: 3%;
+    padding-top: 9%;
+}
+    .noSearchResult ul li {
+        list-style-position: inside;
+        list-style-type: disc;
+    }

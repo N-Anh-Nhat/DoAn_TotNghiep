@@ -3,10 +3,10 @@
 @using X.PagedList;
 
 @{
-    var listSP = (IEnumerable<WebAPI.Models.Product>)ViewBag.posts;
+    var listSP = (X.PagedList.IPagedList<WebAPI.Models.Product>)ViewBag.posts;
     // listCategory = (List<WebAPI.Models.Category>)ViewBag.totalSPCate;
     var totalspCa = ViewBag.totalSPCate;
-
+    var listLSP = (IEnumerable<WebAPI.Models.Category>)ViewBag.ListCategory; 
 
 }
 <div class="all-title-box">
@@ -33,64 +33,70 @@
                         @using (Html.BeginForm("Product", "TheWayShop", FormMethod.Get))
                         {
 
-                            <input class="form-control" placeholder="Tìm sản phẩm..." type="text" name="txtSearch">
+                            <input class="form-control" value="@ViewBag.txtSearch" placeholder="Tìm sản phẩm..." type="text" name="txtSearch">
                             <button type="submit"> <i class="fa fa-search"></i> </button>
                         }
-
                     </div>
-                    <div class="filter-sidebar-left">
-                        <div class="title-left">
-                            <h3>Thể loại</h3>
-                        </div>
-                        <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
-                            @foreach (var item in totalspCa)
-                            {
-                                <a asp-action="Product" asp-route-sort="@ViewData["NameSortParm"]" class="list-group-item list-group-item-action">
-                                    @item
-                                    @*<small class="text-muted">ddd </small>*@
-                                </a>
-                            }
+                    <form method="get" action="Product">
+                        <div class="border-sort">
+                            <div class="title-sort">
+                                <span>Chọn theo tiêu chí</span>
+                            </div>
+                            <div class="">
+                                <div class="title-left">
+                                    <h3>Thể loại</h3>
+                                </div>
+                                <div class="brand-box">
+                                    <ul>
+                                        @foreach (var item in listLSP)
+                                        {
+                                            <li>
+                                                <div class="radio radio-danger">
+                                                    <input name="categoryID" value="@item.ID" type="radio" @(ViewBag.categoryID== @item.ID? "checked" : "")>
+                                                    <label for="Radios1"> @item.Name </label>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="filter-brand-left">
+                                <div class="title-left">
+                                    <h3>Sắp xếp</h3>
+                                </div>
+                                <div class="brand-box">
+                                    <ul>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="PriceLowToHigh" type="radio" @(ViewBag.Sort=="PriceLowToHigh"? "checked" : "") >
+                                                <label for="Radios1"> Giá thấp đến cao </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="PriceHighToLow" type="radio" @(ViewBag.Sort=="PriceHighToLow"? "checked" : "")>
+                                                <label for="Radios2"> Giá cao đến thấp </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="CharA_Z" type="radio" @(ViewBag.Sort=="CharA_Z"? "checked" : "") >
+                                                <label for="Radios3"> Thứ tự chữ cái A-Z </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="CharZ_A" type="radio" @(ViewBag.Sort=="CharZ_A"? "checked" : "") >
+                                                <label for="Radios4"> Thứ tự chữ cái Z-A </label>
+                                            </div>
+                                        </li>
+                                    </ul>
 
-
+                                </div>
+                                <input class="input-group" type="submit" value="Lọc tìm kiếm" style="display:block" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="filter-brand-left">
-                        <div class="title-left">
-                            <h3>Sắp xếp</h3>
-                        </div>
-                        <div class="brand-box">
-                            <ul>
-                                <form method="get" action="Product">
-                                    <li>
-                                        <div class="radio radio-danger">
-                                            <input name="sort" id="Radios1" value="PriceLowToHigh" type="radio">
-                                            <label for="Radios1"> Giá thấp đến cao </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="radio radio-danger">
-                                            <input name="sort" id="Radios2" value="PriceHighToLow" type="radio">
-                                            <label for="Radios2"> Gái cao đến thấp </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="radio radio-danger">
-                                            <input name="sort" id="Radios3" value="CharA_Z" type="radio">
-                                            <label for="Radios3"> Thứ tự chữ cái A-Z </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="radio radio-danger">
-                                            <input name="sort" id="Radios4" value="CharZ_A" type="radio">
-                                            <label for="Radios4"> Thứ tự chữ cái Z-A </label>
-                                        </div>
-                                    </li>
-                                    <input type="submit" />
-                                </form>
-                            </ul>
-                        </div>
-                    </div>
-
+                    </form>
                 </div>
             </div>
             <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
@@ -148,9 +154,21 @@
                                     }
                                     else
                                     {
-                                        <div class="container text-center m-auto">
+                                        <div class="col-12">
+                                            <p>Rất tiếc, TheWayShop.com không tìm thấy kết quả nào phù hợp với từ khóa "@ViewBag.txtSearch"</p>
+                                        </div>
+                                        <div class="col-6 noSearchResult">
+                                            <h3>Để tìm được kết quả chính xác hơn, bạn vui lòng:</h3>
+                                            <ul>
+                                                <li>Kiểm tra lỗi chính tả của từ khóa đã nhập</li>
+                                                <li>Thử lại bằng từ khóa khác</li>
+                                                <li>Thử lại bằng những từ khóa tổng quát hơn</li>
+                                                <li>Thử lại bằng những từ khóa ngắn gọn hơn</li>
+                                            </ul>
+                                        </div>
+                                        <div class="container text-center m-auto col-6">
                                             <i class="empty"></i>
-                                            Không có sản phẩm nào phù hợp với tiêu chí tìm kiếm!
+                                           
                                         </div>
                                     }
 
@@ -163,7 +181,7 @@
                 Trang @(ViewBag.posts.PageCount < ViewBag.posts.PageNumber ? 0 : ViewBag.posts.PageNumber) / @ViewBag.posts.PageCount
                 <div class="card-footer">
                     <nav aria-label="Page navigation example">
-                             @Html.PagedListPager((IPagedList)ViewBag.posts, page => Url.Action("Product", "TheWayShop", new { page = page }))
+                             @Html.PagedListPager((IPagedList)ViewBag.posts, page => Url.Action("Product", "TheWayShop", new { page, @txtSearch = @ViewBag.txtSearch, @categoryId = @ViewBag.categoryID,@sort= @ViewBag.Sort }))
                     </nav>
                 </div>
 
@@ -174,3 +192,8 @@
 </div>
     </div>
 <!-- End Shop Page -->
+<script>
+    function myFunction(val) {
+        alert("The input value has changed. The new value is: " + val);
+    }
+</script>

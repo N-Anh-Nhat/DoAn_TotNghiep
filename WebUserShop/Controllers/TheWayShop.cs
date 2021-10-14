@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,13 +63,13 @@ namespace WebUserShop.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Product(string txtSearch, int? page, string sort)
+        public async Task<IActionResult> Product(string txtSearch,int? categoryID, int? page, string sort)
         {
-
+           
             //danh sách sp
-            var res = await ApiClientFactory.Instance.GetProduct("");
-            ViewBag.TotalSp = res.Where(s => s.Status == true).Count();
-            ViewBag.ListSp = res.Where(s => s.Status == true).ToList();
+            var product = await ApiClientFactory.Instance.GetProduct("");
+            ViewBag.TotalSp = product.Where(s => s.Status == true).Count();
+            ViewBag.ListSp = product.Where(s => s.Status == true).ToList();
 
             //danh sách loại sp
             var category = await ApiClientFactory.Instance.GetCategory("");
@@ -76,7 +77,7 @@ namespace WebUserShop.Controllers
 
             //tổng sản phẩm của loại sản phẩm
             var taisan = from s in category
-                         join x in res on s.ID equals x.ID_Catelogy
+                         join x in product on s.ID equals x.ID_Catelogy
                          group s by s.ID into g
                          select
                          (
@@ -85,47 +86,60 @@ namespace WebUserShop.Controllers
                          );
             ViewBag.totalSPCate = taisan;
 
-            //
-            var datasp = from m in res
+            // list product
+            var datasp = from m in product
                          where m.Status == true
                          select m;
 
-
-            var pageSize = 6;
+            //kích thước sản phẩm trong 1 trang
+            var pageSize = 3;
             var PageNumber = page ?? 1;
-            var datalistpage = res.Where(s => s.Status == true).ToList();
+            ViewBag.Sort = sort;
+            ViewBag.categoryID = categoryID;
 
-            //tìm kiếm
-            if (!String.IsNullOrWhiteSpace(txtSearch))
+
+            //fliter and sort product
+            if (categoryID != null)
+            {
+                datasp = (from m in product
+                          join x in category on m.ID_Catelogy equals x.ID
+                          where x.ID == categoryID
+                          select m);
+            }
+            if (sort !=null)
+            {
+                switch (sort)
+                {
+                    case "PriceLowToHigh":
+                        datasp = datasp.OrderBy(s => s.Price);
+                        break;
+                    case "PriceHighToLow":
+                        datasp = datasp.OrderByDescending(s => s.Price);                   
+                        break;
+                    case "CharA_Z":
+                        datasp = datasp.OrderByDescending(s => s.Name);
+                        break;
+                    case "CharZ_A":
+                        datasp = datasp.OrderByDescending(s => s.Name);
+                        break;
+                }
+            }           
+            else
+            {
+                ViewBag.posts = datasp.ToPagedList(PageNumber, pageSize);
+            }
+            ViewBag.posts = datasp.ToPagedList(PageNumber, pageSize);
+
+
+            //search product
+            ViewBag.txtSearch = txtSearch;
+            if (!string.IsNullOrEmpty(txtSearch))
             {
                 datasp = datasp.Where(s => s.Name.Contains(txtSearch));
                 ViewBag.totalSpSearch = datasp.Count();              
                 ViewBag.posts = datasp.ToPagedList(PageNumber, pageSize);
             }
-            else
-            {
-                ViewBag.posts = datalistpage.ToPagedList(PageNumber, pageSize);
-            }
-
-            //sắp xếp
-            //ViewData["NameSortParm"] = String.IsNullOrEmpty(sort) ? "PriceHighToLow" : "PriceLowToHigh";
-
-            //var  sortPrice = from m in res
-            //                 where m.Status == true
-            //                 select m;
-            //switch (sort)
-            //{
-            //    case "PriceLowToHigh":
-            //        sortPrice = sortPrice.OrderByDescending(s => s.Price);
-            //        break;
-            //    case "PriceHighToLow":
-            //        sortPrice = sortPrice.OrderBy(s => s.Price);
-            //        ViewBag.posts = sortPrice.ToList();
-            //        break;
-            //    default:
-            //        ViewBag.posts = res.ToPagedList(PageNumber, pageSize);
-            //        break;
-            //}
+            
 
 
 
