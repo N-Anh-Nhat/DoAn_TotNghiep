@@ -38,11 +38,11 @@ namespace WebAPI.Services.DataServices
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
-            {
-                data.ID,
+            {              
                 data.Name,
                 data.Image,
                 data.Detail,
+                data.Status,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("Category", obj, conString);
@@ -55,6 +55,7 @@ namespace WebAPI.Services.DataServices
                 data.Name,
                 data.Image,
                 data.Detail,
+                data.Status
             };
             DataResults<object> result = new DataResults<object>();
             try

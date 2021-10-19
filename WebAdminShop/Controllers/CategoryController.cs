@@ -1,11 +1,14 @@
 ﻿using LIB.BaseModels;
 using LIB.Common;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAdminShop.ApiCaller;
@@ -19,13 +22,15 @@ namespace WebAdminShop.Controllers
         private IOptionsSnapshot<MySettingsModel> appSettings;
         private IOptionsSnapshot<AuthenInfo> authenSettings;
         private readonly UserInfo userInfo;
-        public CategoryController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen)
+        private readonly IWebHostEnvironment _env;
+        public CategoryController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen, IWebHostEnvironment env)
         {
           
             appSettings = app;
             authenSettings = authen;
             ApplicationSettings.WebApiUrl = app.Value.WebApiBaseUrl;
             userInfo = new UserInfo();
+            _env = env;
         }
         public IActionResult Index()
         {
@@ -43,58 +48,116 @@ namespace WebAdminShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertlstCategory([FromBody] Category data)
+        public async Task<IActionResult> InsertlstCategory(Category data, IFormFile file)
         {
             //string json = userInfo.GetUserInfo(HttpContext);
 
             //if (json != null)
             //{
-                //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+            //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
-                //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+            //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+            if(file != null)
+            {
+                string filename = GetFileNameWithDate(file.FileName);
+                bool check = SaveFile(file, filename);
+                if (!check)
+                {
+                    DataResults<Object> dataResults = new DataResults<object>();
 
-                var res = await ApiClientFactory.Instance.InsertCategory(data, "", "");
+                    err.IsSuccess = true;
+                    dataResults.Status = -2;
+                    dataResults.Message = "Save file error";
+                    err.Data = dataResults;
+                    return Json(err);
+                }
+                data.Image = "uploads/Category/img/" + filename;
 
-                return Json(res);
+
+            }
+          
+           
+            var res = await ApiClientFactory.Instance.InsertCategory(data, "", "");
+
+            return Json(res);
             ////}
-            //return null;
+            
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatelstCategory([FromBody] Category data, [FromQuery] string value)
+        public async Task<IActionResult> UpdatelstCategory(Category data, IFormFile file)
         {
             //string json = userInfo.GetUserInfo(HttpContext);
-            JsonConvert.PopulateObject(value, data);
+
             //if (json != null)
             //{
             //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
             //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+            if (file != null)
+            {
+                string filename = GetFileNameWithDate(file.FileName);
+                bool check = SaveFile(file, filename);
+                if (!check)
+                {
+                    DataResults<Object> dataResults = new DataResults<object>();
 
-                var res = await ApiClientFactory.Instance.UpdateCategory(data, "", "");
+                    err.IsSuccess = true;
+                    dataResults.Status = -2;
+                    dataResults.Message = "Save file error";
+                    err.Data = dataResults;
+                    return Json(err);
+                }
+                data.Image = "uploads/Category/img/" + filename;
+
+
+            }
+
+            var res = await ApiClientFactory.Instance.UpdateCategory(data, "", "");
 
                 return Json(res);
 
-            //}
-            //return null;
         }
-        //[HttpDelete]
-        //public async Task<IActionResult> DeletelstCategory(string id)
-        //{
-        //    string json = userInfo.GetUserInfo(HttpContext);
+        
+        public bool SaveFile(IFormFile file, string name)
+        {
+            try
+            {
+                string webRootPath = _env.WebRootPath;
+                string newPath = Path.Combine(webRootPath, "uploads/Category/img/");
+                System.IO.DirectoryInfo di = new DirectoryInfo(newPath);
 
-        //    if (json != null)
-        //    {
-        //        UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
 
-        //        curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+                using (var fileStream = new FileStream(Path.Combine(newPath, name), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+                FileInfo fileLocation = new FileInfo(Path.Combine(newPath, name));
 
-        //        var res = await ApiClientFactory.Instance.DeletelstCategory(id, curUser.token);
+                if (fileLocation.Exists)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
 
-        //        return Json(res);
-        //    }
-
-        //    return null;
-        //}
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        private string GetFileNameWithDate(string filename) =>
+            Path.GetFileNameWithoutExtension(filename) +
+            DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") +
+            Path.GetExtension(filename);
     }
 }

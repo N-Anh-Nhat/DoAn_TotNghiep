@@ -11,6 +11,7 @@
                     <div id="btnAdd" class="btnAdd"></div>
                     <div id="btnSave" class="btnSave"></div>
                     <div id="btnLoadData" class="btnLoadData"></div>
+                    <div id="popup"></div>
                 </div>
             </div>
 
@@ -27,57 +28,255 @@
 
 </div>
 
-
+<style>
+    img {
+        width: 100%
+    }
+</style>
 <script type="text/javascript">
+    var listCate =  @Html.Raw(Json.Serialize(ViewBag.listCategory));
+    var listProduct = @Html.Raw(Json.Serialize(ViewBag.listProduct));
 
+    $(function () {
 
-        $(function () {
+        $("#btnAdd").dxButton({
+            text: "Thêm",
+            icon: "inserttable",
+            onClick: function () {
 
-            $("#btnAdd").dxButton({
-                text: "Thêm",
-                icon: "inserttable",
-                onClick: function () {
-                    //Add action
-                    $("#gridList").dxDataGrid("instance").addRow();
-                }
-            });
+                popupAdd.show();
+                $("#input-Name").dxTextBox("instance").option("value", "");
 
-            $("#btnSave").dxButton({
-                text: " Lưu ",
-                icon: "save",
-                onClick: function () {
-                    //Save action
-                    $("#gridList").dxDataGrid("instance").saveEditData();
-                }
-            });
+                $("#input-Detail").dxTextArea("instance").option("value", "");
 
+                $("#input-Status").dxCheckBox("instance").option("value", "");
 
-            $("#btnLoadData").dxButton({
-                text: "Nạp dữ liệu",
-                icon: "refresh",
-                onClick: function () {
-                    //loadData();
-                    loadGrid();
-                }
-            });
+                $("#input-Category").dxSelectBox("instance").option("value", null)
+                $("#input-Total").dxNumberBox("instance").option("value", "");
 
+                $("#input-Price").dxNumberBox("instance").option("value", "");
+
+                $("#input-Promotion").dxNumberBox("instance").option("value", "");
+
+                document.getElementById("IM").src = "";
+                document.getElementById("photoUrl").value = "";
+            }
         });
 
-        $(document).ready(function () {
-            //loadData();
-            loadGrid();
+        var popupAdd = $("#popup").dxPopup({
+            width: 700,
+            height: 450,
+            toolbarItems: [{
+                widget: "dxButton",
+                location: "after",
+                toolbar: "bottom",
+                options: {
+                    text: "Lưu",
+                    onClick: function (e) {
+                        var inputName = $("#input-Name").dxTextBox("instance").option("value");
+                        var inputChiTiet = $("#input-Detail").dxTextArea("instance").option("value");
+                        var inputTrangThai = $("#input-Status").dxCheckBox("instance").option("value");
+                        var inputLoaiSP = $("#input-Category").dxSelectBox("instance").option("value");
+                        var inputSoluong = $("#input-Total").dxNumberBox("instance").option("value");
+                        var inputGia = $("#input-Price").dxNumberBox("instance").option("value");
+                        var inputKhuyenmai = $("#input-Promotion").dxNumberBox("instance").option("value");
+
+
+                        var data = new FormData();
+
+                        data.append("Name", inputName)
+                        data.append("ID_Catelogy", inputLoaiSP)
+                        data.append("Detail", inputChiTiet)
+                        data.append("Total_Quality", inputSoluong)
+                        data.append("Price", inputGia)
+                        data.append("PromotionPrice", inputKhuyenmai)
+                        data.append("Total_Quality", inputSoluong)
+                        data.append("Status", inputTrangThai)
+                        data.append("file", document.getElementById("photoUrl").files[0])
+                        if (inputName == "" || inputChiTiet == "" || inputLoaiSP == null || inputSoluong == "" || inputGia == "" || inputKhuyenmai == "" || document.getElementById("photoUrl").files[0] ==null) {
+                            return DevExpress.ui.notify("Vui lòng nhập đầy đủ thông tin", "Warning", 3000);
+                        }
+                        $.ajax({
+                            type: "POST",
+                            enctype: 'multipart/form-data',
+                            url: "@Url.Action("InsertlstProduct", "Product")",
+                            data: data,
+                            contentType: false,
+                            processData: false,
+                            success: function (result) {
+                                if (result.IsSuccess == true) {
+                                    if (result.Data.Status == 1) {
+                                        $("#input-Name").dxTextBox("instance").option("value", "");
+
+                                        $("#input-Detail").dxTextArea("instance").option("value", "");
+
+                                        $("#input-Status").dxCheckBox("instance").option("value", "");
+
+                                        $("#input-Category").dxSelectBox("instance").option("value", null)
+                                        $("#input-Total").dxNumberBox("instance").option("value", "");
+
+                                        $("#input-Price").dxNumberBox("instance").option("value", "");
+
+                                        $("#input-Promotion").dxNumberBox("instance").option("value", "");
+                                        document.getElementById("photoUrl").files[0].value = null;
+                                        popupAdd.hide();
+                                        $("#gridList").dxDataGrid("instance").refresh();
+
+                                        DevExpress.ui.notify("Thêm thành công", "success", 3000);
+                                    } else if (result.Data.Status == -2) {
+                                        DevExpress.ui.notify("Lưu tệp lỗi.", "Warning", 3000);
+                                    }
+                                    else {
+                                        DevExpress.ui.notify(result.Data.Message, "Warning", 3000);
+                                    }
+                                }
+                                else {
+                                    DevExpress.ui.notify(result.ReturnMessage, "Warning", 3000);
+                                }
+                            },
+                            error: function () {
+                                DevExpress.ui.notify("API lỗi", "error", 3000);
+                            }
+                        });
+        }
+                }
+            }, {
+                widget: "dxButton",
+                location: "after",
+                toolbar: "bottom",
+                options: {
+                    text: "Thoát",
+                    onClick: function (e) {
+                        $("#input-Name").dxTextBox("instance").option("value", "");
+
+                        $("#input-Detail").dxTextArea("instance").option("value", "");
+
+                        $("#input-Status").dxCheckBox("instance").option("value", "");
+
+                        $("#input-Category").dxSelectBox("instance").option("value", null)
+                        $("#input-Total").dxNumberBox("instance").option("value", "");
+
+                        $("#input-Price").dxNumberBox("instance").option("value", "");
+
+                        $("#input-Promotion").dxNumberBox("instance").option("value", "");
+                        document.getElementById("photoUrl").files[0].value = null;
+                        popupAdd.hide();
+                        document.getElementById("IM").src ="";
+                        document.getElementById("photoUrl").value = "";
+
+                    }
+                }
+                },
+            ],
+            contentTemplate: function (container) {
+                var view = $("<div>").append(
+                    $("<div class='row p-1' />").append(
+                        $("<div class='col-3 mt-2'>Tên sản phẩm: </div>"),
+                        $("<div class='col-9 mt-2' id='input-Name'>").dxTextBox({
+                            showClearButton: true,
+                            placeholder: "Nhập tên sản phẩm"
+                        }),
+                        $("<div class='col-3 mt-2'>Loại sản phẩm: </div>"),
+                        $("<div class='col-9 mt-2' id='input-Category'>").dxSelectBox({
+                            dataSource: listCate,
+                            showClearButton: true,
+                            displayExpr: "Name",
+                            valueExpr: "ID",
+                        }),
+                        $("<div class='col-3 mt-2'>Số lượng tống: </div>"),
+                        $("<div class='col-9 mt-2' id='input-Total'>").dxNumberBox({
+                            showClearButton: true,
+                            placeholder: "Nhập số lượng"
+                        }),
+                        $("<div class='col-3 mt-2'>Hình Ảnh: </div>"),
+                        $("<div class='col-9 mt-2'><form id='form-data'  method = 'post' enctype = 'multipart/form-data' > <input type = 'file' name='file' id = 'photoUrl' onchange='readURL(this)'  /><br><img id='IM' src='#' alt='your image' /></form></div > "),
+
+                        $("<div class='col-3 mt-2'>Giá: </div>"),
+                        $("<div class='col-9 mt-2' id='input-Price'>").dxNumberBox({
+                            showClearButton: true,
+                            placeholder: "Nhập giá"
+                        }),
+                        $("<div class='col-3 mt-2'>Khuyến mãi: </div>"),
+                        $("<div class='col-9 mt-2' id='input-Promotion'>").dxNumberBox({
+                            showClearButton: true,
+                            placeholder: "Nhập khuyến mãi"
+                        }),
+
+                        $("<div class='col-3  mt-2'>Trạng thái: </div>"),
+                        $("<div class='col-9 mt-2' id='input-Status'>").dxCheckBox({
+                            value: false,
+                            text: "Đã xóa"
+                        }),
+                        $("<div class='col-3 mt-2'>Chi tiết: </div>"),
+                        $("<div class='col-9 mt-2' id='input-Detail'>").dxTextArea({
+
+                            height: 100,
+
+                        }),
+                    )
+                );
+                view.dxScrollView({
+                    width: '100%',
+                    height: '100%',
+                    useNative: true,
+                    scrollByContent: true,
+                });
+                return view;
+            },
+            showTitle: true,
+            title: "Thêm Loại sản phẩm",
+            dragEnabled: false,
+        }).dxPopup("instance");
+
+
+        $("#btnSave").dxButton({
+            text: " Lưu ",
+            icon: "save",
+            onClick: function () {
+                //Save action
+                $("#gridList").dxDataGrid("instance").saveEditData();
+            }
         });
 
+
+        $("#btnLoadData").dxButton({
+            text: "Nạp dữ liệu",
+            icon: "refresh",
+            onClick: function () {
+                //loadData();
+                loadGrid();
+            }
+        });
+
+    });
+
+    $(document).ready(function () {
+        //loadData();
+        loadGrid();
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#IM').attr('src', e.target.result)
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
 
 
 
         function loadGrid(jsonData) {
 
             var transportStore = new DevExpress.data.CustomStore({
-                key: ["ID", "Name", "Total_Quality", "Image","MoreImages",
+                key: ["ID", "Name","ID_Catelogy", "Total_Quality", "Image","MoreImages",
                     "Price", "PromotionPrice", "Detail", "Description", "CreatedDate", "Status"],
                 load: function () {
                     return sendRequest("Product/GetlstProduct", "GET", "")
+
                 },
                 insert: function (values) {
 
@@ -125,38 +324,12 @@
                     visible: true,
                     applyFilter: "auto"
                 },
-                editing: {
-                    //refreshMode: "full",
-                    mode: "popup",
-                    allowAdding: true,
-                    allowUpdating: true,
-                    selectTextOnEditStart: true,
-                    startEditAction: "click",
-                    useIcons: true,
-                    popup: {
-                        title: "Dept info",
-                        showTitle: true,
-                        width: 700,
-                        height: 300
-                    },
-                    form: {
-                        items: ["Name", "Total_Quality", "Image", "MoreImages",
-                            "Price", "PromotionPrice", "Detail", "Description", "CreatedDate", "Status"],
-                    }
 
-                },
-                onToolbarPreparing: function (e) {
-                    e.toolbarOptions.visible = false;
-                },
-                onInitialized: function (e) {
-                    dataGrid = e.component;
-                },
+               
                 headerFilter: {
                     visible: true
                 },
-                columnFixing: {
-                    enabled: true
-                },
+
                 columnChooser: {
                     enabled: true,
                     mode: "select"
@@ -184,69 +357,281 @@
 
                 //Data type: Accepted Values: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime'
                 columns: [
-                    // ["ID", "Name", "Total_Quality", "Image","MoreImages",
-                    //"Price", "PromotionPrice", "Detail", "Description", "CreatedDate", "Status"],
+                    {
+                        type: "buttons",
+                        width: 80,
+                        caption:"Công cụ",
+                        buttons: [{
+                            hint: "edit",
+                            icon: "edit",
+
+                            onClick: function (e) {
+                                var dataEdit = e.row.key;
+                                var popup = $("#popup").dxPopup({
+                                    width: 700,
+                                    height: 450,
+                                    toolbarItems: [{
+                                        widget: "dxButton",
+                                        location: "after",
+                                        toolbar: "bottom",
+                                        options: {
+                                            text: "Lưu",
+                                            onClick: function (e) {
+                                                var inputName = $("#input-Name").dxTextBox("instance").option("value");
+                                                var inputChiTiet = $("#input-Detail").dxTextArea("instance").option("value");
+                                                var inputTrangThai = $("#input-Status").dxCheckBox("instance").option("value");
+                                                var inputLoaiSP = $("#input-Category").dxSelectBox("instance").option("value");
+                                                var inputSoluong = $("#input-Total").dxNumberBox("instance").option("value");
+                                                var inputGia = $("#input-Price").dxNumberBox("instance").option("value");
+                                                var inputKhuyenmai = $("#input-Promotion").dxNumberBox("instance").option("value");
+
+                                                var data = new FormData();
+                                                data.append("ID", dataEdit.ID)
+                                                data.append("Name", inputName)
+                                                data.append("ID_Catelogy", inputLoaiSP)
+                                                data.append("Detail", inputChiTiet)
+                                                data.append("Total_Quality", inputSoluong)
+                                                data.append("Price", inputGia)
+                                                data.append("PromotionPrice", inputKhuyenmai)
+                                                data.append("Total_Quality", inputSoluong)
+                                                data.append("Status", inputTrangThai)
+                                                data.append("file", document.getElementById("photoUrl").files[0])
+                                                if (document.getElementById("photoUrl").files[0] == null)
+                                                    data.append("Image", dataEdit.Image)
+                                                if (inputName == "" || inputChiTiet == "" || inputLoaiSP == null || inputSoluong == "" || inputGia == "" || inputKhuyenmai == null) {
+                                                    return DevExpress.ui.notify("Vui lòng nhập đầy đủ thông tin", "Warning", 3000);
+                                                }
+                                                $.ajax({
+                                                    type: "POST",
+                                                    enctype: 'multipart/form-data',
+                                                    url: "@Url.Action("UpdatelstProduct", "Product")",
+                                                    data: data,
+                                                    contentType: false,
+                                                    processData: false,
+                                                    success: function (result) {
+                                                        if (result.IsSuccess == true) {
+                                                            if (result.Data.Status == 1) {
+                                                                $("#input-Name").dxTextBox("instance").option("value", "");
+
+                                                                $("#input-Detail").dxTextArea("instance").option("value", "");
+
+                                                                $("#input-Status").dxCheckBox("instance").option("value", "");
+
+                                                                $("#input-Category").dxSelectBox("instance").option("value", null)
+                                                                $("#input-Total").dxNumberBox("instance").option("value", "");
+
+                                                                $("#input-Price").dxNumberBox("instance").option("value", "");
+
+                                                                $("#input-Promotion").dxNumberBox("instance").option("value", "");
+                                                                document.getElementById("photoUrl").value = "";
+
+                                                                popup.hide();
+                                                                $("#gridList").dxDataGrid("instance").refresh();
+
+                                                                DevExpress.ui.notify("Cập nhật thành công", "success", 3000);
+                                                            } else if (result.Data.Status == -2) {
+                                                                DevExpress.ui.notify("Lưu tệp lỗi.", "Warning", 3000);
+                                                            }
+                                                            else {
+                                                                DevExpress.ui.notify(result.Data.Message, "Warning", 3000);
+                                                            }
+                                                        }
+                                                        else {
+                                                            DevExpress.ui.notify(result.ReturnMessage, "Warning", 3000);
+                                                        }
+                                                    },
+                                                    error: function () {
+                                                        DevExpress.ui.notify("API lỗi", "error", 3000);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }, {
+                                        widget: "dxButton",
+                                        location: "after",
+                                        toolbar: "bottom",
+                                        options: {
+                                            text: "Thoát",
+                                            onClick: function (e) {
+                                                popup.hide();
+                                                document.getElementById("IM").src = "";
+                                                document.getElementById("photoUrl").value = "";
+
+                                            }
+                                        }
+                                    },
+                                    ],
+                                    contentTemplate: function (container) {
+                                        var view = $("<div>").append(
+                                            $("<div class='row p-1' />").append(
+                                                $("<div class='col-3 mt-2'>Tên sản phẩm: </div>"),
+                                                $("<div class='col-9 mt-2' id='input-Name'>").dxTextBox({
+                                                    showClearButton: true,
+                                                    placeholder: "Nhập tên sản phẩm",
+                                                    value: dataEdit.Name
+                                                }),
+                                                $("<div class='col-3 mt-2'>Loại sản phẩm: </div>"),
+                                                $("<div class='col-9 mt-2' id='input-Category'>").dxSelectBox({
+                                                    dataSource: listCate,
+                                                    showClearButton: true,
+                                                    displayExpr: "Name",
+                                                    valueExpr: "ID",
+                                                    value: dataEdit.ID_Catelogy,
+                                                }),
+                                                $("<div class='col-3 mt-2'>Số lượng tống: </div>"),
+                                                $("<div class='col-9 mt-2' id='input-Total'>").dxNumberBox({
+                                                    showClearButton: true,
+                                                    placeholder: "Nhập số lượng",
+                                                    value: dataEdit.Total_Quality,
+                                                }),
+                                                $("<div class='col-3 mt-2'>Hình Ảnh: </div>"),
+                                                $(`<div class='col-9 mt-2'><form id='form-data'  method = 'post' enctype = 'multipart/form-data' > <input type = 'file' name='file' id = 'photoUrl' onchange='readURL(this)'  /><br><img id='IM' src="${'/' + dataEdit.Image}" alt='your image' /></form></div > `),
+
+                                                $("<div class='col-3 mt-2'>Giá: </div>"),
+                                                $("<div class='col-9 mt-2' id='input-Price'>").dxNumberBox({
+                                                    showClearButton: true,
+                                                    value: dataEdit.Price,
+                                                    placeholder: "Nhập giá"
+                                                }),
+                                                $("<div class='col-3 mt-2'>Khuyến mãi: </div>"),
+                                                $("<div class='col-9 mt-2' id='input-Promotion'>").dxNumberBox({
+                                                    showClearButton: true,
+                                                    value: dataEdit.PromotionPrice,
+                                                    placeholder: "Nhập khuyến mãi"
+                                                }),
+
+                                                $("<div class='col-3  mt-2'>Trạng thái: </div>"),
+                                                $("<div class='col-9 mt-2' id='input-Status'>").dxCheckBox({
+                                                    value: dataEdit.Status,
+                                                    text: "Đã xóa"
+                                                }),
+                                                $("<div class='col-3 mt-2'>Chi tiết: </div>"),
+                                                $("<div class='col-9 mt-2' id='input-Detail'>").dxTextArea({
+
+                                                    height: 100,
+                                                    value: dataEdit.Detail,
+                                                }),
+                                            )
+                                        );
+                                        view.dxScrollView({
+                                            width: '100%',
+                                            height: '100%',
+                                            useNative: true,
+                                            scrollByContent: true,
+                                        });
+                                        return view;
+                                    },
+                                    showTitle: true,
+                                    title: "Thêm Loại sản phẩm",
+                                    dragEnabled: false,
+                                }).dxPopup("instance");
+                                popup.show();
+                            }
+                        },
+                        {
+                            hint: "delete",
+                            icon: "trash",
+
+                        }
+                        ]
+                    },
+                    {
+                        caption: "Hình ảnh",
+                        dataField: "Image",
+
+                        width: 200,
+                        alignment: "center",
+                        cellTemplate: function (container, options) {
+                            var linkImg;
+                            if (options.key.Image == null) {
+                                linkImg = "#"
+                            }
+                            else {
+                                linkImg = "/" + options.key.Image;
+                            }
+
+                            $("<div id='dropzone-external' class=' flex-box dx-theme-border-color'>")
+                                .append($("<img id='dropzone-image'  src='" + linkImg + "' />")
+                                ).appendTo(container)
+
+                        }
+                    },
                     {
                         dataField: "Name",
                         dataType: "string",
                         alignment: "left",
                         caption: "Name",
+                        cellTemplate: function (container, options) {
+                            $("<div style='margin-top:30px'>").append(
+                                $("<div>" + options.text + "</div>"),
+                            ).appendTo(container)
+                        },
+                    },
+                    {
+                        dataField: "ID_Catelogy",
+                        dataType: "number",
+                        alignment: "left",
+                        caption: "Category",
+                        lookup: {
+                            dataSource: listCate,
+                            valueExpr: "ID",
+                            displayExpr: "Name"
+                        },
+                        cellTemplate: function (container, options) {
+                            $("<div style='margin-top:30px'>").append(
+                                $("<div>" + options.text + "</div>"),
+                            ).appendTo(container)
+                        },
                     },
                     {
                         dataField: "Total_Quality",
                         dataType: "number",
                         alignment: "left",
                         caption: "Total_Quality",
+                        cellTemplate: function (container, options) {
+                            $("<div style='margin-top:30px'>").append(
+                                $("<div>" + options.text + "</div>"),
+                            ).appendTo(container)
+                        },
                     },
-                    
-                    {
-                        dataField: "Image",
-                        dataType: "string",
-                        alignment: "left",
-                        caption: "Image",
-                    },
-                    {
-                        dataField: "MoreImages",
-                        dataType: "string",
-                        alignment: "left",
-                        caption: "MoreImages",
-                    },
+
+
                     {
                         dataField: "Price",
                         dataType: "number",
                         alignment: "left",
                         caption: "Price",
+                        cellTemplate: function (container, options) {
+                            $("<div style='margin-top:30px'>").append(
+                                $("<div>" + options.text + "</div>"),
+                            ).appendTo(container)
+                        },
                     },
                     {
                         dataField: "PromotionPrice",
                         dataType: "number",
                         alignment: "left",
                         caption: "PromotionPrice",
+                        cellTemplate: function (container, options) {
+                            $("<div style='margin-top:30px'>").append(
+                                $("<div>" + options.text + "</div>"),
+                            ).appendTo(container)
+                        },
                     },
                     {
                         dataField: "Detail",
                         dataType: "string",
                         alignment: "left",
                         caption: "Detail",
+
+                        cellTemplate: function (container, options) {
+                            $("<div style='margin-top:30px'>").append(
+                                $("<div>" + options.text + "</div>"),
+                            ).appendTo(container)
+                        },
                     },
-                    {
-                        dataField: "Description",
-                        dataType: "string",
-                        alignment: "left",
-                        caption: "Description",
-                    },
-                    {
-                        dataField: "ID_Catelogy",
-                        dataType: "number",
-                        alignment: "left",
-                        caption: "ID_Catelogy",
-                    },
-                    {
-                        dataField: "CreatedDate",
-                        dataType: "date",
-                        alignment: "left",
-                        caption: "CreatedDate",
-                    },
+
+
                     {
                         dataField: "Status",
                         dataType: "boolean",
@@ -258,12 +643,7 @@
 
 
                 ],
-                onEditorPreparing: function (e) {
-                    if (e.parentType == "dataRow" && e.isOnForm == true) {
-                        if (e.dataField == "ID" && typeof e.row.isNewRow == "undefined")
-                            e.editorOptions.readOnly = true
-                    }
-                }
+
 
             }).dxDataGrid("instance");
         };

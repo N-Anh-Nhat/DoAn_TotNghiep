@@ -39,7 +39,7 @@ namespace WebAPI.Services.DataServices
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.ID,
+               
                 data.Image,
                 data.Name,
                 data.Total_Quality,
@@ -48,6 +48,8 @@ namespace WebAPI.Services.DataServices
                 data.PromotionPrice,
                 data.Description,
                 data.Detail,
+                data.ID_Catelogy,
+                data.Status,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("Product", obj, conString);
@@ -63,6 +65,8 @@ namespace WebAPI.Services.DataServices
                 data.Price,
                 data.PromotionPrice,
                 data.Description,
+                data.ID_Catelogy,
+                data.Status,
                 data.Detail,
             };
             DataResults<object> result = new DataResults<object>();
