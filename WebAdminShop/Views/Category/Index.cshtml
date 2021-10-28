@@ -54,6 +54,12 @@
             onClick: function () {
 
                 popupAdd.show();
+                $("#input-Name").dxTextBox("instance").option("value", "");
+
+                $("#input-Detail").dxTextBox("instance").option("value", "");
+
+                $("#input-Status").dxCheckBox("instance").option("value", "");
+              
                 document.getElementById("IM").src = "";
                 document.getElementById("photoUrl").value = "";
             }
@@ -129,7 +135,7 @@
                                     $("#input-Detail").dxTextBox("instance").option("value", "");
 
                                     $("#input-Status").dxCheckBox("instance").option("value", "");
-                                    document.getElementById("photoUrl").files[0].value = null;
+                                    document.getElementById("photoUrl").value = "";
                                     popupAdd.hide();
                                     $("#gridList").dxDataGrid("instance").refresh();
 
@@ -158,6 +164,12 @@
             options: {
                 text: "Thoát",
                 onClick: function (e) {
+                    $("#input-Name").dxTextBox("instance").option("value", "");
+
+                    $("#input-Detail").dxTextBox("instance").option("value", "");
+
+                    $("#input-Status").dxCheckBox("instance").option("value", "");
+                    document.getElementById("photoUrl").value = "";
                     popupAdd.hide();
                     document.getElementById("IM").src ="";
                     document.getElementById("photoUrl").value = "";
@@ -312,7 +324,7 @@
                                                             $("#input-Detail").dxTextBox("instance").option("value", "");
 
                                                             $("#input-Status").dxCheckBox("instance").option("value", "");
-                                                            document.getElementById("photoUrl").files[0].value = null;
+                                                            document.getElementById("photoUrl").value = "";
                                                             popup.hide();
                                                             $("#gridList").dxDataGrid("instance").refresh();
 
@@ -341,6 +353,12 @@
                                     options: {
                                         text: "Thoát",
                                         onClick: function (e) {
+                                            $("#input-Name").dxTextBox("instance").option("value", "");
+
+                                            $("#input-Detail").dxTextBox("instance").option("value", "");
+
+                                            $("#input-Status").dxCheckBox("instance").option("value", "");
+                                            document.getElementById("photoUrl").value = "";
                                             popup.hide();
                                             document.getElementById("IM").src = "";
                                             document.getElementById("photoUrl").value = "";
