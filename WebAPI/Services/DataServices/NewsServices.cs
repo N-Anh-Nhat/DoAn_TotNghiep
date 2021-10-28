@@ -45,6 +45,8 @@ namespace WebAPI.Services.DataServices
                 data.Image,
                 data.Detai_Name,
                 data.Content_news,
+                data.Status,
+                data.ID_Catelogy,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("News", obj, conString);
@@ -57,6 +59,8 @@ namespace WebAPI.Services.DataServices
                 data.Image,
                 data.Detai_Name,
                 data.Content_news,
+                data.Status,
+                data.ID_Catelogy,
             };
             DataResults<object> result = new DataResults<object>();
             try

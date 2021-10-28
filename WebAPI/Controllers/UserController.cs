@@ -43,6 +43,19 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.UpdateUser(users, user));
         }
+        //Login
+        [HttpGet("GetCheckLogin")]
+        public async Task<IActionResult> GetCheckLogin(string username, string password)
+        {
+            if (string.IsNullOrEmpty(username)) ModelState.AddModelError("Username", "Username is required");
 
+            if (string.IsNullOrEmpty(password)) ModelState.AddModelError("PassWord", "PassWord is required");
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var rs = await dbContext.CheckLogin(username, password);
+
+            return Ok(rs);
+        }
     }
 }

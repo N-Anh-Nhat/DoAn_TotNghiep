@@ -107,5 +107,42 @@ namespace WebAPI.Services.DataServices
 
         //    return await _servicesBase.Update("User", obj, conString, "ID", data.ID);
         //}
+        public async Task<DataResults<object>> CheckLogin(string usermame, string password)
+        {
+            DataResults<object> returns = new DataResults<object>();
+
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+
+                    string Pw = Security.TextToMD5(password);
+
+                    var rs = await db.Query("User").Where("UserName",usermame).Where("Password",Pw).FirstOrDefaultAsync<User>();
+                        
+
+                    if (rs != null)
+                    {
+                        returns.Message = "success";
+                        returns.Status = 1;
+                        rs.Password = null;
+                        returns.Data = rs;
+                        return returns;
+                    }
+
+                    returns.Message = "User or password incorrect";
+                    returns.Status = -1;
+                    return returns;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                returns.Message = "Login fail";
+                returns.Status = -1;
+                return returns;
+            }
+        }
     }
 }

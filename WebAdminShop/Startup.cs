@@ -29,6 +29,12 @@ namespace WebAdminShop
            
             services.AddSingleton(Configuration);
 
+            services.AddDistributedMemoryCache(); //Add cache for session
+            services.AddResponseCaching();
+            services.AddSession(cfg => {          //Add Session
+                cfg.Cookie.Name = "Shop";             //Name in browser (Cookie)
+                cfg.IdleTimeout = new TimeSpan(0, 30, 0);    // Time span Session
+            });
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             {
@@ -54,7 +60,7 @@ namespace WebAdminShop
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -63,7 +69,7 @@ namespace WebAdminShop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Index}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=Index}/{id?}");
             });
         }
     }

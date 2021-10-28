@@ -15,5 +15,6 @@ namespace WebAPI.Services.Interface
         Task<User> GetUserByID(string Id);
         Task<DataResults<object>> InsertUser(User data, string user);
         Task<DataResults<object>> UpdateUser(User data, string user);
+        Task<DataResults<object>> CheckLogin(string usermame, string password);
     }
 }

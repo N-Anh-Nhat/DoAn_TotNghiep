@@ -42,7 +42,15 @@ namespace WebAdminShop.ApiCaller
             var x = await PostAsync<DataResults<object>, User>(requestUrl, data, token);
             return x;
         }
+        public async Task<DataResults<User>> CheckLogin(string username, string password)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "User/GetCheckLogin?username=" + username + "&password=" + password));
 
+            var x = await GetAsync<DataResults<User>>(requestUrl, null);
+
+            return x;
+        }
 
     }
 }
