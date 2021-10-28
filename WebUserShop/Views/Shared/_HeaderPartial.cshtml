@@ -1,21 +1,28 @@
 ﻿
-
 <!-- Start Main Top -->
 <div class="main-top">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="container">
+        <div class="row box-header">
+            <div class=" box-header-left" >
+                <div class="header-phone">
+                    <p>Cần mua hàng?</p>
+                    <p>Gọi ngay&nbsp;<strong>1800.1111</strong></p>
+                </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="right-phone-box">
-                    <p>Liên hệ với chúng tôi :- <a href="#"> +11 900 800 100</a></p>
+            <div class=" box-header-right">
+                <div class="chosse-lang">
+                    <label for="cars">Chọn ngôn ngữ:</label>
+                    <select name="lang" id="lang">
+                        <option value="VN">VN</option>
+                        <option value="EN">EN</option>
+                    </select>
                 </div>
-                <div class="our-link">
-                    <ul>
-                        <li><a href="@Url.Action("My_Account","TheWayShop")">Tài khoản của bạn</a></li>
-
-                    </ul>
+                <div class="member">
+                    <a class="btn" onclick="showModal('@Url.Action("Index","User",null,Context.Request.Scheme)','Đăng ký tài khoản','Nhanh chóng và dễ dàng.')">Đăng ký</a>
+                    <span>/</span>
+                    <a class="btn" onclick="showModal1('@Url.Action("")','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đăng nhập</a>
                 </div>
+               
             </div>
         </div>
     </div>

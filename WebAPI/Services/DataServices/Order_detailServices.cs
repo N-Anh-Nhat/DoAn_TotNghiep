@@ -41,7 +41,6 @@ namespace WebAPI.Services.DataServices
             object obj = new
             {
                 data.Quality,
-                data.Total_monney,
                 data.PromotionPrice,
                  CreatedBy = user,
             };
@@ -52,7 +51,6 @@ namespace WebAPI.Services.DataServices
             object obj = new
             {
                 data.Quality,
-                data.Total_monney,
                 data.PromotionPrice
             };
             DataResults<object> result = new DataResults<object>();

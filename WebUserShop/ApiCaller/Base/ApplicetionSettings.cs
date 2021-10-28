@@ -1,4 +1,4 @@
-﻿namespace WebAdminShop.ApiCaller
+﻿namespace WebUserShop.ApiCaller
 {
     public static class ApplicationSettings
     {

@@ -142,9 +142,9 @@
      font-size: 20px;
 }
 /*------------------------------------------------------------------ HEADER -------------------------------------------------------------------*/
- .main-top{
-     background: #010101;
-     padding: 10px 0px;
+.main-top {
+    background: #D70018;
+    padding: 10px 0px;
 }
 
  .bootstrap-select.btn-group .dropdown-toggle .filter-option{
@@ -1608,9 +1608,12 @@ nav.navbar.navbar-inverse ul.cart-list > li.total > .btn {
      font-size: 24px;
      font-weight: 700;
 }
- .contact-form-right p{
-     margin-bottom: 15px;
-}
+    .contact-form-right .text_sao {
+        font-size: 13px;
+        font-style: italic;
+        color: red;
+        margin-bottom: 10px;
+    }
  .contact-form-right .form-group .form-control::-moz-placeholder{
      color: #999999;
 }

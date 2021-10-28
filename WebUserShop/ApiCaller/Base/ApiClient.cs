@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace WebAdminShop.ApiCaller
+namespace WebUserShop.ApiCaller
 {
     public partial class ApiClient
     {

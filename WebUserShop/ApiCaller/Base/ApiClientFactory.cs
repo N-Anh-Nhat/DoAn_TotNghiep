@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace WebAdminShop.ApiCaller
+namespace WebUserShop.ApiCaller
 {
     public static class ApiClientFactory
     {

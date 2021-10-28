@@ -8,38 +8,38 @@ namespace WebUserShop.ApiCaller
 {
     public partial class ApiClient
     {
-        public async Task<Product> GetProductById(string Id, string token)
+        public async Task<Feedback> GetFeedbackById(string Id, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "Product/GetProductById?Id=" + Id));
+                "Feedback/GetFeedbackById?Id=" + Id));
 
-            var x = await GetAsync<Product>(requestUrl, token);
+            var x = await GetAsync<Feedback>(requestUrl, token);
 
             return x;
         }
 
-        public async Task<IEnumerable<Product>> GetProduct(string token)
+        public async Task<IEnumerable<Feedback>> GetFeedback(string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "Product/GetProduct"));
+                "Feedback/GetFeedback"));
 
-            var x = await GetAsync<IEnumerable<Product>>(requestUrl, token);
+            var x = await GetAsync<IEnumerable<Feedback>>(requestUrl, token);
 
             return x;
         }
-        public async Task<Message<DataResults<object>>> InsertProduct(Product data, string user, string token)
+        public async Task<Message<DataResults<object>>> InsertFeedback(Feedback data, string user, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "Product/InsertProduct?user=" + user));
+                "Feedback/InsertsFeedback?user=" + user));
             var x = await PostAsync<DataResults<object>, object>(requestUrl, data, token);
             return x;
         }
 
-        public async Task<Message<DataResults<object>>> UpdateProduct(Product data, string user, string token)
+        public async Task<Message<DataResults<object>>> UpdateFeedback(Feedback data, string user, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "Product/UpdateProduct?user=" + user));
-            var x = await PostAsync<DataResults<object>, Product>(requestUrl, data, token);
+                "Feedback/UpdateFeedback?user=" + user));
+            var x = await PostAsync<DataResults<object>, Feedback>(requestUrl, data, token);
             return x;
         }
 

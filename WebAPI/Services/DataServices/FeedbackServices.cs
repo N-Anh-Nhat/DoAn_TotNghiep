@@ -39,10 +39,11 @@ namespace WebAPI.Services.DataServices
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.Address,
+                data.Title,
                 data.Content,
                 data.Name,
                 data.Phone,
+                data.Email,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("Feedback", obj, conString);
@@ -52,10 +53,11 @@ namespace WebAPI.Services.DataServices
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
-                data.Address,
+                data.Title,
                 data.Content,
                 data.Name,
-                data.Phone
+                data.Phone,
+                data.Email,
             };
             DataResults<object> result = new DataResults<object>();
             try

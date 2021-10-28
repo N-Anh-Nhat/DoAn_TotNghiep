@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAdminShop.ApiCaller;
+using WebUserShop.ApiCaller;
 using WebAPI.Models;
 using X.PagedList;
 
@@ -29,7 +29,6 @@ namespace WebUserShop.Controllers
             ApplicationSettings.WebApiUrl = app.Value.WebApiBaseUrl;
             userInfo = new UserInfo();
         }
-
         public IActionResult Index()
         {
             return View();
@@ -46,6 +45,15 @@ namespace WebUserShop.Controllers
         public IActionResult Contact_Us()
         {
             return View();
+        }
+        //gửi phản hồi
+        [HttpPost]
+        public async Task<IActionResult> SendFeedback([FromBody] Feedback feedback)
+        {
+
+            feedback.Status = true;
+            var sendFB = await ApiClientFactory.Instance.InsertFeedback(feedback, "", "");
+            return Json(sendFB);
         }
         public IActionResult My_Account()
         {
@@ -117,7 +125,7 @@ namespace WebUserShop.Controllers
                         datasp = datasp.OrderByDescending(s => s.Price);                   
                         break;
                     case "CharA_Z":
-                        datasp = datasp.OrderByDescending(s => s.Name);
+                        datasp = datasp.OrderBy(s => s.Name);
                         break;
                     case "CharZ_A":
                         datasp = datasp.OrderByDescending(s => s.Name);
@@ -162,7 +170,7 @@ namespace WebUserShop.Controllers
             ViewBag.ProSize = prosize.Where(s => s.Status == true).ToList();
 
             //sản phẩm cùng danh mục
-            var ProOfCategory = a.Where(s => s.ID_Catelogy == category && !(s.ID==id));                        
+            var ProOfCategory = a.Where(s => s.ID_Catelogy == category && !(s.ID==id)).Take(4);                        
             ViewBag.ProOfCategory = ProOfCategory.Where(s => s.Status == true).ToList();
             return View(proDetail);
         }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LIB.BaseModels;
 using WebAPI.Models;
 
-namespace WebAdminShop.ApiCaller
+namespace WebUserShop.ApiCaller
 {
     public partial class ApiClient
     {
@@ -30,7 +30,7 @@ namespace WebAdminShop.ApiCaller
         public async Task<Message<DataResults<object>>> InsertUser(User data, string user, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "User/InsertUser?user=" + user));
+                "User/InsertsUser?user=" + user));
             var x = await PostAsync<DataResults<object>, object>(requestUrl, data, token);
             return x;
         }
