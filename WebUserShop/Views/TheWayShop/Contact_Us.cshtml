@@ -1,4 +1,5 @@
 ﻿    <!-- Start All Title Box -->
+
 <div class="all-title-box">
     <div class="container">
         <div class="row">
@@ -17,13 +18,13 @@
 <div class="contact-box-main">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-sm-12">
+            <div class="col-lg-6 col-sm-12">
                 <div class="contact-info-left">
                     <h2>Liên hệ</h2>
-                    <p>Nếu bạn cần liện hệ với quản trị để liên hệ, quảng cáo hay khiếu nại vui lòng điền form theo hướng dẫn </p>
+                    <p>Nếu bạn cần liện hệ với quản trị để quảng cáo hay khiếu nại vui lòng điền form theo hướng dẫn </p>
                     <ul>
                         <li>
-                            <p><i class="fas fa-map-marker-alt"></i>Địa chỉ: Michael I. Days 3756 <br>Preston Street Wichita,<br> KS 67213 </p>
+                            <p><i class="fas fa-map-marker-alt"></i>Địa chỉ: Huỳnh Thúc Kháng, Quận 1, TPHCM</p>
                         </li>
                         <li>
                             <p><i class="fas fa-phone-square"></i>Điện thoại: <a href="tel:+1-888705770">+1-888 705 770</a></p>
@@ -32,52 +33,52 @@
                             <p><i class="fas fa-envelope"></i>Email: <a href="mailto:contactinfo@gmail.com">contactinfo@gmail.com</a></p>
                         </li>
                     </ul>
+
                 </div>
             </div>
-            <div class="col-lg-8 col-sm-12">
+            <div class="col-lg-6 col-sm-12">
                 <div class="contact-form-right">
                     <h2>Gửi yêu cầu</h2>
                     <p>Vui lòng điền đầy đủ thông tin về vấn đề cần liên hệ hoặc khiếu nại</p>
-                    <form id="contactForm">
+                    <p class="text_sao">Các trường * là bắt buộc nhập</p>
+                    <form id="Validate_FB" >
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Tên của bạn&nbsp;(*)" required data-error="Nhập tên của bạn">
-                                    <div class="help-block with-errors"></div>
+                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Tên của bạn&nbsp;(*)">
+                                    <span id="errorName" class="TextError"></span>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" placeholder="Your Email&nbsp;(*)" id="email" class="form-control" name="name" required data-error="Nhập email của bạn ">
-                                            <div class="help-block with-errors"></div>
+                                            <input type="text" placeholder="Your Email&nbsp;(*)" id="Email" name="Email" class="form-control">
+                                            <span id="errorEmail" class="TextError"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="number" placeholder="Điện thoại của bạn&nbsp;(*)" id="SDT" class="form-control" name="phone" required data-error="Nhập số điện thoại của bạn">
-                                            <div class="help-block with-errors"></div>
+                                            <input type="number" placeholder="Điện thoại của bạn&nbsp;(*)" id="SDT" name="Phone" class="form-control">
+                                            <span id="errorSDT" class="TextError"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="subject" name="name" placeholder="Nội dung&nbsp;(*)" required data-error="Nhập nội dung cần liên hệ">
-                                    <div class="help-block with-errors"></div>
+                                    <input type="text" class="form-control" id="Title" name="Title" placeholder="Tiêu đề&nbsp;(*)">
+                                    <span id="errorTitle" class="TextError"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <textarea class="form-control" id="message" placeholder="Tin nhắn của bạn&nbsp;(*)" rows="4" data-error="Nhập tin nhắn của bạn" required></textarea>
-                                    <div class="help-block with-errors"></div>
+                                    <textarea class="form-control" id="Message" name="Message" placeholder="Tin nhắn của bạn&nbsp;(*)" rows="4"></textarea>
+                                    <span id="errorMessage" class="TextError"></span>
                                 </div>
                                 <div class="submit-button text-center">
-                                    <button class="btn hvr-hover" id="submit" type="submit">Gửi yêu cầu</button>
-                                    <div id="msgSubmit" class="h3 text-center hidden"></div>
-                                    <div class="clearfix"></div>
+                                    <input type="submit" value="Gửi yêu cầu"  class="btn btn-primary w-100" />
                                 </div>
                             </div>
                         </div>

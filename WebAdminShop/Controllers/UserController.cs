@@ -39,7 +39,7 @@ namespace WebAdminShop.Controllers
         {
 
             var res = await ApiClientFactory.Instance.GetUser("");
-
+            
             return Json(res);
         }
 

@@ -47,6 +47,7 @@ namespace WebAPI.Services.DataServices
                 data.Address,
                 data.Email,
                 data.Phone,
+                data.ID_Role,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("User", obj, conString);
@@ -62,7 +63,8 @@ namespace WebAPI.Services.DataServices
                 data.Frist_Name,
                 data.Address,
                 data.Email,
-                data.Phone
+                data.Phone,
+                data.ID_Role,
             };
             DataResults<object> result = new DataResults<object>();
             try

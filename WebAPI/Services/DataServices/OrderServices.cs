@@ -41,6 +41,7 @@ namespace WebAPI.Services.DataServices
             {
                 data.Name_order,
                 data.Type_ship,
+                data.Total_monney,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("Order", obj, conString);
@@ -51,6 +52,7 @@ namespace WebAPI.Services.DataServices
             {
                 data.Name_order,
                 data.Type_ship,
+                data.Total_monney,
             };
             DataResults<object> result = new DataResults<object>();
             try

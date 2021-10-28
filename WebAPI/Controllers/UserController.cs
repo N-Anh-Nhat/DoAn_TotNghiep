@@ -30,13 +30,14 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetUserByID(Id));
         }
-        [HttpPost("InsertUser")]
+        [HttpPost("InsertsUser")]
 
-        public async Task<IActionResult> InsertUser(User users, string user)
+        public async Task<IActionResult> InsertsUser(User data, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            return Ok(await dbContext.InsertUser(users, user));
+            return Ok(await dbContext.InsertUser(data, user));
         }
+
         [HttpPost("UpdateUser")]
         public async Task<IActionResult> UpdateUser(User users, string user)
         {

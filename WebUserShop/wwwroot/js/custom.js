@@ -1,4 +1,4 @@
-(function($) {
+﻿(function($) {
 
 
 
@@ -28,8 +28,16 @@
 		});
 	});
 
-
-
-
-	
 }(jQuery));
+showModal = (url, title, title2) => {
+	$.ajax({
+		type: 'GET',
+		url: url,
+		success: function (res) {
+			$('#form-modal .modal-body').html(res);
+			$('#form-modal .modal-title').html(title);
+			$('#form-modal .modal-title2').html(title2);
+			$('#form-modal').modal('show');
+		}
+	})
+}

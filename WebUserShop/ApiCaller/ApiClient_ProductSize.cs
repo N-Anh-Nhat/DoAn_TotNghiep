@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LIB.BaseModels;
 using WebAPI.Models;
 
-namespace WebAdminShop.ApiCaller
+namespace WebUserShop.ApiCaller
 {
     public partial class ApiClient
     {

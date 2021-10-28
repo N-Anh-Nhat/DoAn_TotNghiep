@@ -30,12 +30,12 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetFeedbackByID(Id));
         }
-        [HttpPost("InsertFeedback")]
+        [HttpPost("InsertsFeedback")]
 
-        public async Task<IActionResult> InsertFeedback(Feedback Feedback, string user)
+        public async Task<IActionResult> InsertsFeedback(Feedback data, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            return Ok(await dbContext.InsertFeedback(Feedback, user));
+            return Ok(await dbContext.InsertFeedback(data, user));
         }
         [HttpPost("DeleteFeedback")]
 
