@@ -1,4 +1,14 @@
 ﻿   <!-- Start All Title Box -->
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+@{
+    var listSP = (X.PagedList.IPagedList<WebAPI.Models.Product>)ViewBag.posts;
+    // listCategory = (List<WebAPI.Models.Category>)ViewBag.totalSPCate;
+    var totalspCa = ViewBag.totalSPCate;
+    var listLSP = (IEnumerable<WebAPI.Models.Category>)ViewBag.ListCategory; 
+
+}
 <div class="all-title-box">
     <div class="container">
         <div class="row">
@@ -20,366 +30,170 @@
             <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
                 <div class="product-categori">
                     <div class="search-product">
-                        <form action="#">
-                            <input class="form-control" placeholder="Tìm sản phẩm..." type="text">
-                            <button type="submit"> <i class="fa fa-search"></i> </button>
-                        </form>
-                    </div>
-                    <div class="filter-sidebar-left">
-                        <div class="title-left">
-                            <h3>Thể loại</h3>
-                        </div>
-                        <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
-                            <div class="list-group-collapse sub-men">
-                                <a class="list-group-item list-group-item-action" href="#sub-men1" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men1">
-                                    Clothing <small class="text-muted">(100)</small>
-                                </a>
-                                <div class="collapse show" id="sub-men1" data-parent="#list-group-men">
-                                    <div class="list-group">
-                                        <a href="#" class="list-group-item list-group-item-action active">T-Shirts <small class="text-muted">(50)</small></a>
-                                        <a href="#" class="list-group-item list-group-item-action">Polo T-Shirts <small class="text-muted">(10)</small></a>
-                                        <a href="#" class="list-group-item list-group-item-action">Round Neck T-Shirts <small class="text-muted">(10)</small></a>
-                                        <a href="#" class="list-group-item list-group-item-action">V Neck T-Shirts <small class="text-muted">(10)</small></a>
-                                        <a href="#" class="list-group-item list-group-item-action">Hooded T-Shirts <small class="text-muted">(20)</small></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-collapse sub-men">
-                                <a class="list-group-item list-group-item-action" href="#sub-men2" data-toggle="collapse" aria-expanded="false" aria-controls="sub-men2">
-                                    Footwear
-                                    <small class="text-muted">(50)</small>
-                                </a>
-                                <div class="collapse" id="sub-men2" data-parent="#list-group-men">
-                                    <div class="list-group">
-                                        <a href="#" class="list-group-item list-group-item-action">Sports Shoes <small class="text-muted">(10)</small></a>
-                                        <a href="#" class="list-group-item list-group-item-action">Sneakers <small class="text-muted">(20)</small></a>
-                                        <a href="#" class="list-group-item list-group-item-action">Formal Shoes <small class="text-muted">(20)</small></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#" class="list-group-item list-group-item-action"> Men  <small class="text-muted">(150) </small></a>
-                            <a href="#" class="list-group-item list-group-item-action">Accessories <small class="text-muted">(11)</small></a>
-                            <a href="#" class="list-group-item list-group-item-action">Bags <small class="text-muted">(22)</small></a>
-                        </div>
-                    </div>
-                    <div class="filter-brand-left">
-                        <div class="title-left">
-                            <h3>Sắp xếp</h3>
-                        </div>
-                        <div class="brand-box">
-                            <ul>
-                                <li>
-                                    <div class="radio radio-danger">
-                                        <input name="survey" id="Radios1" value="Yes" type="radio">
-                                        <label for="Radios1"> Giá thấp đến cao </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="radio radio-danger">
-                                        <input name="survey" id="Radios2" value="No" type="radio">
-                                        <label for="Radios2"> Gái cao đến thấp </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="radio radio-danger">
-                                        <input name="survey" id="Radios3" value="declater" type="radio">
-                                        <label for="Radios3"> Thứ tự chữ cái A-Z </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="radio radio-danger">
-                                        <input name="survey" id="Radios4" value="declater" type="radio">
-                                        <label for="Radios4"> Thứ tự chữ cái Z-A </label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                        @using (Html.BeginForm("Product", "TheWayShop", FormMethod.Get))
+                        {
 
+                            <input class="form-control" value="@ViewBag.txtSearch" placeholder="Tìm sản phẩm..." type="text" name="txtSearch">
+                            <button type="submit"> <i class="fa fa-search"></i> </button>
+                        }
+                    </div>
+                    <form method="get" action="Product">
+                        <div class="border-sort">
+                            <div class="title-sort">
+                                <span>Chọn theo tiêu chí</span>
+                            </div>
+                            <div class="">
+                                <div class="title-left">
+                                    <h3>Thể loại</h3>
+                                </div>
+                                <div class="brand-box">
+                                    <ul>
+                                        @foreach (var item in listLSP)
+                                        {
+                                            <li>
+                                                <div class="radio radio-danger">
+                                                    <input name="categoryID" value="@item.ID" type="radio" @(ViewBag.categoryID== @item.ID? "checked" : "")>
+                                                    <label for="Radios1"> @item.Name </label>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="filter-brand-left">
+                                <div class="title-left">
+                                    <h3>Sắp xếp</h3>
+                                </div>
+                                <div class="brand-box">
+                                    <ul>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="PriceLowToHigh" type="radio" @(ViewBag.Sort=="PriceLowToHigh"? "checked" : "") >
+                                                <label for="Radios1"> Giá thấp đến cao </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="PriceHighToLow" type="radio" @(ViewBag.Sort=="PriceHighToLow"? "checked" : "")>
+                                                <label for="Radios2"> Giá cao đến thấp </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="CharA_Z" type="radio" @(ViewBag.Sort=="CharA_Z"? "checked" : "") >
+                                                <label for="Radios3"> Thứ tự chữ cái A-Z </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="sort" value="CharZ_A" type="radio" @(ViewBag.Sort=="CharZ_A"? "checked" : "") >
+                                                <label for="Radios4"> Thứ tự chữ cái Z-A </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                <input class="input-group" type="submit" value="Lọc tìm kiếm" style="display:block" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
                 <div class="right-product-box">
                     <div class="product-item-filter row">
-                        <p class="custosm_tottal">Có tất cả <strong>41</strong> sản phẩm trong kho</p>
+                        <p class="custosm_tottal">Có tất cả <strong>@ViewBag.TotalSp</strong> sản phẩm trong kho</p>
                     </div>
                 </div>
                 <div class="row product-categorie-box">
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
                             <div class="row">
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Giảm giá</p>
+                                    @if (listSP.Count() > 0)
+                                    {
+                                        @foreach (var item in listSP)
+                                        {
+                                            TimeSpan time = DateTime.Now - item.CreatedDate;
+                                            decimal giaSale = item.Price * item.PromotionPrice / 100;
+                                            decimal GiaSpDaSale = item.Price - giaSale;
+                                            String ConvGiaSpDaSale = String.Format("{0:#,#.##}", GiaSpDaSale);
+                                            String ConvPrivcie = String.Format("{0:#,#.##}", item.Price);
+                                            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="products-single fix">
+                                                    <div class="box-img-hover">
+
+                                                        @if (item.PromotionPrice > 0)
+                                                        {
+                                                            <div class="type-lb">
+                                                                <p class="sale">Giảm giá @item.PromotionPrice%</p>
+                                                            </div>
+                                                        }
+                                                        @if (time.Days < 7)
+                                                        {
+                                                            <div class="type-lb1">
+                                                                <p class="sale">Mới ra mắt</p>
+                                                            </div>
+                                                        }
+                                                        <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
+                                                        <div class="mask-icon">
+                                                            <ul>
+                                                                <li><a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                                            </ul>
+                                                            <a class="cart" href="#">Thêm vào giỏ hàng</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="why-text">
+                                                        <h4>@item.Name</h4>
+                                                        <h5>@ConvGiaSpDaSale</h5>
+                                                        <h6>@ConvPrivcie</h6>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="col-12">
+                                            <p>Rất tiếc, TheWayShop.com không tìm thấy kết quả nào phù hợp với từ khóa "@ViewBag.txtSearch"</p>
                                         </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
+                                        <div class="col-6 noSearchResult">
+                                            <h3>Để tìm được kết quả chính xác hơn, bạn vui lòng:</h3>
+                                            <ul>
+                                                <li>Kiểm tra lỗi chính tả của từ khóa đã nhập</li>
+                                                <li>Thử lại bằng từ khóa khác</li>
+                                                <li>Thử lại bằng những từ khóa tổng quát hơn</li>
+                                                <li>Thử lại bằng những từ khóa ngắn gọn hơn</li>
+                                            </ul>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Sale</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
+                                        <div class="container text-center m-auto col-6">
+                                            <i class="empty"></i>
+                                           
                                         </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Giảm giá</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Sale</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Giảm giá</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Sale</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Giảm giá</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Sale</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Giảm giá</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Sale</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Giảm giá</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                    <div class="products-single fix">
-                                        <div class="box-img-hover">
-                                            <div class="type-lb">
-                                                <p class="sale">Sale</p>
-                                            </div>
-                                            <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
-                                            <div class="mask-icon">
-                                                <ul>
-                                                    <li><a href="@Url.Action("Product_detail","TheWayShop")" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                </ul>
-                                                <a class="cart" href="#">Thêm vào giỏ hàng</a>
-                                            </div>
-                                        </div>
-                                        <div class="why-text">
-                                            <h4>Lorem ipsum dolor sit amet</h4>
-                                            <h5> $9.79</h5>
-                                            <h6>$2.2222</h6>
-                                        </div>
-                                    </div>
-                                </div>
+                                    }
 
                             </div>
                         </div>
                     </div>
                 </div>
+                @*phân trang*@
+            <div class="form-main">
+                Trang @(ViewBag.posts.PageCount < ViewBag.posts.PageNumber ? 0 : ViewBag.posts.PageNumber) / @ViewBag.posts.PageCount
+                <div class="card-footer">
+                    <nav aria-label="Page navigation example">
+                             @Html.PagedListPager((IPagedList)ViewBag.posts, page => Url.Action("Product", "TheWayShop", new { page, @txtSearch = @ViewBag.txtSearch, @categoryId = @ViewBag.categoryID,@sort= @ViewBag.Sort }))
+                    </nav>
+                </div>
+
+
             </div>
         </div>
     </div>
 </div>
     </div>
 <!-- End Shop Page -->
+<script>
+    function myFunction(val) {
+        alert("The input value has changed. The new value is: " + val);
+    }
+</script>

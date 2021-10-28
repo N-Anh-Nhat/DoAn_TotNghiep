@@ -14,6 +14,9 @@
 </div>
 <!-- End All Title Box -->
 <!-- Start NEWS  -->
+@{ 
+    var ListNews= (List<WebAPI.Models.News>)ViewBag.ListNews;
+}
 <section class=" container section_news">
     <div class="row">
         <!-- LIST NEWS  -->
@@ -21,240 +24,35 @@
             <div class="container title_catelogy">
                 <h3>TIN TỨC MỚi NHẤT</h3>
             </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
+            
+            @foreach (var item in ListNews)
+            {
+                <div class=" container news_list">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
+                            <p class="Picture_new">
+                                <a asp-controller="TheWayShop" asp-action="News_Detail" asp-route-id="@item.ID"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
+                            </p>
                         </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
+                        <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                            <div class="title_content_news">
+                                <a asp-controller="TheWayShop" asp-action="News_Detail" asp-route-id="@item.ID"> <h3>@item.Name</h3></a>
+                            </div>
+                            <div class="datetime_news">
+                                <span class="datetime">@item.CreatedDate</span>
+                            </div>
+                            <div class="content_news">
+                                <p>@item.Detai_Name</p>
+                            </div>
+                            <div class="Danh_muc_lien_quan">
+                                <span>
+                                    <p>Danh mục:&nbsp;<strong class="sp_lien_quan">@item.ID_Catelogy</strong></p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=" container news_list">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
-                        <p class="Picture_new">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                        <div class="title_content_news">
-                            <a href="@Url.Action("News_Detail","TheWayShop")"> <h3>3 mẹo giúp bạn có đôi chân đẹp</h3></a>
-                        </div>
-                        <div class="datetime_news">
-                            <span class="time">21:22</span>
-                            <span class="date">20/5/2021</span>
-                        </div>
-                        <div class="content_news">
-                            <p>Đôi chân khỏe mạnh, nuột nà là tài sản quý giá của phụ nữ. Yếu tố này giúp tăng sự tự tin và quyến rũ cho phái đẹp.</p>
-                        </div>
-                        <div class="Danh_muc_lien_quan">
-                            <span>
-                                <p>Danh mục:&nbsp;<strong class="sp_lien_quan">Cặp</strong></p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
 
         </div>
         <div class="col-md-4">

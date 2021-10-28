@@ -7,7 +7,7 @@ namespace WebAPI.Models
 {
     public class ProductSize
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Size { get; set; }
         public int Quality { get; set; }
         public DateTime CreatedDate { get; set; }
