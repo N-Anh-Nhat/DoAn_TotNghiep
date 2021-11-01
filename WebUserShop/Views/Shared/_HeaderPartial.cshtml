@@ -1,9 +1,16 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@model object
+@{
+    var listND = (List<WebAPI.Models.User>)ViewBag.user;
+    var spsaphet = ViewBag.user as List<WebAPI.Models.User>;
+    var spkm = ViewBag.user as ICollection<User>;
+    User user = ViewBag.user;
+}
 <!-- Start Main Top -->
 <div class="main-top">
     <div class="container">
         <div class="row box-header">
-            <div class=" box-header-left" >
+            <div class=" box-header-left">
                 <div class="header-phone">
                     <p>Cần mua hàng?</p>
                     <p>Gọi ngay&nbsp;<strong>1800.1111</strong></p>
@@ -17,12 +24,38 @@
                         <option value="EN">EN</option>
                     </select>
                 </div>
-                <div class="member">
-                    <a class="btn" onclick="showModal('@Url.Action("Index","User",null,Context.Request.Scheme)','Đăng ký tài khoản','Nhanh chóng và dễ dàng.')">Đăng ký</a>
-                    <span>/</span>
-                    <a class="btn" onclick="showModal1('@Url.Action("")','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đăng nhập</a>
-                </div>
-               
+                @if (Context.Session.GetString("user1") != null)
+                {
+                    <div class="avatar">
+                        <a class="btn btn-avatar">
+                            Hello, <span> </span>
+                        </a>
+                        <ul class="dropdown-menu-avatar">
+                            <li class="custom-li-avatar">
+                                <a asp-controller="TheWayShop" asp-action="Cart">GIỎ HÀNG</a>
+                            </li>
+                            <li class="custom-li-avatar">
+                                <a asp-controller="TheWayShop" asp-action="My_Account">TÀI KHOẢN</a>
+                            </li>
+                            <li class="custom-li-avatar">
+                                <a asp-controller="TheWayShop" asp-action="Wish_List">YÊU THÍCH</a>
+                            </li>
+                            <li class="custom-li-avatar">
+                                <a asp-controller="User" asp-action="Logout">ĐĂNG XUẤT</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="member">
+                        <a class="btn" onclick="showModal('@Url.Action("Index","User",null,Context.Request.Scheme)','Đăng ký tài khoản','Nhanh chóng và dễ dàng.')">Đăng ký</a>
+                        <span>/</span>
+                        <a class="btn" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đăng nhập</a>
+                    </div>
+                }
+
+
             </div>
         </div>
     </div>
@@ -56,21 +89,6 @@
                     <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() =="NEWS"? "active":"")">
                         <a class="nav-link" asp-controller="TheWayShop" asp-action="NEWS">TIN TỨC</a>
                     </li>
-                    <li class="dropdown">
-                        <a class="nav-link dropdown-toggle arrow" data-toggle="dropdown">CỦA BẠN</a>
-                        <ul class="dropdown-menu">
-                            <li class="custom-li-menu">
-                                <a asp-controller="TheWayShop" asp-action="Cart">GIỎ HÀNG</a>
-                            </li>
-                            <li class="custom-li-menu">
-                                <a asp-controller="TheWayShop" asp-action="My_Account">TÀI KHOẢN</a>
-                            </li>
-                            <li class="custom-li-menu">
-                                <a asp-controller="TheWayShop" asp-action="Wish_List">YÊU THÍCH</a>
-                            </li>
-                        </ul>
-                    </li>
-
                     <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() =="Contact_Us"? "active":"")">
                         <a class="nav-link" asp-controller="TheWayShop" asp-action="Contact_Us">LIÊN HỆ</a>
                     </li>
@@ -91,7 +109,7 @@
             </div>
             <!-- End Atribute Navigation -->
         </div>
-      
+
     </nav>
     <!-- End Navigation -->
 </header>

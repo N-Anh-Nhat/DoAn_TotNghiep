@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using WebUserShop.ApiCaller;
 using WebAPI.Models;
 using X.PagedList;
+using Microsoft.AspNetCore.Http;
 
 namespace WebUserShop.Controllers
 {
@@ -40,7 +41,11 @@ namespace WebUserShop.Controllers
         }
         public IActionResult Cart()
         {
-            return View();
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                return View();
+            }
+            return NotFound();
         }
         public IActionResult Contact_Us()
         {
@@ -57,7 +62,11 @@ namespace WebUserShop.Controllers
         }
         public IActionResult My_Account()
         {
-            return View();
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                return View();
+            }
+            return NotFound();
         }
         public async Task<IActionResult> NEWS()
         {
@@ -176,7 +185,11 @@ namespace WebUserShop.Controllers
         }
         public IActionResult Wish_List()
         {
-            return View();
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                return View();
+            }
+            return NotFound();
         }
         public IActionResult Chinh_sach_doi_tra()
         {

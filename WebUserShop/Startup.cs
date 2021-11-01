@@ -29,6 +29,13 @@ namespace WebUserShop
             services.AddSingleton(Configuration);
 
             services.AddControllersWithViews();
+            services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromMinutes(30);
+                option.Cookie.Name = "user";
+                option.Cookie.HttpOnly = true;
+                option.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +55,7 @@ namespace WebUserShop
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 

@@ -1,5 +1,4 @@
-﻿
-(function ($) {
+﻿(function ($) {
 	// validate email
 	$.validator.addMethod("validateEmail", function (value, element) {
 		return this.optional(element) || /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
@@ -105,7 +104,7 @@
 			});
 	});
 	
-	//User
+	//User Res	
 	$().ready(function () {
 		$("#Validate_User").validate({
 			rules: {
@@ -237,9 +236,53 @@
 						}
 					}
 				});
-				alert("Gửi yêu cầu thành công");
+				alert("Tạo tài khoản thành công");
 				$("#Validate_User").trigger("reset");
 			}
 		});
 	});
+
+
+	//user login
+	$().ready(function () {
+		$("#login").validate({
+			rules: {
+				"usernameLogin": {
+					required: true
+				},
+				"passwordLogin": {
+					required: true
+				},	
+			},
+			messages: {
+				"usernameLogin": {
+					required: "Không được để trống Tài khoản",
+				},
+				"passwordLogin": {
+					required: "Không được để trống Mật khẩu"
+				},
+			},
+			submitHandler: function () {
+				var inputtk = $('#usernameLogin').val();
+				var inputmk = $('#passwordLogin').val();
+				$.ajax({
+					url: "../User/Login",
+					data: { tkLogin: inputtk, mkLogin: inputmk },
+					cache: false,
+					type: "POST",
+					success: function (res) {
+						if (res == true) {
+							alert("Đăng nhập thành công");
+							window.location.reload();
+						}
+                        else {
+							alert("Sai tên tài khoản hoặc mật khẩu");
+                        }	
+					}
+				});
+				
+			}
+		});
+	});
+
 }(jQuery));
