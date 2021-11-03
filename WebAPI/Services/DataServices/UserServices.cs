@@ -66,6 +66,7 @@ namespace WebAPI.Services.DataServices
                 data.Email,
                 data.Phone,
                 data.ID_Role,
+                data.ModifiedDate
             };
             DataResults<object> result = new DataResults<object>();
             try
@@ -94,7 +95,7 @@ namespace WebAPI.Services.DataServices
 
                 result.Message = e.Message;
                 result.Status = -1;
-                result.Data = data; ;
+                result.Data = data;
             }
             return result;
         }

@@ -61,7 +61,7 @@ namespace WebUserShop.Controllers
             {
                 var str = JsonConvert.SerializeObject(data);
                 HttpContext.Session.SetString("user1", str);
-                ViewBag.user = data;
+                HttpContext.Session.SetString("userHello", tkLogin);
                 x = true;
                 return Json(x);
             }
@@ -76,6 +76,7 @@ namespace WebUserShop.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("user1");
+            HttpContext.Session.Remove("userHello");
             return RedirectToAction("Index", "TheWayShop");
         }
 

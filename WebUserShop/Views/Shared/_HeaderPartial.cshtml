@@ -1,11 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Http
-@model object
-@{
-    var listND = (List<WebAPI.Models.User>)ViewBag.user;
-    var spsaphet = ViewBag.user as List<WebAPI.Models.User>;
-    var spkm = ViewBag.user as ICollection<User>;
-    User user = ViewBag.user;
-}
 <!-- Start Main Top -->
 <div class="main-top">
     <div class="container">
@@ -28,7 +21,7 @@
                 {
                     <div class="avatar">
                         <a class="btn btn-avatar">
-                            Hello, <span> </span>
+                            Welcome, <span> @Context.Session.GetString("userHello") </span>
                         </a>
                         <ul class="dropdown-menu-avatar">
                             <li class="custom-li-avatar">
@@ -96,17 +89,21 @@
             </div>
             <!-- /.navbar-collapse -->
             <!-- Start Atribute Navigation -->
-            <div class="attr-nav">
-                <ul>
-                    <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
-                    <li class="side-menu">
-                        <a href="@Url.Action("Cart","TheWayShop")">
-                            <i class="fa fa-shopping-bag"></i>
-                            <span class="badge">3</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            @if (Context.Session.GetString("user1") != null)
+            {
+                <div class="attr-nav">
+                    <ul>
+                        <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+                        <li class="side-menu">
+                            <a href="@Url.Action("Cart","TheWayShop")">
+                                <i class="fa fa-shopping-bag"></i>
+                                <span class="badge">3</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
             <!-- End Atribute Navigation -->
         </div>
 
