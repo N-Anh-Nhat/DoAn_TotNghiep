@@ -38,10 +38,11 @@ namespace WebAPI.Services.DataServices
         public async Task<DataResults<object>> InsertUser(User data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
+            var pas = Security.TextToMD5(data.Password);
             object obj = new
             {
                 data.UserName,
-                data.Password,                
+                Password = pas,                
                 data.Last_Name,
                 data.Frist_Name,
                 data.Address,
@@ -54,7 +55,7 @@ namespace WebAPI.Services.DataServices
         }
         public async Task<DataResults<object>> UpdateUser(User data, string user)
         {
-          
+           
             object obj = new
             {
                 data.UserName,
@@ -65,6 +66,7 @@ namespace WebAPI.Services.DataServices
                 data.Email,
                 data.Phone,
                 data.ID_Role,
+                data.ModifiedDate
             };
             DataResults<object> result = new DataResults<object>();
             try
@@ -93,7 +95,7 @@ namespace WebAPI.Services.DataServices
 
                 result.Message = e.Message;
                 result.Status = -1;
-                result.Data = data; ;
+                result.Data = data;
             }
             return result;
         }

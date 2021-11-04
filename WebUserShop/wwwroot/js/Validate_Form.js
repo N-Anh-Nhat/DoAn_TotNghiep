@@ -1,21 +1,15 @@
-﻿
-(function ($) {
+﻿(function ($) {
 	// validate email
 	$.validator.addMethod("validateEmail", function (value, element) {
 		return this.optional(element) || /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
 	}, "Hãy nhập đúng dịnh dạng Email vd: abc@.com.vn");
-
-	//validate name
-	$.validator.addMethod("validateName", function (value, element) {
-		return this.optional(element) || /^[a-zA-Z]+$/.test(value);
-	}, "Tên không được chứa số");
 
 	//validate sdt
 	$.validator.addMethod("validateSDT", function (value, element) {
 		return this.optional(element) || /^[0-9]{10}$/.test(value);
 	}, "Hãy nhập đúng định dạng SĐT (10 số)");
 
-	//validate Pass
+	//validate Password
 	$.validator.addMethod("validatePassword", function (value, element) {
 		return this.optional(element) || /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,16}$/.test(value);
 	}, "Hãy nhập password từ 8 đến 16 ký tự bao gồm chữ hoa, chữ thường và ít nhất một chữ số");
@@ -31,7 +25,7 @@
 					"Name": {
 						required: true,
 						minlength: 2,
-						validateName: true
+
 					},
 					"Email": {
 						required: true,
@@ -105,7 +99,7 @@
 			});
 	});
 	
-	//User
+	//User REGISTER
 	$().ready(function () {
 		$("#Validate_User").validate({
 			rules: {
@@ -113,13 +107,11 @@
 					required: true,
 					maxlength: 15,
 					minlength: 2,
-					validateName: true
 				},
 				"Frist_Name": {
 					required: true,
 					maxlength: 15,
 					minlength: 2,
-					validateName: true
 				},
 				"UserName": {
 					required: true,
@@ -237,9 +229,132 @@
 						}
 					}
 				});
-				alert("Gửi yêu cầu thành công");
+				alert("Tạo tài khoản thành công");
 				$("#Validate_User").trigger("reset");
+				window.location.reload();
 			}
 		});
 	});
+
+
+	//user login
+	$().ready(function () {
+		$("#login").validate({
+			rules: {
+				"usernameLogin": {
+					required: true
+				},
+				"passwordLogin": {
+					required: true
+				},	
+			},
+			messages: {
+				"usernameLogin": {
+					required: "Không được để trống Tài khoản",
+				},
+				"passwordLogin": {
+					required: "Không được để trống Mật khẩu"
+				},
+			},
+			submitHandler: function () {
+				var inputtk = $('#usernameLogin').val();
+				var inputmk = $('#passwordLogin').val();
+				$.ajax({
+					url: "../User/Login",
+					data: { tkLogin: inputtk, mkLogin: inputmk },
+					cache: false,
+					type: "POST",
+					success: function (res) {
+						if (res == true) {
+							alert("Đăng nhập thành công");
+							window.location.reload();
+						}
+                        else {
+							alert("Sai tên tài khoản hoặc mật khẩu");
+                        }	
+					}
+				});
+				
+			}
+		});
+	});
+
+	//edit user
+	$().ready(function () {
+		$("#EditUser").validate({
+			rules: {
+				"Last_NameUser": {
+					required: true,
+					maxlength: 15,
+					minlength: 2,
+				},
+				"Frist_NameUser": {
+					required: true,
+					maxlength: 15,
+					minlength: 2,
+				},
+				"AddressUser": {
+					required: true,
+					minlength: 10
+				},
+			},
+			messages: {
+				"Last_NameUser": {
+					required: "Không được để trống Họ",
+					maxlength: "Tối đa 15 ký tự",
+					minlength: "Hãy nhập ít nhất 2 ký tự"
+				},
+				"Frist_NameUser": {
+					required: "Không được để trống Tên",
+					maxlength: "Tối đa 15 ký tự",
+					minlength: "Hãy nhập ít nhất 2 ký tự"
+				},
+				"AddressUser": {
+					required: "Không được để trống Địa chỉ",
+					minlength: "Hãy nhập ít nhất 10 ký tự"
+				},
+			},
+			submitHandler: function () {
+				var hoUser = $('#Last_NameUser').val();
+				var tenUser = $('#Frist_NameUser').val();
+				var diachiUser = $('#AddressUser').val();
+				var emailUser = $('#EmailUser').val();
+				var taikhoanUser = $('#tkUserdn').val();
+				var sdtUser = $('#PhoneUser').val();
+				var matkhauUser = $('#tkPassdn').val();
+				var idRole = $('#idroleUser').val();
+				var idUSer = $('#id').val();
+				var data = {
+					Last_Name: hoUser,
+					Frist_Name: tenUser,
+					Address: diachiUser,
+					UserName: taikhoanUser,
+					Password: matkhauUser,
+					Email: emailUser,
+					Phone: sdtUser,
+					ID_Role: idRole,
+					ID: idUSer,
+				}
+				$.ajax({
+					"async": false,
+					"crossDomain": true,
+					"url": "../TheWayShop/EditAccount",
+					"headers": {
+						"Content-Type": "application/json",
+						"cache-control": "no-cache"
+					},
+					"method": "POST",
+					"data": JSON.stringify(data),
+					success: function (res) {
+						if (res == true) {
+							alert("Sửa thông tin thành công");
+							window.location.reload();
+						}
+					}
+				});
+
+			}
+		});
+	});
+
 }(jQuery));

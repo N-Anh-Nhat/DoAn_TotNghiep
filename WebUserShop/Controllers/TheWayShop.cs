@@ -13,6 +13,10 @@ using System.Threading.Tasks;
 using WebUserShop.ApiCaller;
 using WebAPI.Models;
 using X.PagedList;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace WebUserShop.Controllers
 {
@@ -40,12 +44,17 @@ namespace WebUserShop.Controllers
         }
         public IActionResult Cart()
         {
-            return View();
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                return View();
+            }
+            return NotFound();
         }
         public IActionResult Contact_Us()
         {
             return View();
         }
+
         //gửi phản hồi
         [HttpPost]
         public async Task<IActionResult> SendFeedback([FromBody] Feedback feedback)
@@ -57,7 +66,27 @@ namespace WebUserShop.Controllers
         }
         public IActionResult My_Account()
         {
-            return View();
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                string a = HttpContext.Session.GetString("user1");
+                var user = JsonConvert.DeserializeObject<List<User>>(a);
+                ViewBag.infoUser = user;
+                return View();
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditAccount([FromBody] User user)
+        {
+            user.ModifiedDate = DateTime.Now;
+            var editUser = await ApiClientFactory.Instance.UpdateUser(user, "", "");
+
+
+           
+
+
+
+            return Json(true);
         }
         public async Task<IActionResult> NEWS()
         {
@@ -176,7 +205,11 @@ namespace WebUserShop.Controllers
         }
         public IActionResult Wish_List()
         {
-            return View();
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                return View();
+            }
+            return NotFound();
         }
         public IActionResult Chinh_sach_doi_tra()
         {

@@ -140,7 +140,7 @@
                                                                 <li><a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
                                                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                             </ul>
-                                                            <a class="cart" href="#">Thêm vào giỏ hàng</a>
+                                                            <a class="cart"  asp-controller="TheWayShop" asp-action="AddCart" asp-route-id="@item.ID">Thêm vào giỏ hàng</a>
                                                         </div>
                                                     </div>
                                                     <div class="why-text">
