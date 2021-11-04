@@ -1,4 +1,9 @@
-﻿        <!-- top bar navigation -->
+﻿@using LIB.BaseModels;
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@using WebAPI.Models;
+@inject IHttpContextAccessor HttpContextAccessor
+
 <div class="headerbar">
 
     <!-- LOGO -->
@@ -61,21 +66,30 @@
                     <img src="~/assets/images/avatars/admin.png" alt="Profile image" class="avatar-rounded">
                 </a>
                 <div class="dropdown-content">
-                    <div class="dropdown-list-user">
-                        <div class="header-mess">
-                            <h5>
-                                <small>Xin Chào, Admin</small>
-                            </h5>
+                    @{
+                        var session = HttpContextAccessor.HttpContext.Session;
+                        string json = session.GetString("UserInfo");
+                        UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+                        var jsonInfo = JsonConvert.SerializeObject(curUser.Info);
+                        var Info = JsonConvert.DeserializeObject<User>(jsonInfo);
+                         
+                        <div class="dropdown-list-user">
+                            <div class="header-mess">
+                                <h5>
+                                    <small>@Info.UserName</small>
+                                </h5>
+                            </div>
+                            <a href="@Url.Action("Profile","Profile")" class="list-mess">
+                                <i class="fas fa-user"></i>
+                                <span>Thông tin</span>
+                            </a>
+                            <a href="@Url.Action("Logout","Login")" class="list-mess">
+                                <i class="fas fa-power-off"></i>
+                                <span>Đăng xuất</span>
+                            </a>
                         </div>
-                        <a href="@Url.Action("Profile","Profile")" class="list-mess">
-                            <i class="fas fa-user"></i>
-                            <span>Thông tin</span>
-                        </a>
-                        <a href="" class="list-mess">
-                            <i class="fas fa-power-off"></i>
-                            <span>Đăng xuất</span>
-                        </a>
-                    </div>
+                    }
+
                 </div>
 
 

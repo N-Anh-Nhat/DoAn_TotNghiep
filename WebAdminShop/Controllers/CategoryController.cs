@@ -34,91 +34,100 @@ namespace WebAdminShop.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            string json = userInfo.GetUserInfo(HttpContext);
+
+            if (json != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
        
         
         [HttpGet]
         public async Task<IActionResult> GetlstCategory()
         {
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            var res = await ApiClientFactory.Instance.GetCategory("");
+            if (json != null)
+            {
+                var res = await ApiClientFactory.Instance.GetCategory("");
 
-            return Json(res);
+                return Json(res);
+            }
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
         public async Task<IActionResult> InsertlstCategory(Category data, IFormFile file)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            //if (json != null)
-            //{
-            //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
-
-            //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
-            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
-            if(file != null)
+            if (json != null)
             {
-                string filename = GetFileNameWithDate(file.FileName);
-                bool check = SaveFile(file, filename);
-                if (!check)
+               
+                Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+                if(file != null)
                 {
-                    DataResults<Object> dataResults = new DataResults<object>();
+                    string filename = GetFileNameWithDate(file.FileName);
+                    bool check = SaveFile(file, filename);
+                    if (!check)
+                    {
+                        DataResults<Object> dataResults = new DataResults<object>();
 
-                    err.IsSuccess = true;
-                    dataResults.Status = -2;
-                    dataResults.Message = "Save file error";
-                    err.Data = dataResults;
-                    return Json(err);
+                        err.IsSuccess = true;
+                        dataResults.Status = -2;
+                        dataResults.Message = "Save file error";
+                        err.Data = dataResults;
+                        return Json(err);
+                    }
+                    data.Image = "uploads/Category/img/" + filename;
+
+
                 }
-                data.Image = "uploads/Category/img/" + filename;
-
-
-            }
           
            
-            var res = await ApiClientFactory.Instance.InsertCategory(data, "", "");
+                var res = await ApiClientFactory.Instance.InsertCategory(data, "", "");
 
-            return Json(res);
-            ////}
-            
+                return Json(res);
+            }
+            return RedirectToAction("Index", "Login");
+
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdatelstCategory(Category data, IFormFile file)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            //if (json != null)
-            //{
-            //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
-
-            //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
-            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
-            if (file != null)
+            if (json != null)
             {
-                string filename = GetFileNameWithDate(file.FileName);
-                bool check = SaveFile(file, filename);
-                if (!check)
+                
+                Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+                if (file != null)
                 {
-                    DataResults<Object> dataResults = new DataResults<object>();
+                    string filename = GetFileNameWithDate(file.FileName);
+                    bool check = SaveFile(file, filename);
+                    if (!check)
+                    {
+                        DataResults<Object> dataResults = new DataResults<object>();
 
-                    err.IsSuccess = true;
-                    dataResults.Status = -2;
-                    dataResults.Message = "Save file error";
-                    err.Data = dataResults;
-                    return Json(err);
+                        err.IsSuccess = true;
+                        dataResults.Status = -2;
+                        dataResults.Message = "Save file error";
+                        err.Data = dataResults;
+                        return Json(err);
+                    }
+                    data.Image = "uploads/Category/img/" + filename;
+
+
                 }
-                data.Image = "uploads/Category/img/" + filename;
 
-
-            }
-
-            var res = await ApiClientFactory.Instance.UpdateCategory(data, "", "");
+                var res = await ApiClientFactory.Instance.UpdateCategory(data, "", "");
 
                 return Json(res);
-
+            }
+            return RedirectToAction("Index", "Login");
         }
         
         public bool SaveFile(IFormFile file, string name)

@@ -1,9 +1,11 @@
 using LIB.BaseModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -42,6 +44,7 @@ namespace WebAdminShop
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             }
             ); ;
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }
 
