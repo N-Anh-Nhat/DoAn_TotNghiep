@@ -133,7 +133,7 @@ namespace WebAPI.Services.DataServices
                         return returns;
                     }
 
-                    returns.Message = "User or password incorrect";
+                    returns.Message = "Tài khoản hoặc mật khẩu không đúng";
                     returns.Status = -1;
                     return returns;
                 }
@@ -141,7 +141,7 @@ namespace WebAPI.Services.DataServices
             catch (Exception ex)
             {
                 
-                returns.Message = "Login fail";
+                returns.Message = "Đăng nhập lỗi";
                 returns.Status = -1;
                 return returns;
             }
