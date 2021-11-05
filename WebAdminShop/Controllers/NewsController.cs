@@ -74,7 +74,7 @@ namespace WebAdminShop.Controllers
                     err.Data = dataResults;
                     return Json(err);
                 }
-                data.Image = "uploads/Product/img/" + filename;
+                data.Image = "uploads/New/img/" + filename;
 
 
             }
@@ -111,7 +111,7 @@ namespace WebAdminShop.Controllers
                     err.Data = dataResults;
                     return Json(err);
                 }
-                data.Image = "uploads/Product/img/" + filename;
+                data.Image = "uploads/New/img/" + filename;
 
 
             }
@@ -146,7 +146,7 @@ namespace WebAdminShop.Controllers
             try
             {
                 string webRootPath = _env.WebRootPath;
-                string newPath = Path.Combine(webRootPath, "uploads/Product/img/");
+                string newPath = Path.Combine(webRootPath, "uploads/New/img/");
                 System.IO.DirectoryInfo di = new DirectoryInfo(newPath);
 
                 if (!Directory.Exists(newPath))
