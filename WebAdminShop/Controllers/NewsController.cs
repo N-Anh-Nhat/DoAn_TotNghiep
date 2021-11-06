@@ -34,101 +34,94 @@ namespace WebAdminShop.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            string json = userInfo.GetUserInfo(HttpContext);
-
-            if (json != null)
-            {
-                var res = await ApiClientFactory.Instance.GetCategory("");
-                ViewBag.listCategory = res;
-                return View();
-            }
-            return RedirectToAction("Index", "Login");
+            var res = await ApiClientFactory.Instance.GetCategory("");
+            ViewBag.listCategory = res;
+            return View();
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetlstNews()
         {
-            string json = userInfo.GetUserInfo(HttpContext);
 
-            if (json != null)
-            {
-                var res = await ApiClientFactory.Instance.GetNews("");
+            var res = await ApiClientFactory.Instance.GetNews("");
 
-                return Json(res);
-            }
-            return RedirectToAction("Index", "Login");
+            return Json(res);
         }
 
         [HttpPost]
         public async Task<IActionResult> InsertlstNews(News data, IFormFile file)
         {
-            string json = userInfo.GetUserInfo(HttpContext);
+            //string json = userInfo.GetUserInfo(HttpContext);
 
-            if (json != null)
+            //if (json != null)
+            //{
+            //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+
+            //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+            if (file != null)
             {
-               
-                Message<DataResults<Object>> err = new Message<DataResults<Object>>();
-                if (file != null)
+                string filename = GetFileNameWithDate(file.FileName);
+                bool check = SaveFile(file, filename);
+                if (!check)
                 {
-                    string filename = GetFileNameWithDate(file.FileName);
-                    bool check = SaveFile(file, filename);
-                    if (!check)
-                    {
-                        DataResults<Object> dataResults = new DataResults<object>();
+                    DataResults<Object> dataResults = new DataResults<object>();
 
-                        err.IsSuccess = true;
-                        dataResults.Status = -2;
-                        dataResults.Message = "Save file error";
-                        err.Data = dataResults;
-                        return Json(err);
-                    }
-                    data.Image = "uploads/Product/img/" + filename;
-
-
+                    err.IsSuccess = true;
+                    dataResults.Status = -2;
+                    dataResults.Message = "Save file error";
+                    err.Data = dataResults;
+                    return Json(err);
                 }
+                data.Image = "uploads/New/img/" + filename;
 
-                var res = await ApiClientFactory.Instance.InsertNews(data, "", "");
 
-                return Json(res);
             }
-            return RedirectToAction("Index", "Login");
+
+            var res = await ApiClientFactory.Instance.InsertNews(data, "", "");
+
+            return Json(res);
+            ////}
+            //return null;
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdatelstNews(News data, IFormFile file)
         {
-            string json = userInfo.GetUserInfo(HttpContext);
+            //string json = userInfo.GetUserInfo(HttpContext);
+            
+            //if (json != null)
+            //{
+            //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
-            if (json != null)
+            //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+            if (file != null)
             {
-                
-                Message<DataResults<Object>> err = new Message<DataResults<Object>>();
-                if (file != null)
+                string filename = GetFileNameWithDate(file.FileName);
+                bool check = SaveFile(file, filename);
+                if (!check)
                 {
-                    string filename = GetFileNameWithDate(file.FileName);
-                    bool check = SaveFile(file, filename);
-                    if (!check)
-                    {
-                        DataResults<Object> dataResults = new DataResults<object>();
+                    DataResults<Object> dataResults = new DataResults<object>();
 
-                        err.IsSuccess = true;
-                        dataResults.Status = -2;
-                        dataResults.Message = "Save file error";
-                        err.Data = dataResults;
-                        return Json(err);
-                    }
-                    data.Image = "uploads/Product/img/" + filename;
-
-
+                    err.IsSuccess = true;
+                    dataResults.Status = -2;
+                    dataResults.Message = "Save file error";
+                    err.Data = dataResults;
+                    return Json(err);
                 }
+                data.Image = "uploads/New/img/" + filename;
 
-                var res = await ApiClientFactory.Instance.UpdateNews(data, "", "");
-
-                return Json(res);
 
             }
-            return RedirectToAction("Index", "Login");
+
+            var res = await ApiClientFactory.Instance.UpdateNews(data, "", "");
+
+            return Json(res);
+
+            //}
+            //return null;
         }
         //[HttpDelete]
         //public async Task<IActionResult> DeletelstNews(string id)
@@ -153,7 +146,7 @@ namespace WebAdminShop.Controllers
             try
             {
                 string webRootPath = _env.WebRootPath;
-                string newPath = Path.Combine(webRootPath, "uploads/Product/img/");
+                string newPath = Path.Combine(webRootPath, "uploads/New/img/");
                 System.IO.DirectoryInfo di = new DirectoryInfo(newPath);
 
                 if (!Directory.Exists(newPath))
