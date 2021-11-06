@@ -25,34 +25,41 @@ namespace WebAPI.Services.DataServices
             conString = _config.GetConnectionString("CN");
             _servicesBase = new BaseServices();
         }
-        public async Task<IEnumerable<Order>> GetOrder()
+        public async Task<IEnumerable<Orders>> GetOrder()
         {
-            return await _servicesBase.GetList<Order>("Order", conString);
+            return await _servicesBase.GetList<Orders>("Orders", conString);
         }
-        public async Task<Order> GetOrderByID(string Id)
+        public async Task<Orders> GetOrderByID(string Id)
         {
-            var results = await _servicesBase.GetById<Order>("Order", "ID", Id, conString);
+            var results = await _servicesBase.GetById<Orders>("Orders", "ID", Id, conString);
             return results;
         }
-        public async Task<DataResults<object>> InsertOrder(Order data, string user)
+        public async Task<DataResults<object>> InsertOrder(Orders data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
                 data.Name_order,
                 data.Type_ship,
-                data.Total_monney,
+                data.Address,
+                data.Email,
+                data.Phone,
+                data.Note,
+                data.ID_User,
+                data.ToTal_Money,
                 CreatedBy = user,
+                CreatedDate = DateTime.Now,
+                Status = false,
             };
-            return await _servicesBase.Insert("Order", obj, conString);
+            return await _servicesBase.Insert("Orders", obj, conString);
         }
-        public async Task<DataResults<object>> UpdateOrder(Order data, string user)
+        public async Task<DataResults<object>> UpdateOrder(Orders data, string user)
         {
             object obj = new
             {
                 data.Name_order,
                 data.Type_ship,
-                data.Total_monney,
+                data.ToTal_Money,
             };
             DataResults<object> result = new DataResults<object>();
             try
@@ -60,7 +67,7 @@ namespace WebAPI.Services.DataServices
                 using (var sqlConnection = new SqlConnection(conString))
                 {
                     var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
-                    var results = await db.Query("Order").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    var results = await db.Query("Orders").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
                     if (results == 1)
                     {
                         result.Message = "successed";
@@ -85,7 +92,7 @@ namespace WebAPI.Services.DataServices
             }
             return result;
         }
-        public async Task<DataResults<object>> DeleteOrder(Order data, string user)
+        public async Task<DataResults<object>> DeleteOrder(Orders data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
@@ -93,7 +100,7 @@ namespace WebAPI.Services.DataServices
                 Status = false,
             };
 
-            return await _servicesBase.Update("Order", obj, conString, "ID", data.ID);
+            return await _servicesBase.Update("Orders", obj, conString, "ID", data.ID);
         }
     }
 }

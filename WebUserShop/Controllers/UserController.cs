@@ -56,8 +56,8 @@ namespace WebUserShop.Controllers
             var x = false;
             var res = await ApiClientFactory.Instance.GetUser("");
             var c_pass = Security.TextToMD5(mkLogin);
-            var data = res.Where(u => u.UserName.Equals(tkLogin) && u.Password.Equals(c_pass) && u.ID_Role==2).ToList();
-            if (data.Count>0)
+            var data = res.Where(u => u.UserName.Equals(tkLogin) && u.Password.Equals(c_pass) && u.ID_Role == 2).FirstOrDefault<User>(); ;
+            if (data != null)
             {
                 var str = JsonConvert.SerializeObject(data);
                 HttpContext.Session.SetString("user1", str);

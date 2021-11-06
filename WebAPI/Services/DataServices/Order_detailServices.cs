@@ -12,6 +12,7 @@ using WebAPI.Services.Interface;
 using LIB.Base;
 using LIB.BaseModels;
 using LIB.Common;
+using LIB.Extensions;
 
 namespace WebAPI.Services.DataServices
 {
@@ -26,27 +27,81 @@ namespace WebAPI.Services.DataServices
             conString = _config.GetConnectionString("CN");
             _servicesBase = new BaseServices();
         }
-        public async Task<IEnumerable<Order_Detail>> GetOrder_Detail()
+        public async Task<IEnumerable<Order_Details>> GetOrder_Detail()
         {
-            return await _servicesBase.GetList<Order_Detail>("Order_Detail", conString);
+            return await _servicesBase.GetList<Order_Details>("Order_Details", conString);
         }
-        public async Task<Order_Detail> GetOrder_DetailByID(string Id)
+        public async Task<Order_Details> GetOrder_DetailByID(string Id)
         {
-            var results = await _servicesBase.GetById<Order_Detail>("Order_Detail", "ID", Id, conString);
+            var results = await _servicesBase.GetById<Order_Details>("Order_Details", "ID", Id, conString);
             return results;
         }
-        public async Task<DataResults<object>> InsertOrder_Detail(Order_Detail data, string user)
+        public async Task<Orders> GetIdNow()
         {
-            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
-            object obj = new
+            try
             {
-                data.Quality,
-                data.PromotionPrice,
-                 CreatedBy = user,
-            };
-            return await _servicesBase.Insert("Order_Detail", obj, conString);
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    var result =await db.Query("Orders").OrderByDesc("ID").Limit(1).FirstOrDefaultAsync<Orders>();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Orders();
+            }
         }
-        public async Task<DataResults<object>> UpdateOrder_Detail(Order_Detail data, string user)
+        public async Task<DataResults<object>> InsertOrder_Detail(List<Order_Details> data, string user)
+        {
+            DataResults<object> dataResults = new DataResults<object>();
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    var res = await GetIdNow();
+
+                    foreach (var item in data)
+                    {
+                        var obj = new
+                        {
+                            item.ID_Product,
+                            item.ID_Size,
+                            item.Note,
+                            item.Price,
+                            item.PromotionPrice,
+                            item.Quality,                          
+                            CreatedBy = user,
+                            CreatedDate = DateTime.Now,
+                            ModifiedDate = DateTime.Now,
+                            ID_Order = res.ID,
+                            Status = true,
+                        };
+                       
+                        var rs = db.Query("Order_Details").Insert(obj);
+                        if (rs <= 0)
+                        {
+                            
+                            dataResults.Status = -1;
+                            dataResults.Message = "failed";
+                            return dataResults;
+                        }
+                    }
+                    dataResults.Status = 1;
+                    dataResults.Message = "sussces";
+                }
+            }
+            catch (Exception ex)
+            {
+                dataResults.Status = -1;
+                dataResults.Data = null;
+                dataResults.Message = ex.Message;
+            }
+
+            return dataResults;
+        }
+        public async Task<DataResults<object>> UpdateOrder_Detail(Order_Details data, string user)
         {
             object obj = new
             {
@@ -59,7 +114,7 @@ namespace WebAPI.Services.DataServices
                 using (var sqlConnection = new SqlConnection(conString))
                 {
                     var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
-                    var results = await db.Query("Order_Detail").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
+                    var results = await db.Query("Order_Details").WhereRaw("ID='" + data.ID + "'").UpdateAsync(obj);
                     if (results == 1)
                     {
                         result.Message = "successed";
@@ -84,7 +139,7 @@ namespace WebAPI.Services.DataServices
             }
             return result;
         }
-        public async Task<DataResults<object>> DeleteOrder_Detail(Order_Detail data, string user)
+        public async Task<DataResults<object>> DeleteOrder_Detail(Order_Details data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
@@ -92,7 +147,7 @@ namespace WebAPI.Services.DataServices
                 Status = false,
             };
 
-            return await _servicesBase.Update("Order_Detail", obj, conString, "ID", data.ID);
+            return await _servicesBase.Update("Order_Details", obj, conString, "ID", data.ID);
         }
     }
 }

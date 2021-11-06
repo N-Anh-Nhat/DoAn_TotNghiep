@@ -32,20 +32,20 @@ namespace WebAPI.Controllers
         }
         [HttpPost("InsertOrder_Detail")]
 
-        public async Task<IActionResult> InsertOrder_Detail(Order_Detail Order_Detail, string user)
+        public async Task<IActionResult> InsertOrder_Detail(List<Order_Details> data, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            return Ok(await dbContext.InsertOrder_Detail(Order_Detail, user));
+            return Ok(await dbContext.InsertOrder_Detail(data, user));
         }
         [HttpPost("DeleteOrder_Detail")]
 
-        public async Task<IActionResult> DeleteOrder_Detail(Order_Detail Order_Detail, string user)
+        public async Task<IActionResult> DeleteOrder_Detail(Order_Details Order_Detail, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.DeleteOrder_Detail(Order_Detail, user));
         }
         [HttpPost("UpdateOrder_Detail")]
-        public async Task<IActionResult> UpdateOrder_Detail(Order_Detail Order_Detail, string user)
+        public async Task<IActionResult> UpdateOrder_Detail(Order_Details Order_Detail, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.UpdateOrder_Detail(Order_Detail, user));

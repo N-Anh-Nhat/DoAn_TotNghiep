@@ -1,4 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+
 <!-- Start Main Top -->
 <div class="main-top">
     <div class="container">
@@ -89,20 +92,26 @@
             </div>
             <!-- /.navbar-collapse -->
             <!-- Start Atribute Navigation -->
-            @if (Context.Session.GetString("user1") != null)
-            {
-                <div class="attr-nav">
-                    <ul>
-                        <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
-                        <li class="side-menu">
-                            <a href="@Url.Action("Cart","TheWayShop")">
-                                <i class="fa fa-shopping-bag"></i>
-                                <span class="badge">3</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            }
+
+            <div class="attr-nav">
+                <ul>
+                    <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li class="side-menu">
+                        <a href="@Url.Action("Index","Cart")">
+                            <i class="fa fa-shopping-bag"></i>
+                            @if(HttpContextAccessor.HttpContext.Session.GetString("Cart_Key") != null)
+                            {
+                                var session = HttpContextAccessor.HttpContext.Session;
+                                string jsoncart = session.GetString("Cart_Key");
+                                List<Order_Details> lst = JsonConvert.DeserializeObject<List<Order_Details>>(jsoncart);
+                                <span class="badge">@lst.Count</span>
+                            }
+                            
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
 
             <!-- End Atribute Navigation -->
         </div>

@@ -83,6 +83,48 @@ namespace WebAPI.Services.DataServices
             }
             return result;
         }
-        
+        public async Task<DataResults<object>> UpdateListProductSize(List<ProductSize> data, string user)
+        {
+           
+            DataResults<object> result = new DataResults<object>();
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    foreach (var item in data)
+                    {
+                        var obj = new
+                        {                          
+                            item.Quality,                                                      
+                            ModifiedDate = DateTime.Now,                                                     
+                        };
+
+                        var results = await db.Query("ProductSize").WhereRaw("ID='" + item.ID + "'").UpdateAsync(obj);
+                        if (results <= 0)
+                        {
+
+                            result.Status = -1;
+                            result.Message = "failed";
+                            return result;
+                        }
+                    }
+                    result.Status = 1;
+                    result.Message = "sussces";
+                    
+                    
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+
+                result.Message = e.Message;
+                result.Status = -1;
+                result.Data = data; ;
+            }
+            return result;
+        }
+
     }
 }

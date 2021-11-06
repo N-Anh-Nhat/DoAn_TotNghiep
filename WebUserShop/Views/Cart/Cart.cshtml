@@ -1,0 +1,452 @@
+﻿@using LIB.BaseModels;
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@using WebAPI.Models;
+
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Giỏ hàng của bạn</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a>Shop</a></li>
+                    <li class="breadcrumb-item active">Giỏ hàng</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+<!-- Start Cart  -->
+<div class="cart-box-main">
+    @if (Context.Session.GetString("Cart_Key") != null)
+    {
+        var json = Context.Session.GetString("Cart_Key");
+        List<Order_Details> lst = JsonConvert.DeserializeObject<List<Order_Details>>(json);
+        int dem = 0;
+        int countlist = lst.Count();
+        Decimal TongHD = 0;
+        Decimal ThanhTien;
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="table-main table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ảnh sản phẩm</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Giảm giá</th>
+                                    <th>Đơn giá</th>
+                                    <th>Kích cỡ</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng</th>
+                                    <th>Hủy bỏ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in lst)
+                                {
+                                    dem++;
+
+                                    Product data = new Product();
+                                    foreach (var rs in ViewBag.Product)
+                                    {
+                                        if (rs.ID == item.ID_Product)
+                                        {
+                                            data = rs;
+                                            break;
+                                        }
+                                    }
+                                    ProductSize dataSize = new ProductSize();
+                                    foreach (var rsS in ViewBag.Size)
+                                    {
+                                        if (rsS.ID == item.ID_Size)
+                                        {
+                                            dataSize = rsS;
+                                            break;
+                                        }
+
+
+                                    }
+                                    decimal TienSale = item.Price * item.PromotionPrice / 100;
+                                    decimal SPrice = item.Price - TienSale;
+                                    decimal Tong = item.Quality * SPrice;
+                                    TongHD += Tong;
+                                    <tr>
+                                        <td>
+                                            @dem
+                                        </td>
+                                        <td class="thumbnail-img">
+                                            <a href="#">
+                                                <img class="img-fluid" src="~/images/img-pro-01.jpg" alt="" />
+                                            </a>
+                                        </td>
+                                        <td class="name-pr">
+                                            <a href="#">
+                                                @data.Name
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <p>@item.PromotionPrice %</p>
+                                        </td>
+                                        <td>
+                                            <p>@SPrice VND</p>
+                                        </td>
+                                        <td class="price-pr">
+                                            <p>@dataSize.Size</p>
+                                        </td>
+                                        <td class="quantity-box">
+                                            <input id="soluong-@dem" onchange="UpdateItem(@item.ID_Product,@item.ID_Size,@item.Price,@item.PromotionPrice,@dem,@dataSize.Quality,@countlist)" type="number" size="4" value="@item.Quality" max="@dataSize.Quality" min="0" step="1" class="c-input-text qty text">
+                                        </td>
+                                        <td >
+                                            <input style="width: 80%" type="number" disabled="disabled" id="TongGia1SP-@dem" value="@Tong" /> VND
+                                        </td>
+                                        <td class="remove-pr">
+                                            <a onclick="RemoveItem(@data.ID,@countlist)">
+                                                <i class="fas fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                            <thead>
+                                <tr>
+                                   <th colspan="7">Tổng</th>
+                                   <th id="SumHoaDon">@TongHD</th>
+                                   <th></th>
+                                </tr>
+                            </thead>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @{
+                ThanhTien = TongHD;
+             }
+           
+            <div class="row my-12">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="coupon-box">
+                        <div class="input-group input-group-sm">
+                            <h4>Thông tin giao hàng</h4>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <label for="Address">Địa chỉ giao hàng</label>
+                                    <input id="Address" class="form-control" placeholder="Nhập địa chỉ" aria-label="Coupon code" type="text">
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <label for="Phone">Số điện thoại</label>
+                                    <input id="Phone" class="form-control" placeholder="Nhập số điện thoại" aria-label="Coupon code" type="number">
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <label for="Email">Gmail</label>
+                                    <input id="Email" class="form-control" placeholder="Nhập email" aria-label="Coupon code" type="email">
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <label for="Note">Ghi chú (Tên người nhận, lưu ý,...)</label>
+                                    <input id="Note" class="form-control" placeholder="Nhập ghi chú" aria-label="Coupon code" type="text">
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="row my-5">
+                <div class="col-md-12 col-lg-12">
+                    <div class="shipping-method-box">
+                        <div class="title-left">
+                            <h3>Giao hàng</h3>
+                        </div>
+                        <div class="mb-4">
+                            <div class="custom-control custom-radio">
+                                <input id="shippingOption1" onchange="UpdateShip(@countlist)" checked="checked" name="shipping-option" class="custom-control-input" type="radio">
+                                <label class="custom-control-label" for="shippingOption1">Giao hàng thường</label> <span class="float-right font-weight-bold">FREE</span>
+                            </div>
+                            <div class="ml-4 mb-2 small">(3-7 ngày làm việc)</div>
+                            <div class="custom-control custom-radio">
+                                <input id="shippingOption2" onchange="UpdateShip(@countlist)" name="shipping-option" class="custom-control-input" type="radio">
+                                <label class="custom-control-label" for="shippingOption2">Giao hàng nhanh</label> <span class="float-right font-weight-bold">30.000 VND</span>
+                            </div>
+                            <div class="ml-4 mb-2 small">(2-4 ngày làm việc)</div>
+                            <div class="custom-control custom-radio">
+                                <input id="shippingOption3" onchange="UpdateShip(@countlist)" name="shipping-option" class="custom-control-input" type="radio">
+                                <label class="custom-control-label" for="shippingOption3">Giao hàng đặc biệt</label> <span class="float-right font-weight-bold">60.000 VND</span>
+                            </div>
+                            <div class="ml-4 mb-2 small">(1-2 ngày làm việc)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-5">
+                <div class="col-lg-8 col-sm-12">
+                    <img src="~/images/payment-icon/thanhtoanthuanloi(1).gif" alt="Alternate Text" />
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="order-box">
+                        <h3>Tổng hóa đơn</h3>
+                        <div class="d-flex">
+                            <h4></h4>
+                            <div id="HoaDon" class="ml-auto font-weight-bold"> @TongHD </div>
+                        </div>
+                       
+                        <hr class="my-1">
+                        <div class="d-flex">
+                            <h4>Giao hàng</h4>
+                            <div id="GiaoHang" class="ml-auto font-weight-bold">Giao hàng thường</div>
+                        </div>
+                        <div class="d-flex">
+                            <h4>Phí giao hàng</h4>
+                            <div id="TienGiaoHang" class="ml-auto font-weight-bold">0 VND </div>
+                        </div>
+
+                        <hr>
+                        <div class="d-flex gr-total">
+                            <h5>Thành tiền</h5>
+                            <div id="ThanhTien" class="ml-auto h5">@ThanhTien </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="col-12 d-flex shopping-box">
+                    <button class="ml-auto btn hvr-hover" onclick="DatHang(@countlist)" type="button">Đặt hàng</button>
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>
+<!-- End Cart -->
+<script>
+    function UpdateItem(id, size, price, proprice, iditem, max ,count) {
+        var IDSoLuong = "soluong-" + iditem;
+        var soluong = document.getElementById(IDSoLuong).value;
+        var SPrice = price - (price * (proprice / 100));
+        var Tong = soluong * SPrice;
+        var IDTong = "TongGia1SP-" + iditem;
+
+
+        if (soluong > max || soluong < 0) {
+            document.getElementById(IDSoLuong).value = 1;
+            return alert("Số lượng không được vượt quá " + max + "hoặc nhỏ hơn 0")
+        }
+
+
+        $.ajax({
+            url: "../Cart/UpdateItemInCart?id=" + id + "&size=" + size + "&soluong=" + soluong,
+            cache: false,
+            type: "POST",
+            success: function (res) {
+                if (res == true) {
+                    document.getElementById(IDTong).value = Tong;
+                    var SumHD = 0;
+                    for (var i = 1; i <= count; i++) {
+
+                        var NameIDTong = "TongGia1SP-" + i;
+                        var tinh = document.getElementById(NameIDTong).value;
+                        SumHD = SumHD + parseFloat(tinh);
+                    }
+                    document.getElementById("SumHoaDon").innerHTML = SumHD;
+                    document.getElementById("HoaDon").innerHTML = SumHD;
+                    var radios = document.getElementsByName('shipping-option');
+
+                    for (var i = 0, length = radios.length; i < length; i++) {
+
+                        if (radios[i].checked) {
+                            if (i == 0)
+                                document.getElementById("ThanhTien").innerHTML = SumHD;
+                            if (i == 1) {
+                                SumHD += 30000;
+                                document.getElementById("ThanhTien").innerHTML = SumHD;
+
+                            }
+                            if (i == 2) {
+                                SumHD += 60000;
+                                document.getElementById("ThanhTien").innerHTML = SumHD;
+                            }
+                        }
+                        else
+                            document.getElementById("ThanhTien").innerHTML = SumHD;
+                    }
+                    return alert("Chỉnh sửa số lượng thành công");
+                }
+
+                else {
+                    document.getElementById(IDSoLuong).value = 1;
+                    return alert("Chỉnh sửa số lượng thất bại");
+                }
+
+            }
+        });
+    }
+    function UpdateShip(count) {
+        var SumHD = 0;
+        for (var i = 1; i <= count; i++) {
+
+            var NameIDTong = "TongGia1SP-" + i;
+            var tinh = document.getElementById(NameIDTong).value;
+            SumHD = SumHD + parseFloat(tinh);
+        }
+        var radios = document.getElementsByName('shipping-option');
+
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                if (i == 0)
+                    document.getElementById("ThanhTien").innerHTML = SumHD;
+                if (i == 1) {
+                    SumHD += 30000;
+                    document.getElementById("ThanhTien").innerHTML = SumHD;
+                    document.getElementById("GiaoHang").innerHTML = "Giao hàng nhanh";
+                    document.getElementById("TienGiaoHang").innerHTML = "30.000 VND";
+                }
+                if (i == 2) {
+                    SumHD += 60000;
+                    document.getElementById("ThanhTien").innerHTML = SumHD;
+                    document.getElementById("GiaoHang").innerHTML = "Giao hàng đặc biệt";
+                    document.getElementById("TienGiaoHang").innerHTML = "60.000 VND";
+
+                }
+            }
+        }
+    }
+    function RemoveItem(id, count) {
+        $.ajax({
+            url: "../Cart/ClearItemInCart?id=" + id ,
+            cache: false,
+            type: "POST",
+            success: function (res) {
+                if (res == true) {
+                    window.location.reload();
+                    var SumHD = 0;
+                    for (var i = 1; i <= count; i++) {
+
+                        var NameIDTong = "TongGia1SP-" + i;
+                        var tinh = document.getElementById(NameIDTong).value;
+                        SumHD = SumHD + parseFloat(tinh);
+                    }
+                    document.getElementById("SumHoaDon").innerHTML = SumHD;
+                    document.getElementById("HoaDon").innerHTML = SumHD;
+                    var radios = document.getElementsByName('shipping-option');
+
+                    for (var i = 0, length = radios.length; i < length; i++) {
+
+                        if (radios[i].checked) {
+                            if (i == 0) {
+                                document.getElementById("ThanhTien").innerHTML = SumHD;
+                                break;
+                            }
+
+                            if (i == 1) {
+                                SumHD += 30000;
+                                document.getElementById("ThanhTien").innerHTML = SumHD;
+                                break;
+                            }
+                            if (i == 2) {
+                                SumHD += 60000;
+                                document.getElementById("ThanhTien").innerHTML = SumHD;
+                                break;
+                            }
+                        }
+                    }
+                    return alert("Xóa sản phẩm ra khỏi giỏ hàng thành công");
+                }
+
+                else
+                    return alert("Xóa sản phẩm ra khỏi giỏ hàng thất bại");
+            }
+        });
+    }
+    function DatHang(count) {
+        var SumHD = 0;
+        for (var i = 1; i <= count; i++) {
+
+            var NameIDTong = "TongGia1SP-" + i;
+            var tinh = document.getElementById(NameIDTong).value;
+            SumHD = SumHD + parseFloat(tinh);
+        }
+        var radios = document.getElementsByName('shipping-option');
+        var TypeShip;
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                if (i == 0)
+                    TypeShip = "Giao hàng thường"
+                if (i == 1) {
+                    SumHD += 30000;
+                    TypeShip = "Giao hàng nhanh"
+                }
+                if (i == 2) {
+                    SumHD += 60000;
+                    TypeShip = "Giao hàng đặc biệt"
+
+                }
+
+
+            }
+
+        }
+
+        var inputAddress = document.getElementById("Address").value;
+        var inputPhone = document.getElementById("Phone").value;
+        var inputEmail = document.getElementById("Email").value;
+        var inputNote = document.getElementById("Note").value;
+        var data = {
+            Address : inputAddress,
+            Phone : inputPhone,
+            Email : inputEmail,
+            Note : inputNote,
+            Type_ship : TypeShip,
+            ToTal_Money : SumHD
+        }
+        $.ajax({
+            "async": false,
+            "crossDomain": true,
+            "url": "@Url.Action("InsertOrder", "Cart")",
+            "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache"
+            },
+            "method": "POST",
+            "data": JSON.stringify(data),
+
+        }).done(function (result) {
+            if (result.isSuccess == true) {
+               if (result.data.status == 1) {
+                    $.ajax({
+                        "async": false,
+                        "crossDomain": true,
+                        "url": "@Url.Action("InsertOrderDetail", "Cart")",
+                        "headers": {
+                            "Content-Type": "application/json",
+                            "cache-control": "no-cache"
+                        },
+                            "method": "POST",
+                            
+
+                    }).done(function (result) {
+                        if (result.isSuccess == 1) {
+                            if (result.data.status  == 1) {
+                                alert("Đặt hàng thành công");
+                                window.location.reload();
+                                    
+                            }
+                        }
+
+                    })
+
+               }
+            }
+
+        })
+    }
+
+</script>

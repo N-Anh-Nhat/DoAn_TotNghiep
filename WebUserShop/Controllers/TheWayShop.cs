@@ -42,14 +42,7 @@ namespace WebUserShop.Controllers
         {
             return View();
         }
-        public IActionResult Cart()
-        {
-            if (HttpContext.Session.GetString("user1") != null)
-            {
-                return View();
-            }
-            return NotFound();
-        }
+        
         public IActionResult Contact_Us()
         {
             return View();
@@ -69,7 +62,7 @@ namespace WebUserShop.Controllers
             if (HttpContext.Session.GetString("user1") != null)
             {
                 string a = HttpContext.Session.GetString("user1");
-                var user = JsonConvert.DeserializeObject<List<User>>(a);
+                var user = JsonConvert.DeserializeObject<User>(a);
                 ViewBag.infoUser = user;
                 return View();
             }

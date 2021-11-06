@@ -10,10 +10,10 @@ namespace WebAPI.Services.Interface
 {
     public interface IOrder
     {
-        Task<IEnumerable<Order>> GetOrder();
-        Task<Order> GetOrderByID(string Id);
-        Task<DataResults<object>> InsertOrder(Order data, string user);
-        Task<DataResults<object>> UpdateOrder(Order data, string user);
-        Task<DataResults<object>> DeleteOrder(Order data, string user);
+        Task<IEnumerable<Orders>> GetOrder();
+        Task<Orders> GetOrderByID(string Id);
+        Task<DataResults<object>> InsertOrder(Orders data, string user);
+        Task<DataResults<object>> UpdateOrder(Orders data, string user);
+        Task<DataResults<object>> DeleteOrder(Orders data, string user);
     }
 }

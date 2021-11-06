@@ -15,6 +15,7 @@ namespace WebAPI.Services.Interface
         Task<ProductSize> GetProductSizeByID(string Id);
         Task<DataResults<object>> InsertProductSize(ProductSize data, string user);
         Task<DataResults<object>> UpdateProductSize(ProductSize data, string user);
+        Task<DataResults<object>> UpdateListProductSize(List<ProductSize> data, string user);
 
     }
 }

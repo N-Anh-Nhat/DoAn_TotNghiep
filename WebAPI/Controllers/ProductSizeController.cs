@@ -44,5 +44,11 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.UpdateProductSize(ProductSize, user));
         }
+        [HttpPost("UpdateListProductSize")]
+        public async Task<IActionResult> UpdateListProductSize(List<ProductSize> data, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.UpdateListProductSize(data, user));
+        }
     }
 }
