@@ -95,7 +95,7 @@ namespace WebUserShop.Controllers
         {
 
             var resMail = await ApiClientFactory.Instance.GetUser("");
-            //kiem tra trung user
+            //kiem tra trung mail
             var mailCount = resMail.Where(u => u.Email.Equals(mail)).Select(x => x.ID).Count();
             bool result = mailCount > 0 ? false : true;
             return Json(result);

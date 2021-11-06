@@ -119,7 +119,7 @@
 					minlength: 6,
 					//validate unique Username
 					remote: {
-						url: "../User/GetlstUser",
+						url: "../../User/GetlstUser",
 						type: "get",
 						data: {
 							User: function () {
@@ -145,7 +145,7 @@
 					validateEmail: true,
 					//validate unique Email
 					remote: {
-						url: "../User/GetlstUserofMail",
+						url: "../../User/GetlstUserofMail",
 						type: "get",
 						data: {
 							mail: function () {
@@ -216,7 +216,7 @@
 				$.ajax({
 					"async": false,
 					"crossDomain": true,
-					"url": "../User/Create",
+					"url": "../../User/Create",
 					"headers": {
 						"Content-Type": "application/json",
 						"cache-control": "no-cache"
@@ -260,7 +260,7 @@
 				var inputtk = $('#usernameLogin').val();
 				var inputmk = $('#passwordLogin').val();
 				$.ajax({
-					url: "../User/Login",
+					url: "../../User/Login",
 					data: { tkLogin: inputtk, mkLogin: inputmk },
 					cache: false,
 					type: "POST",
