@@ -119,6 +119,12 @@
                     </a>
                 </li>
                 <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Order"? "active":"")" href="@Url.Action("Index","Order")">
+                        <i class="fas fa-file-alt"></i>
+                        <span> Duyệt đơn hàng </span>
+                    </a>
+                </li>
+                <li class="submenu">
                     <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Category"? "active":"")" href="@Url.Action("Index","Category")">
                         <i class="fas fa-file-alt"></i>
                         <span> Loại sản phẩm </span>

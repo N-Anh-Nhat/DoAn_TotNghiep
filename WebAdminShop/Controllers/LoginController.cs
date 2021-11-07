@@ -41,6 +41,8 @@ namespace WebAdminShop.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
+            if(username == null || password == null)
+                return View("Login", new { username, message = "Không để trống Tên tài khoản hoặc mật khẩu" });
             var rs = await ApiClientFactory.Instance.CheckLogin(username, password);
 
             if (rs.Status == 1)

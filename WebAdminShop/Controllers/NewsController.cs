@@ -34,94 +34,103 @@ namespace WebAdminShop.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var res = await ApiClientFactory.Instance.GetCategory("");
-            ViewBag.listCategory = res;
-            return View();
+            string json = userInfo.GetUserInfo(HttpContext);
+
+            if (json != null)
+            {
+                var res = await ApiClientFactory.Instance.GetCategory("");
+                ViewBag.listCategory = res;
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetlstNews()
         {
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            var res = await ApiClientFactory.Instance.GetNews("");
+            if (json != null)
+            {
+                var res = await ApiClientFactory.Instance.GetNews("");
 
-            return Json(res);
+                return Json(res);
+            }
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
         public async Task<IActionResult> InsertlstNews(News data, IFormFile file)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            //if (json != null)
-            //{
-            //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
-
-            //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
-            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
-            if (file != null)
+            if (json != null)
             {
-                string filename = GetFileNameWithDate(file.FileName);
-                bool check = SaveFile(file, filename);
-                if (!check)
+                //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+
+                //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+                Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+                if (file != null)
                 {
-                    DataResults<Object> dataResults = new DataResults<object>();
+                    string filename = GetFileNameWithDate(file.FileName);
+                    bool check = SaveFile(file, filename);
+                    if (!check)
+                    {
+                        DataResults<Object> dataResults = new DataResults<object>();
 
-                    err.IsSuccess = true;
-                    dataResults.Status = -2;
-                    dataResults.Message = "Save file error";
-                    err.Data = dataResults;
-                    return Json(err);
+                        err.IsSuccess = true;
+                        dataResults.Status = -2;
+                        dataResults.Message = "Save file error";
+                        err.Data = dataResults;
+                        return Json(err);
+                    }
+                    data.Image = "uploads/New/img/" + filename;
+
+
                 }
-                data.Image = "uploads/New/img/" + filename;
 
+                var res = await ApiClientFactory.Instance.InsertNews(data, "", "");
 
+                return Json(res);
             }
-
-            var res = await ApiClientFactory.Instance.InsertNews(data, "", "");
-
-            return Json(res);
-            ////}
-            //return null;
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdatelstNews(News data, IFormFile file)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
-            
-            //if (json != null)
-            //{
-            //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
-            Message<DataResults<Object>> err = new Message<DataResults<Object>>();
-            if (file != null)
+            if (json != null)
             {
-                string filename = GetFileNameWithDate(file.FileName);
-                bool check = SaveFile(file, filename);
-                if (!check)
+                
+                Message<DataResults<Object>> err = new Message<DataResults<Object>>();
+                if (file != null)
                 {
-                    DataResults<Object> dataResults = new DataResults<object>();
+                    string filename = GetFileNameWithDate(file.FileName);
+                    bool check = SaveFile(file, filename);
+                    if (!check)
+                    {
+                        DataResults<Object> dataResults = new DataResults<object>();
 
-                    err.IsSuccess = true;
-                    dataResults.Status = -2;
-                    dataResults.Message = "Save file error";
-                    err.Data = dataResults;
-                    return Json(err);
+                        err.IsSuccess = true;
+                        dataResults.Status = -2;
+                        dataResults.Message = "Save file error";
+                        err.Data = dataResults;
+                        return Json(err);
+                    }
+                    data.Image = "uploads/New/img/" + filename;
+
+
                 }
-                data.Image = "uploads/New/img/" + filename;
 
+                var res = await ApiClientFactory.Instance.UpdateNews(data, "", "");
+
+                return Json(res);
 
             }
-
-            var res = await ApiClientFactory.Instance.UpdateNews(data, "", "");
-
-            return Json(res);
-
-            //}
-            //return null;
+            return RedirectToAction("Index", "Login");
         }
         //[HttpDelete]
         //public async Task<IActionResult> DeletelstNews(string id)

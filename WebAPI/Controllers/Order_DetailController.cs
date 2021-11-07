@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
             return Ok(await dbContext.GetOrder_Detail());
         }
         [HttpGet("GetOrder_DetailById")]
-        public async Task<IActionResult> GetOrder_DetailById(string Id)
+        public async Task<IActionResult> GetOrder_DetailById(int Id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetOrder_DetailByID(Id));

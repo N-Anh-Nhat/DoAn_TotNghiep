@@ -39,6 +39,8 @@ namespace WebAPI.Services.DataServices
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
             object obj = new
             {
+                data.ID_Product,
+                Status = false,
                 data.Size,
                 data.Quality,
                 CreatedBy = user,
@@ -49,6 +51,8 @@ namespace WebAPI.Services.DataServices
         {
             object obj = new
             {
+                data.ID_Product,
+                data.Status,
                 data.Size,
                 data.Quality,
             };
