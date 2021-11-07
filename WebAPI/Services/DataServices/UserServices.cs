@@ -123,7 +123,7 @@ namespace WebAPI.Services.DataServices
 
                     string Pw = Security.TextToMD5(password);
 
-                    var rs = await db.Query("User").Where("UserName",usermame).Where("Password",Pw).FirstOrDefaultAsync<User>();
+                    var rs = await db.Query("User").Where("UserName",usermame).Where("Password",Pw).Where("ID_Role",1).FirstOrDefaultAsync<User>();
                         
 
                     if (rs != null)

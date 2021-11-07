@@ -27,56 +27,68 @@ namespace WebAdminShop.Controllers
             ApplicationSettings.WebApiUrl = app.Value.WebApiBaseUrl;
             userInfo = new UserInfo();
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            string json = userInfo.GetUserInfo(HttpContext);
+
+            if (json != null)
+            {
+                var res = await ApiClientFactory.Instance.GetProduct("");
+                ViewBag.Product = res;
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetlstProductSize()
         {
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            var res = await ApiClientFactory.Instance.GetProductSize("");
-
-            return Json(res);
+            if (json != null)
+            {
+                var res = await ApiClientFactory.Instance.GetProductSize("");
+                return Json(res);
+            }
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
         public async Task<IActionResult> InsertlstProductSize([FromBody] ProductSize data)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            //if (json != null)
-            //{
-            //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+            if (json != null)
+            {
+                //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
-            //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+                //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-            var res = await ApiClientFactory.Instance.InsertProductSize(data, "", "");
+                var res = await ApiClientFactory.Instance.InsertProductSize(data, "", "");
 
-            return Json(res);
-            ////}
-            //return null;
+                return Json(res);
+            }
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdatelstProductSize([FromBody] ProductSize data, [FromQuery] string value)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
+            string json = userInfo.GetUserInfo(HttpContext);
             JsonConvert.PopulateObject(value, data);
-            //if (json != null)
-            //{
-            //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+            if (json != null)
+            {
+                //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
-            //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+                //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-            var res = await ApiClientFactory.Instance.UpdateProductSize(data, "", "");
+                var res = await ApiClientFactory.Instance.UpdateProductSize(data, "", "");
 
-            return Json(res);
+                return Json(res);
 
-            //}
-            //return null;
+            }
+            return RedirectToAction("Index", "Login");
         }
         //[HttpDelete]
         //public async Task<IActionResult> DeletelstProductSize(string id)

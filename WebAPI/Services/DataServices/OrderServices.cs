@@ -60,6 +60,8 @@ namespace WebAPI.Services.DataServices
                 data.Name_order,
                 data.Type_ship,
                 data.ToTal_Money,
+                data.Status,
+                ModifiedDate = DateTime.Now,
             };
             DataResults<object> result = new DataResults<object>();
             try

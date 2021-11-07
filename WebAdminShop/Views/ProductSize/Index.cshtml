@@ -69,12 +69,12 @@
     });
 
 
-
+    var listPro =  @Html.Raw(Json.Serialize(ViewBag.Product));
 
     function loadGrid(jsonData) {
 
         var transportStore = new DevExpress.data.CustomStore({
-            key: ["Size", "Quality", "CreatedDate", "ID_Product", "Status"],
+            key: ["ID","Size", "Quality", "CreatedDate", "ID_Product", "Status"],
             load: function () {
                 return sendRequest("ProductSize/GetlstProductSize", "GET", "")
             },
@@ -97,6 +97,10 @@
         $("#gridList").dxDataGrid({
             //dataSource: jsonData,
             dataSource: transportStore,
+            scrolling: {
+                useNative: true,
+                columnRenderingMode: 'virtual'
+            },
             repaintChangesOnly: true,
             showColumnLines: true,
             showRowLines: true,
@@ -105,21 +109,20 @@
             columnAutoWidth: true,
             showBorders: true,
             width: "auto",
+            columnResizingMode: 'widget',
             columnsAutoWidth: true,
             hoverStateEnabled: true,
             paging: {
-                pageSize: 100
+                pageSize: 20
             },
             pager: {
                 visible: true,
-                allowedPageSizes: ['ALL'],
+               
                 showPageSizeSelector: false,
                 showInfo: false,
                 showNavigationButtons: false
             },
-            scrolling: {
-                mode: "virtual"
-            },
+            
             filterRow: {
                 visible: true,
                 applyFilter: "auto"
@@ -133,13 +136,13 @@
                 startEditAction: "click",
                 useIcons: true,
                 popup: {
-                    title: "Dept info",
+                    title: "Thông tin kích cỡ sản phẩm",
                     showTitle: true,
                     width: 700,
                     height: 300
                 },
                 form: {
-                    items: ["Size", "Quality", "CreatedDate", "ID_Product", "Status"],
+                    items: ["Size", "Quality", "ID_Product", "Status"],
                 }
 
             },
@@ -188,31 +191,31 @@
                     dataField: "ID_Product",
                     dataType: "number",
                     alignment: "left",
-                    caption: "ID_Product",
+                    caption: "Tên sản phẩm",
+                    groupIndex: 0,
+                    lookup: {
+                        dataSource: listPro,
+                        valueExpr: "ID",
+                        displayExpr: "Name"
+                    },
                 },
                 {
                     dataField: "Size",
                     dataType: "string",
                     alignment: "left",
-                    caption: "Size",
+                    caption: "Kích cỡ",
                 },
                 {
                     dataField: "Quality",
                     dataType: "number",
                     alignment: "left",
-                    caption: "Quality",
+                    caption: "Số lượng",
                 },
-                
-                {
-                    dataField: "CreatedDate",
-                    dataType: "date",
-                    alignment: "left",
-                    caption: "CreatedDate",
-                },
+
                 {
                     dataField: "Status",
                     dataType: "boolean",
-                    caption: "Status",
+                    caption: "Trạng thái",
                     alignment: "center",
                 },
 
@@ -220,6 +223,17 @@
 
 
             ],
+            summary: {
+                groupItems: [
+                    {
+                        column: "Quality",
+                        summaryType: "sum",
+                        howInGroupFooter: false,
+                        alignByColumn: true,
+                        displayFormat: "Tổng sản phẩm: {0}",
+                    }
+                ]
+            },
             onEditorPreparing: function (e) {
                 if (e.parentType == "dataRow" && e.isOnForm == true) {
                     if (e.dataField == "ID" && typeof e.row.isNewRow == "undefined")

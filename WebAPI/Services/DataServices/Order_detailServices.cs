@@ -31,10 +31,22 @@ namespace WebAPI.Services.DataServices
         {
             return await _servicesBase.GetList<Order_Details>("Order_Details", conString);
         }
-        public async Task<Order_Details> GetOrder_DetailByID(string Id)
+        public async Task<IEnumerable<Order_Details>> GetOrder_DetailByID(int Id)
         {
-            var results = await _servicesBase.GetById<Order_Details>("Order_Details", "ID", Id, conString);
-            return results;
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    var result = db.Query("Order_Details").Where("ID_Order", Id);
+                    return await result.GetAsync<Order_Details>();
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                return null;
+            }
         }
         public async Task<Orders> GetIdNow()
         {

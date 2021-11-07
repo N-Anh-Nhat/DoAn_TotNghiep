@@ -12,167 +12,62 @@
 
 
             <div class="row">
-                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
-                    <div class="card-box noradius noborder bg-danger">
-                        <i class="fas fa-coins float-right text-white"></i>
-                        <h6 class="text-white text-uppercase mb-3">Tổng sản phẩm</h6>
-                        <h1 class="mb-3 text-white counter">487</h1>
+                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3" style="height: 100%; width: 100%">
+                    <div class="card-box noradius noborder bg-danger" >
+                        <i class="fas fa-coins float-right text-white"  style="margin: 0"></i>
+                        <h8 class="text-white text-uppercase mb-3">Tổng sản phẩm</h8>
+                        <h3 class="mb-3 text-white counter">@ViewData["CountProduct"]</h3>
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3"  style="height: 100%; width: 100%">
                     <div class="card-box noradius noborder bg-success">
-                        <i class="fas fa-hand-holding-usd float-right text-white"></i>
-                        <h6 class="text-white text-uppercase mb-3">Đã bán</h6>
-                        <h1 class="mb-3 text-white counter">290</h1>
+                        <i class="fas fa-shopping-cart float-right text-white" style="margin: 0"></i>
+                        <h8 class="text-white text-uppercase mb-3">Đơn hàng đã bán</h8>
+                        <h3 class="mb-3 text-white counter">@ViewData["CountDon"]</h3>
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3"  style="height: 100%; width: 100%">
                     <div class="card-box noradius noborder bg-warning">
-                        <i class="fas fa-shopping-cart float-right text-white"></i>
-                        <h6 class="text-white text-uppercase mb-3">Đặt hàng</h6>
-                        <h1 class="mb-3 text-white counter">320</h1>
+                        <i class="fas fa-shopping-cart float-right text-white" style="margin: 0"></i>
+                        <h8 class="text-white text-uppercase mb-3">Đơn hàng chưa duyệt</h8>
+                        <h3 class="mb-3 text-white counter">@ViewData["CountDonChuaBan"]</h3>
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3"  style="height: 100%; width: 100%">
                     <div class="card-box noradius noborder bg-info">
-                        <i class="far fa-envelope float-right text-white"></i>
-                        <h6 class="text-white text-uppercase mb-3">Tin nhắn</h6>
-                        <h1 class="mb-3 text-white counter">58</h1>
+                        <i class="fas fa-hand-holding-usd float-right text-white" style="margin: 0"></i>
+                        <h8 class="text-white text-uppercase ">Doanh thu trong tháng(VND)</h8>
+                        <h6 class="mb-3 text-white counter">@ViewData["DoanhThuThang"]</h6>
 
                     </div>
                 </div>
             </div>
             <!-- end row -->
             <div class="row">
-                <div class="col-md-6">
-                    <div class="card mb-2">
-                        <div class="card_header">
-                            <h3>
-                                <i class="fas fa-chart-bar"></i>
-                                Chart 1
-                            </h3>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. At inventore labore quaerat aut maxime odio repellendus accusamus eos itaque nam officia amet, assumenda earum culpa vero tempore dolores, laudantium beatae?
-                        </div>
-                        <div class="card-body">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum omnis mollitia laborum quam velit dolorem rerum est sint! Enim, beatae dicta explicabo eveniet aut sit unde. Repudiandae laudantium voluptate odit?
-                                Officia, dolorem dolor inventore nobis molestiae et modi quas reprehenderit, necessitatibus cupiditate nihil! Quas autem, accusantium fugiat blanditiis, veritatis sunt quo reiciendis molestias dolor et iusto. Repudiandae numquam incidunt modi?
-                                A earum laborum nam non laudantium perspiciatis nemo, ab cupiditate officia harum sit eaque minima neque quos repellendus accusantium, soluta odit? Ab aspernatur, cum temporibus molestiae laudantium reiciendis officia error!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card mb-2">
-                        <div class="card_header">
-                            <h3>
-                                <i class="fas fa-chart-bar"></i>
-                                Chart 1
-                            </h3>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. At inventore labore quaerat aut maxime odio repellendus accusamus eos itaque nam officia amet, assumenda earum culpa vero tempore dolores, laudantium beatae?
-                        </div>
-                        <div class="card-body">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum omnis mollitia laborum quam velit dolorem rerum est sint! Enim, beatae dicta explicabo eveniet aut sit unde. Repudiandae laudantium voluptate odit?
-                                Officia, dolorem dolor inventore nobis molestiae et modi quas reprehenderit, necessitatibus cupiditate nihil! Quas autem, accusantium fugiat blanditiis, veritatis sunt quo reiciendis molestias dolor et iusto. Repudiandae numquam incidunt modi?
-                                A earum laborum nam non laudantium perspiciatis nemo, ab cupiditate officia harum sit eaque minima neque quos repellendus accusantium, soluta odit? Ab aspernatur, cum temporibus molestiae laudantium reiciendis officia error!
-                            </p>
-                        </div>
-                    </div>
-                </div>
+              
 
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-3">
                         <div class="card_header">
-                            <span class="float-right">
-                                <button class="btn btn-primary btn-sm">
-                                    <i class="fas fa-store-alt"></i>
-                                    Thêm sản phẩm
-                                </button>
-                            </span>
+                            
                             <h3>
                                 <i class="fas fa-cube"></i>
-                                Danh sách sản phẩm
+                                Danh sách đơn hàng
                             </h3>
                         </div>
                         <div class="card_body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Tên sản phẩm</th>
-                                        <th scope="col">Số lượng</th>
-                                        <th scope="col">Ảnh</th>
-                                        <th scope="col">Tất cả ảnh</th>
-                                        <th scope="col">Giá</th>
-                                        <th scope="col">Giảm giá</th>
-                                        <th scope="col">Chi tiết</th>
-                                        <th scope="col">Mô tả</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                        <td>Otto</td>
-                                        <td>aaaa</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="col-md-12" style="width: 100%">
+                                    <div id="gridList"></div>
+                                    
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,3 +79,183 @@
     <!-- END content -->
 
 </div>
+<script>
+    $(document).ready(function () {
+      
+        loadGrid();
+    });
+    function loadGrid(jsonData) {
+
+        var transportStore = new DevExpress.data.CustomStore({
+            key: ["ID", "Name_order", "Type_ship", "Address",
+                "Email", "Phone", "Note", "ToTal_Money", "ID_User", "CreatedDate", "Status"],
+            load: function () {
+                return sendRequest("Index/GetlstOrder", "GET", "")
+            },
+            insert: function (values) {
+
+                return sendRequest("Order/InsertlstOrder", "POST", JSON.stringify(values));
+            },
+            update: function (key, values) {
+
+                return sendRequest("Order/UpdatelstOrder?value=" + JSON.stringify(values), "POST", JSON.stringify(key));
+            },
+            //remove: function (key) {
+            //    return sendRequest("Category/DeletelstCategory?id=" + key, "DELETE", "");
+            //}
+        });
+
+        //Pref: https://js.devexpress.com/Documentation/Guide/UI_Components/DataGrid/Editing/
+
+        //Load grid
+        $("#gridList").dxDataGrid({
+            //dataSource: jsonData,
+            dataSource: transportStore,
+            scrolling: {
+                useNative: true,
+                columnRenderingMode: 'virtual'
+            },
+            repaintChangesOnly: true,
+            showColumnLines: true,
+            showRowLines: true,
+            allowColumnReordering: true,
+            allowColumnResizing: true,
+            columnAutoWidth: true,
+            showBorders: true,
+            width: "auto",
+            columnResizingMode: 'widget',
+            columnsAutoWidth: true,
+            hoverStateEnabled: true,
+            paging: {
+                pageSize: 20
+            },
+            pager: {
+                visible: true,
+
+                showPageSizeSelector: false,
+                showInfo: false,
+                showNavigationButtons: false
+            },
+            filterRow: {
+                visible: true,
+                applyFilter: "auto"
+            },
+           
+            onToolbarPreparing: function (e) {
+                e.toolbarOptions.visible = false;
+            },
+            onInitialized: function (e) {
+                dataGrid = e.component;
+            },
+            headerFilter: {
+                visible: true
+            },
+            columnFixing: {
+                enabled: true
+            },
+            columnChooser: {
+                enabled: true,
+                mode: "select"
+            },
+            onContextMenuPreparing: function (e) {
+                if (e.target == "header") {
+                    if (!e.items) e.items = [];
+
+                    //custom menu item in header
+                    e.items.push({
+                        text: "Hide",
+                        onItemClick: function () {
+                            $("#gridList").dxDataGrid("columnOption", e.column.name, "visible", false);
+                        }
+                    });
+
+                    e.items.push({
+                        text: "Unhide",
+                        onItemClick: function () {
+                            $("#gridList").dxDataGrid("instance").showColumnChooser()
+                        }
+                    });
+                }
+            },
+
+            //Data type: Accepted Values: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime'
+            columns: [
+                {
+                    dataField: "Name_order",
+                    dataType: "string",
+                    alignment: "left",
+                    caption: "Tên đơn hàng",
+                },
+                {
+                    dataField: "Type_ship",
+                    dataType: "string",
+                    alignment: "left",
+                    caption: "Phương thức giao hàng",
+                },              
+                {
+                    dataField: "ToTal_Money",
+                    dataType: "number",
+                    alignment: "left",
+                    caption: "Tông tiền",
+                },
+                {
+                    dataField: "CreatedDate",
+                    dataType: "date",
+                    alignment: "left",
+                    format: "dd/MM/yyyy",
+                    caption: "Ngày đặt",
+                },
+
+
+                {
+                    dataField: "Status",
+                    dataType: "boolean",
+                    caption: "Trạng thái",
+                    alignment: "center",
+                },
+
+            ],
+
+
+        }).dxDataGrid("instance");
+    };
+
+    function sendRequest(url, method, data) {
+        var d = $.Deferred();
+        $.ajax({
+            type: method,
+            url: url,
+            data: data,
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (res) {
+                d.resolve(res);
+            },
+
+        });
+
+        return d.promise().done(function (result) {
+            if (result.IsSuccess == 1) {
+                if (result.Data.Status == 1) {
+
+                    DevExpress.ui.notify(result.Data.Message, "success", 3000);
+                }
+                else {
+                    DevExpress.ui.notify("Fail: " + result.Data.Message, "error", 3000);
+
+                }
+            }
+            if (result.Status == 1) {
+                DevExpress.ui.notify(result.Message, "success", 3000);
+            }
+            else if (result.Status == -1) {
+                DevExpress.ui.notify("Fail: " + result.Message, "error", 3000);
+            }
+
+
+
+        });
+    };
+</script>
