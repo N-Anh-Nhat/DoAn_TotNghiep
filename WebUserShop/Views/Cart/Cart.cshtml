@@ -80,12 +80,12 @@
                                             @dem
                                         </td>
                                         <td class="thumbnail-img">
-                                            <a href="#">
+                                            <a>
                                                 <img class="img-fluid" src="~/images/img-pro-01.jpg" alt="" />
                                             </a>
                                         </td>
                                         <td class="name-pr">
-                                            <a href="#">
+                                            <a>
                                                 @data.Name
                                             </a>
                                         </td>
@@ -142,11 +142,11 @@
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Phone">Số điện thoại</label>
-                                    <input id="Phone" class="form-control" placeholder="Nhập số điện thoại" aria-label="Coupon code" type="number">
+                                    <input id="Phone" class="form-control"  placeholder="Nhập số điện thoại" aria-label="Coupon code" type="number">
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Email">Gmail</label>
-                                    <input id="Email" class="form-control" placeholder="Nhập email" aria-label="Coupon code" type="email">
+                                    <input id="Email" class="form-control"  placeholder="Nhập email" aria-label="Coupon code" type="email">
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Note">Ghi chú (Tên người nhận, lưu ý,...)</label>
@@ -218,13 +218,34 @@
                     </div>
                 </div>
                 <div class="col-12 d-flex shopping-box">
-                    <button class="ml-auto btn hvr-hover" onclick="DatHang(@countlist)" type="button">Đặt hàng</button>
+                    @if (Context.Session.GetString("user1") != null)
+                    {
+                        <button class="ml-auto btn hvr-hover" onclick="DatHang(@countlist)" type="button">Đặt hàng</button>
+                    }
+                    else
+                    {
+                        <button class="ml-auto btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đặt hàng</button>
+                    }
+
                 </div>
             </div>
 
         </div>
+                }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="no-cart">
+                        <i class="far fa-frown fa-4x"></i>
+                        <p class="messages-no-cart">Oppos! Bạn đang không có sản phẩm nào trong giỏ hàng</p>
+                        <a class="btn btn-buy" asp-controller="TheWayShop" asp-action="Product">Bấm vào đây để mua hàng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
-
 </div>
 <!-- End Cart -->
 <script>

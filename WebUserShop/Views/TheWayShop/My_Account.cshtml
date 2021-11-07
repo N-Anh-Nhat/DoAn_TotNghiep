@@ -1,6 +1,7 @@
-﻿  <!-- Start All Title Box -->
+﻿@model WebAPI.Models.User
+  <!-- Start All Title Box -->
 @{ 
-    var infoUser = (List<User>)ViewBag.infoUser;
+    
 }
 <div class="all-title-box">
     <div class="container">
@@ -30,64 +31,117 @@
                             <h3><i class="far fa-user"></i> Chi tiết cá nhân</h3>
                         </div>
                         <div class="card-body">
-                            @foreach (var item in infoUser)
-                            {
-                                <form id="EditUser" >
 
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Last name</label>
-                                                <input class="form-control" id="Last_NameUser" name="Last_NameUser" type="text" value="@item.Last_Name" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Frist name</label>
-                                                <input class="form-control" id="Frist_NameUser" name="Frist_NameUser" type="text" value="@item.Frist_Name" />
-                                            </div>
+                            <form id="EditUser">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Last name</label>
+                                            <input class="form-control" id="Last_NameUser" name="Last_NameUser" type="text" value="@Model.Last_Name" />
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Email</label>
-                                                <input class="form-control" type="email" id="EmailUser" readonly value="@item.Email" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Địa chỉ</label>
-                                                <input class="form-control" id="AddressUser" name="AddressUser" value="@item.Address" />
-                                            </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Frist name</label>
+                                            <input class="form-control" id="Frist_NameUser" name="Frist_NameUser" type="text" value="@Model.Frist_Name" />
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Số điện thoại</label>
-                                                <input class="form-control" readonly id="PhoneUser" value="@item.Phone" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Ngày tạo</label>
-                                                <input class="form-control" readonly value="@item.CreatedDate" />
-                                            </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input class="form-control" type="email" id="EmailUser" readonly value="@Model.Email" />
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <input type="hidden" id="id" value="@item.ID" />
-                                            <input type="hidden" id="tkUserdn" value="@item.UserName" />
-                                            <input type="hidden" id="tkPassdn" value="@item.Password" />
-                                            <input type="hidden" id="idroleUser" value="@item.ID_Role" />
-                                            <input type="submit" value="Sửa thông tin" class="btn btn-primary w-100" />
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Địa chỉ</label>
+                                            <input class="form-control" id="AddressUser" name="AddressUser" value="@Model.Address" />
                                         </div>
                                     </div>
-                                    
-                                </form>
-                            }
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Số điện thoại</label>
+                                            <input class="form-control" readonly id="PhoneUser" value="@Model.Phone" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Ngày tạo</label>
+                                            <input class="form-control" readonly value="@Model.CreatedDate" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Mật khẩu cũ</label>
+                                            <div class="btn Showrequires">
+                                                <i class="far fa-question-circle"></i>
+                                                <ul class="requiresInput">
+                                                    <li>Mật khẩu không được để trống</li>
+                                                    <li>Mật khẩu từ 8 đến 16 ký tự</li>
+                                                    <li>Mật khẩu gồm chữ hoa, chữ thường và ít nhất một chữ số</li>
+                                                </ul>
+                                            </div>
+                                            <input id="Password" name="Password" type="password" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Mật khẩu mới</label>
+                                            <div class="btn Showrequires">
+                                                <i class="far fa-question-circle"></i>
+                                                <ul class="requiresInput">
+                                                    <li>Mật khẩu không được để trống</li>
+                                                    <li>Mật khẩu từ 8 đến 16 ký tự</li>
+                                                    <li>Mật khẩu gồm chữ hoa, chữ thường và ít nhất một chữ số</li>
+                                                </ul>
+                                            </div>
+                                            <div class="icon_show_hide_pass">
+                                                <span class="input-text" onclick=" password_show_hide();">
+                                                    <i class="fas fa-eye" id="show_eye"></i>
+                                                    <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                                                </span>
+                                            </div>
+                                            <input id="NewPassword" name="NewPassword" type="password" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Nhập lại mật khẩu mới</label>
+                                            <div class="btn Showrequires">
+                                                <i class="far fa-question-circle"></i>
+                                                <ul class="requiresInput">
+                                                    <li>Mật khẩu không được để trống</li>
+                                                    <li>Mật khẩu phải khớp với nhau</li>
+                                                </ul>
+                                            </div>
+                                            <div class="icon_show_hide_pass">
+                                                <span class="input-text" onclick="Repassword_show_hide();">
+                                                    <i class="fas fa-eye" id="Reshow_eye"></i>
+                                                    <i class="fas fa-eye-slash d-none" id="Rehide_eye"></i>
+                                                </span>
+                                            </div>
+                                            <input id="NewRePassword" name="NewRePassword" type="password" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <input type="hidden" id="id" value="@Model.ID" />
+                                        <input type="hidden" id="tkUserdn" value="@Model.UserName" />
+                                        <input type="hidden" id="idroleUser" value="@Model.ID_Role" />
+                                        <input type="submit" value="Sửa thông tin" class="btn btn-primary w-100" />
+                                    </div>
+                                </div>
+
+                            </form>
+                       
                             </div>
                         <!-- end card-body -->
 
@@ -134,3 +188,36 @@
 </div>
 <!-- END content-page -->
 <!-- End My Account -->
+<script>
+    function password_show_hide() {
+        var pass = document.getElementById("NewPassword");
+        var show_eye = document.getElementById("show_eye");
+        var hide_eye = document.getElementById("hide_eye");
+        hide_eye.classList.remove("d-none");
+        if (pass.type === "password") {
+            pass.type = "text";
+            show_eye.style.display = "none";
+            hide_eye.style.display = "block";
+        } else {
+            pass.type = "password";
+            show_eye.style.display = "block";
+            hide_eye.style.display = "none";
+        }
+    }
+    function Repassword_show_hide() {
+        var pass = document.getElementById("NewRePassword");
+        var show_eye = document.getElementById("Reshow_eye");
+        var hide_eye = document.getElementById("Rehide_eye");
+        hide_eye.classList.remove("d-none");
+        if (pass.type === "password") {
+            pass.type = "text";
+            show_eye.style.display = "none";
+            hide_eye.style.display = "block";
+        } else {
+            pass.type = "password";
+            show_eye.style.display = "block";
+            hide_eye.style.display = "none";
+        }
+    }
+
+</script>

@@ -28,13 +28,19 @@
                         </a>
                         <ul class="dropdown-menu-avatar">
                             <li class="custom-li-avatar">
-                                <a asp-controller="TheWayShop" asp-action="Cart">GIỎ HÀNG</a>
+                                <a asp-controller="Cart" asp-action="Cart">GIỎ HÀNG</a>
+                            </li>
+                            <li class="custom-li-avatar">
+                                <a asp-controller="User" asp-action="ĐonHang">ĐƠN HÀNG</a>
                             </li>
                             <li class="custom-li-avatar">
                                 <a asp-controller="TheWayShop" asp-action="My_Account">TÀI KHOẢN</a>
                             </li>
                             <li class="custom-li-avatar">
                                 <a asp-controller="TheWayShop" asp-action="Wish_List">YÊU THÍCH</a>
+                            </li>
+                            <li class="custom-li-avatar">
+                                <a asp-controller="User" asp-action="DoiMatKhau">ĐỔI MẬT KHẨU</a>
                             </li>
                             <li class="custom-li-avatar">
                                 <a asp-controller="User" asp-action="Logout">ĐĂNG XUẤT</a>
@@ -97,7 +103,7 @@
                 <ul>
                     <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
                     <li class="side-menu">
-                        <a href="@Url.Action("Index","Cart")">
+                        <a href="@Url.Action("Cart","Cart")">
                             <i class="fa fa-shopping-bag"></i>
                             @if(HttpContextAccessor.HttpContext.Session.GetString("Cart_Key") != null)
                             {

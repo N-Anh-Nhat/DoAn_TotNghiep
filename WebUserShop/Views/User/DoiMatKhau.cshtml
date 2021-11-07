@@ -1,0 +1,92 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form id="DoiMatKhau" method="post">
+                <div class="form-group">
+                    <label class="control-label">Mật khẩu cũ</label>
+                    <div class="btn Showrequires">
+                        <i class="far fa-question-circle"></i>
+                        <ul class="requiresInput">
+                            <li>Mật khẩu không được để trống</li>
+                            <li>Mật khẩu từ 8 đến 16 ký tự</li>
+                            <li>Mật khẩu gồm chữ hoa, chữ thường và ít nhất một chữ số</li>
+                        </ul>
+                    </div>
+                    <input id="Password" name="Password" type="password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Mật khẩu mới</label>
+                    <div class="btn Showrequires">
+                        <i class="far fa-question-circle"></i>
+                        <ul class="requiresInput">
+                            <li>Mật khẩu không được để trống</li>
+                            <li>Mật khẩu từ 8 đến 16 ký tự</li>
+                            <li>Mật khẩu gồm chữ hoa, chữ thường và ít nhất một chữ số</li>
+                        </ul>
+                    </div>
+                    <div class="icon_show_hide_pass">
+                        <span class="input-text" onclick=" password_show_hide();">
+                            <i class="fas fa-eye" id="show_eye"></i>
+                            <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                        </span>
+                    </div>
+                    <input id="NewPassword" name="NewPassword" type="password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Nhập lại mật khẩu mới</label>
+                    <div class="btn Showrequires">
+                        <i class="far fa-question-circle"></i>
+                        <ul class="requiresInput">
+                            <li>Mật khẩu không được để trống</li>
+                            <li>Mật khẩu phải khớp với nhau</li>
+                        </ul>
+                    </div>
+                    <div class="icon_show_hide_pass">
+                        <span class="input-text" onclick="Repassword_show_hide();">
+                            <i class="fas fa-eye" id="Reshow_eye"></i>
+                            <i class="fas fa-eye-slash d-none" id="Rehide_eye"></i>
+                        </span>
+                    </div>
+                    <input id="NewRePassword" name="NewRePassword" type="password" class="form-control" />
+                </div>
+                <div class="form-group ">
+                    <input type="submit" value="Đổi mật kh" class="btn btn-primary w-100" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function password_show_hide() {
+        var pass = document.getElementById("NewPassword");
+        var show_eye = document.getElementById("show_eye");
+        var hide_eye = document.getElementById("hide_eye");
+        hide_eye.classList.remove("d-none");
+        if (pass.type === "password") {
+            pass.type = "text";
+            show_eye.style.display = "none";
+            hide_eye.style.display = "block";
+        } else {
+            pass.type = "password";
+            show_eye.style.display = "block";
+            hide_eye.style.display = "none";
+        }
+    }
+    function Repassword_show_hide() {
+        var pass = document.getElementById("NewRePassword");
+        var show_eye = document.getElementById("Reshow_eye");
+        var hide_eye = document.getElementById("Rehide_eye");
+        hide_eye.classList.remove("d-none");
+        if (pass.type === "password") {
+            pass.type = "text";
+            show_eye.style.display = "none";
+            hide_eye.style.display = "block";
+        } else {
+            pass.type = "password";
+            show_eye.style.display = "block";
+            hide_eye.style.display = "none";
+        }
+    }
+
+</script>

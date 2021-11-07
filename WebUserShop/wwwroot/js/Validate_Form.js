@@ -297,6 +297,28 @@
 					required: true,
 					minlength: 10
 				},
+				"Password": {
+					required: true,
+					//kiem tra pass co trung k
+					remote: {
+						url: "../../User/UniquePass",
+						type: "get",
+						data: {
+							Pass: function () {
+								return $("#Password").val();
+							}
+						}
+					}
+				},
+				"NewPassword": {
+					required: true,
+					validatePassword: true
+				},
+				"NewRePassword": {
+					required: true,
+					equalTo: "#NewPassword",
+
+				},
 			},
 			messages: {
 				"Last_NameUser": {
@@ -313,6 +335,17 @@
 					required: "Không được để trống Địa chỉ",
 					minlength: "Hãy nhập ít nhất 10 ký tự"
 				},
+				"Password": {
+					required: "Không được để trống Họ",
+					remote: "Mật khẩu sai"
+				},
+				"NewPassword": {
+					required: "Không được để trống Mật khẩu",
+				},
+				"NewRePassword": {
+					required: "Không được để trống Mật khẩu",
+					equalTo: "Mật khẩu không khớp"
+				},
 			},
 			submitHandler: function () {
 				var hoUser = $('#Last_NameUser').val();
@@ -321,7 +354,7 @@
 				var emailUser = $('#EmailUser').val();
 				var taikhoanUser = $('#tkUserdn').val();
 				var sdtUser = $('#PhoneUser').val();
-				var matkhauUser = $('#tkPassdn').val();
+				var matkhauUser = $('#NewPassword').val();
 				var idRole = $('#idroleUser').val();
 				var idUSer = $('#id').val();
 				var data = {
@@ -347,8 +380,8 @@
 					"data": JSON.stringify(data),
 					success: function (res) {
 						if (res == true) {
-							alert("Sửa thông tin thành công");
-							window.location.reload();
+							alert("Sửa thông tin thành công,Vui lòng đăng nhập lại");
+							window.location.assign("https://localhost:44369");
 						}
 					}
 				});
@@ -356,5 +389,6 @@
 			}
 		});
 	});
+
 
 }(jQuery));
