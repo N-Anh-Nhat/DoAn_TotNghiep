@@ -1,0 +1,108 @@
+﻿@{ 
+    var listorderOfUser = ViewBag.ListOrder;
+    var listChiTietOrder = ViewBag.listChiTietOrder;
+} 
+ <!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Wishlist</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a>Shop</a></li>
+                    <li class="breadcrumb-item active">Đơn hàng</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+<!-- Start Wishlist  -->
+<div class="wishlist-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-main table-responsive">
+                    <h3><p style="margin: 20px 0;">Đơn hàng</p></h3>
+                    <table class="table">
+                        <thead class="thead-ligh">
+                            <tr>
+                                <th scope="col">Mã đơn hàng</th>
+                                <th scope="col">Tên đơn hàng</th>
+                                <th scope="col">Giao hàng</th>
+                                <th scope="col">Địa chỉ</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Tổng tiền</th>
+                                <th scope="col">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in ViewBag.ListOrder)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.ID
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.Name_order
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.Type_ship
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.Address
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.Email
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.Note
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.Phone
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @item.ToTal_Money
+                                        </p>
+                                    </td>
+                                    <td class="name-pr">
+                                        <p>
+                                            @if (@item.Status == true)
+                                            {
+                                            <p>ADMIN đã duyệt</p>
+                                        }
+                                            @if (@item.Status == false)
+                                            {
+                                                <p>Đang chờ duyệt</p>
+                                            }
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                    </table>
+                    <p>Chi tiết đơn hàng</p>
+                    @ViewBag.listChiTietOrder.MADN
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Wishlist -->

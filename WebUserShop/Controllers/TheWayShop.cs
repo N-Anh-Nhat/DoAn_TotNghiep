@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
+using LIB.Base;
 
 namespace WebUserShop.Controllers
 {
@@ -64,21 +65,21 @@ namespace WebUserShop.Controllers
                 string a = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(a);
                 ViewBag.infoUser = user;
-                return View();
+                return View(user);
             }
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
         [HttpPost]
         public async Task<IActionResult> EditAccount([FromBody] User user)
         {
             user.ModifiedDate = DateTime.Now;
+            user.Password = Security.TextToMD5(user.Password);
             var editUser = await ApiClientFactory.Instance.UpdateUser(user, "", "");
-
-
-           
-
-
-
+            HttpContext.Session.Remove("user1");
+            HttpContext.Session.Remove("userHello");
             return Json(true);
         }
         public async Task<IActionResult> NEWS()
@@ -89,9 +90,17 @@ namespace WebUserShop.Controllers
             ViewBag.ListNews = listnews.Where(s => s.Status == true).ToList();
             return View();
         }
-        public IActionResult News_Detail()
+        public async Task<IActionResult> News_Detail(int? id, int? cate)
         {
-            return View();
+            if (id==null)
+            {
+                return NotFound();
+            }
+            var listNew = await ApiClientFactory.Instance.GetNews("");
+            var newDetail = listNew.FirstOrDefault(s => s.ID == id && s.Status==true);
+            var NewOfCategory = listNew.Where(s => s.ID_Catelogy == cate && !(s.ID == id));
+            ViewBag.NewOfCategory = NewOfCategory.Where(s => s.Status == true).ToList();
+            return View(newDetail);
         }
         public async Task<IActionResult> Product(string txtSearch,int? categoryID, int? page, string sort)
         {

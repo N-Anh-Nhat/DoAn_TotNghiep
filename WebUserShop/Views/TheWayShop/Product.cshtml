@@ -118,10 +118,10 @@
                                             decimal GiaSpDaSale = item.Price - giaSale;
                                             String ConvGiaSpDaSale = String.Format("{0:#,#.##}", GiaSpDaSale);
                                             String ConvPrivcie = String.Format("{0:#,#.##}", item.Price);
+                                            var linkimg = "https://localhost:44363/" + item.Image;
                                             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
                                                 <div class="products-single fix">
                                                     <div class="box-img-hover">
-
                                                         @if (item.PromotionPrice > 0)
                                                         {
                                                             <div class="type-lb">
@@ -134,20 +134,20 @@
                                                                 <p class="sale">Mới ra mắt</p>
                                                             </div>
                                                         }
-                                                        <img src="~/images/img-pro-01.jpg" class="img-fluid" alt="Image">
+                                                        <img src="@linkimg" class="img-fluid" alt="Image" style="height:283px;">
                                                         <div class="mask-icon">
                                                             <ul>
-                                                                <li><a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                                                <li><a href="#" title="Yêu thích"><i class="far fa-heart"></i></a></li>
                                                             </ul>
-                                                            <a class="cart"  >Thêm vào giỏ hàng</a>
                                                         </div>
                                                     </div>
-                                                    <div class="why-text">
-                                                        <h4>@item.Name</h4>
-                                                        <h5>@ConvGiaSpDaSale</h5>
-                                                        <h6>@ConvPrivcie</h6>
-                                                    </div>
+                                                    <a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy">
+                                                        <div class="why-text">
+                                                            <h4>@item.Name</h4>
+                                                            <h5>@ConvGiaSpDaSale</h5>
+                                                            <h6>@ConvPrivcie</h6>
+                                                        </div>
+                                                    </a>
                                                 </div>
                                             </div>
                                         }

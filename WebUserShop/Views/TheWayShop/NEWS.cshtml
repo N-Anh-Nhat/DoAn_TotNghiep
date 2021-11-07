@@ -27,16 +27,17 @@
             
             @foreach (var item in ListNews)
             {
+                var linkimg = "https://localhost:44363/" + item.Image;
                 <div class=" container news_list">
                     <div class="row">
                         <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 picture_option">
                             <p class="Picture_new">
-                                <a asp-controller="TheWayShop" asp-action="News_Detail" asp-route-id="@item.ID"><img class="img_news" src="~/images/about-img.jpg" alt=""></a>
+                                <a asp-controller="TheWayShop" asp-action="News_Detail" asp-route-id="@item.ID"  asp-route-cate="@item.ID_Catelogy"><img class="img_news" src="@linkimg" alt=""></a>
                             </p>
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
                             <div class="title_content_news">
-                                <a asp-controller="TheWayShop" asp-action="News_Detail" asp-route-id="@item.ID"> <h3>@item.Name</h3></a>
+                                <a asp-controller="TheWayShop" asp-action="News_Detail" asp-route-id="@item.ID" asp-route-cate="@item.ID_Catelogy"> <h3>@item.Name</h3></a>
                             </div>
                             <div class="datetime_news">
                                 <span class="datetime">@item.CreatedDate</span>

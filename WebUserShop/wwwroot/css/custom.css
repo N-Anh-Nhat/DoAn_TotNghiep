@@ -407,3 +407,22 @@ section .datetime_news
     background-color: #eee;
     color: black;
 }
+.no-cart {
+    text-align: center;
+    margin-top: 50px;
+}
+.fa-4x {
+    font-size: 4em;
+    margin-bottom: 30px;
+}
+.messages-no-cart {
+    font-size: 22px;
+    font-weight: 300;
+}
+.btn-buy {
+    color: #e11b1e;
+    border: solid 1px #eee;
+    font-size: 14px;
+    margin-top: 30px;
+    margin-top: 30px;
+}
