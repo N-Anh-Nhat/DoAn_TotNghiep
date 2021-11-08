@@ -8,12 +8,12 @@ namespace WebUserShop.ApiCaller
 {
     public partial class ApiClient
     {
-        public async Task<Order_Details> GetOrder_detailById(string Id, string token)
+        public async Task<IEnumerable<Order_Details>> GetOrder_detailById(int Id, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "Order_Detail/GetOrder_DetailById?Id=" + Id));
 
-            var x = await GetAsync<Order_Details>(requestUrl, token);
+            var x = await GetAsync<IEnumerable<Order_Details>>(requestUrl, token);
 
             return x;
         }

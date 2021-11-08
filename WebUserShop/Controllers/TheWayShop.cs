@@ -34,9 +34,24 @@ namespace WebUserShop.Controllers
             ApplicationSettings.WebApiUrl = app.Value.WebApiBaseUrl;
             userInfo = new UserInfo();
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var category = await ApiClientFactory.Instance.GetCategory("");
+            ViewBag.category = category.Where(s => s.Status == true).ToList();
+            var lnew = await ApiClientFactory.Instance.GetNews("");
+            ViewBag.lnew = lnew.Where(s => s.Status == true).OrderBy(s=>s.CreatedDate).Take(3).ToList();
+
+            //san phẩm sale nhiều
+            var product = await ApiClientFactory.Instance.GetProduct("");
+            ViewBag.productSaleNhieu = product.Where(s => s.Status == true).OrderByDescending(s=>s.PromotionPrice).Take(4).ToList();
+
+            //san phẩm sale nhiều
+            ViewBag.productHot = product.Where(s => s.Status == true).OrderByDescending(s => s.CreatedDate).Take(4).ToList();
+
+            //san phẩm hiếm nhất
+            ViewBag.productHiem = product.Where(s => s.Status == true).OrderBy(s => s.Total_Quality).Take(4).ToList();
             return View();
+
 
         }
         public IActionResult About()
@@ -131,7 +146,7 @@ namespace WebUserShop.Controllers
                          select m;
 
             //kích thước sản phẩm trong 1 trang
-            var pageSize = 3;
+            var pageSize = 6;
             var PageNumber = page ?? 1;
             ViewBag.Sort = sort;
             ViewBag.categoryID = categoryID;

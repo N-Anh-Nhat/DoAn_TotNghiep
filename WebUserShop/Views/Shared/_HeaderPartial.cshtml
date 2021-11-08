@@ -40,9 +40,6 @@
                                 <a asp-controller="TheWayShop" asp-action="Wish_List">YÊU THÍCH</a>
                             </li>
                             <li class="custom-li-avatar">
-                                <a asp-controller="User" asp-action="DoiMatKhau">ĐỔI MẬT KHẨU</a>
-                            </li>
-                            <li class="custom-li-avatar">
                                 <a asp-controller="User" asp-action="Logout">ĐĂNG XUẤT</a>
                             </li>
                         </ul>
@@ -101,7 +98,6 @@
 
             <div class="attr-nav">
                 <ul>
-                    <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
                     <li class="side-menu">
                         <a href="@Url.Action("Cart","Cart")">
                             <i class="fa fa-shopping-bag"></i>
@@ -111,8 +107,7 @@
                                 string jsoncart = session.GetString("Cart_Key");
                                 List<Order_Details> lst = JsonConvert.DeserializeObject<List<Order_Details>>(jsoncart);
                                 <span class="badge">@lst.Count</span>
-                            }
-                            
+                            } 
                         </a>
                     </li>
                 </ul>
@@ -127,16 +122,4 @@
 </header>
 <!-- End Main Top -->
 <!-- Start Top Search -->
-@if (true)
-{
 
-}
-<div class="top-search">
-    <div class="container">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input type="text" class="form-control" placeholder="Tìm kiếm...">
-            <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-        </div>
-    </div>
-</div>

@@ -1,0 +1,68 @@
+﻿<table class="table">
+    <thead class="thead-ligh">
+        <tr>          
+            <th>Ảnh sản phẩm</th>
+            <th>Tên sản phẩm</th>
+            <th>Giảm giá</th>
+            <th>Đơn giá</th>
+            <th>Kích cỡ</th>
+            <th>Số lượng</th>          
+        </tr>
+    </thead>
+    @foreach (var item in ViewBag.listorder)
+    {
+        
+        Product data = new Product();
+        foreach (var rs in ViewBag.Product)
+        {
+            if (rs.ID == item.ID_Product)
+            {
+                data = rs;
+                break;
+            }
+        }
+        ProductSize dataSize = new ProductSize();
+        foreach (var rsS in ViewBag.Size)
+        {
+            if (rsS.ID == item.ID_Size)
+            {
+                dataSize = rsS;
+                break;
+            }
+
+
+        }
+        var linkimg = "https://localhost:44363/" + data.Image;
+        <tbody>
+            <tr>
+                
+                <td class="thumbnail-img">
+                    <a>
+                        <img class="img-fluid" src="@linkimg" alt="" />
+                    </a>
+                </td>
+                <td class="name-pr">
+                    <a>
+                        @data.Name
+                    </a>
+                </td>
+                <td>
+                    <p>@item.PromotionPrice %</p>
+                </td>
+                <td>
+                    <p>@item.Price</p>
+                </td>
+                <td class="price-pr">
+                    <p>@dataSize.Size</p>
+                </td>
+                <td class="quantity-box">
+                    
+                    <p>@item.Quality</p>
+                </td>
+                              
+            </tr>
+
+        </tbody>
+        
+    }
+</table>

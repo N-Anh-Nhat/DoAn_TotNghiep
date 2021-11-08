@@ -336,7 +336,7 @@
 					minlength: "Hãy nhập ít nhất 10 ký tự"
 				},
 				"Password": {
-					required: "Không được để trống Họ",
+					required: "Không được để trống Mật khẩu",
 					remote: "Mật khẩu sai"
 				},
 				"NewPassword": {

@@ -36,12 +36,11 @@ namespace WebUserShop.Controllers
         }
         public async Task<IActionResult> Cart()
         {
-           
-                var rsPro = await ApiClientFactory.Instance.GetProduct("");
-                var rsSize = await ApiClientFactory.Instance.GetProductSize("");
-                ViewBag.Product = rsPro;
-                ViewBag.Size = rsSize;
-                return View();
+            var rsPro = await ApiClientFactory.Instance.GetProduct("");
+            var rsSize = await ApiClientFactory.Instance.GetProductSize("");
+            ViewBag.Product = rsPro;
+            ViewBag.Size = rsSize;
+            return View();
             
             
         }

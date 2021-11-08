@@ -75,13 +75,14 @@
                                     decimal SPrice = item.Price - TienSale;
                                     decimal Tong = item.Quality * SPrice;
                                     TongHD += Tong;
+                                    var linkimg = "https://localhost:44363/" + data.Image;
                                     <tr>
                                         <td>
                                             @dem
                                         </td>
                                         <td class="thumbnail-img">
                                             <a>
-                                                <img class="img-fluid" src="~/images/img-pro-01.jpg" alt="" />
+                                                <img class="img-fluid" src="@linkimg" alt="" />
                                             </a>
                                         </td>
                                         <td class="name-pr">
@@ -133,8 +134,9 @@
             <div class="row my-12">
                 <div class="col-lg-12 col-sm-12">
                     <div class="coupon-box">
-                        <div class="input-group input-group-sm">
-                            <h4>Thông tin giao hàng</h4>
+                        <div class="title-left">
+                            <h3>Thông tin giao hàng</h3>
+                        </div>
                             <div class="row">
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Address">Địa chỉ giao hàng</label>
@@ -142,20 +144,18 @@
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Phone">Số điện thoại</label>
-                                    <input id="Phone" class="form-control"  placeholder="Nhập số điện thoại" aria-label="Coupon code" type="number">
+                                    <input id="Phone" class="form-control" placeholder="Nhập số điện thoại" aria-label="Coupon code" type="number">
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Email">Gmail</label>
-                                    <input id="Email" class="form-control"  placeholder="Nhập email" aria-label="Coupon code" type="email">
+                                    <input id="Email" class="form-control" placeholder="Nhập email" aria-label="Coupon code" type="email">
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Note">Ghi chú (Tên người nhận, lưu ý,...)</label>
                                     <input id="Note" class="form-control" placeholder="Nhập ghi chú" aria-label="Coupon code" type="text">
                                 </div>
-                               
+
                             </div>
-                            
-                        </div>
                     </div>
                 </div>
                
@@ -388,7 +388,15 @@
         });
     }
     function DatHang(count) {
-        var SumHD = 0;
+        var valinputAddress = document.getElementById("Address").value;
+        var valinputPhone = document.getElementById("Phone").value;
+        var valinputEmail = document.getElementById("Email").value;
+        var valinputNote = document.getElementById("Note").value;
+        if (valinputAddress == "" || valinputPhone == "" || valinputEmail == "" || valinputNote == "") {
+            alert("Thông tin đơn hàng không được để trống");
+        }
+        else {
+            var SumHD = 0;
         for (var i = 1; i <= count; i++) {
 
             var NameIDTong = "TongGia1SP-" + i;
@@ -415,7 +423,6 @@
             }
 
         }
-
         var inputAddress = document.getElementById("Address").value;
         var inputPhone = document.getElementById("Phone").value;
         var inputEmail = document.getElementById("Email").value;
@@ -428,46 +435,47 @@
             Type_ship : TypeShip,
             ToTal_Money : SumHD
         }
-        $.ajax({
-            "async": false,
-            "crossDomain": true,
-            "url": "@Url.Action("InsertOrder", "Cart")",
-            "headers": {
-                "Content-Type": "application/json",
-                "cache-control": "no-cache"
-            },
-            "method": "POST",
-            "data": JSON.stringify(data),
+            $.ajax({
+                "async": false,
+                "crossDomain": true,
+                "url": "@Url.Action("InsertOrder", "Cart")",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache"
+                },
+                "method": "POST",
+                "data": JSON.stringify(data),
 
-        }).done(function (result) {
-            if (result.isSuccess == true) {
-               if (result.data.status == 1) {
-                    $.ajax({
-                        "async": false,
-                        "crossDomain": true,
-                        "url": "@Url.Action("InsertOrderDetail", "Cart")",
-                        "headers": {
-                            "Content-Type": "application/json",
-                            "cache-control": "no-cache"
-                        },
+            }).done(function (result) {
+                if (result.isSuccess == true) {
+                    if (result.data.status == 1) {
+                        $.ajax({
+                            "async": false,
+                            "crossDomain": true,
+                            "url": "@Url.Action("InsertOrderDetail", "Cart")",
+                            "headers": {
+                                "Content-Type": "application/json",
+                                "cache-control": "no-cache"
+                            },
                             "method": "POST",
-                            
 
-                    }).done(function (result) {
-                        if (result.isSuccess == 1) {
-                            if (result.data.status  == 1) {
-                                alert("Đặt hàng thành công");
-                                window.location.reload();
-                                    
+
+                        }).done(function (result) {
+                            if (result.isSuccess == 1) {
+                                if (result.data.status == 1) {
+                                    alert("Đặt hàng thành công");
+                                    window.location.reload();
+
+                                }
                             }
-                        }
 
-                    })
+                        })
 
-               }
-            }
+                    }
+                }
 
-        })
+            });
+        }
     }
 
 </script>

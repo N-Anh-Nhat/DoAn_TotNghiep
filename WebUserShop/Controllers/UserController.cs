@@ -35,6 +35,24 @@ namespace WebUserShop.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> ChiTietDonHang(int id)
+        {
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                var rsPro = await ApiClientFactory.Instance.GetProduct("");
+                var rsSize = await ApiClientFactory.Instance.GetProductSize("");
+                ViewBag.Product = rsPro;
+                ViewBag.Size = rsSize;
+                var res = await ApiClientFactory.Instance.GetOrder_detailById(id,"");
+                ViewBag.listorder = res;
+                return PartialView();
+            }
+            else
+            {
+                 return NotFound();
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] User user)
         {
@@ -71,14 +89,6 @@ namespace WebUserShop.Controllers
                 return Json(x);
             }
             
-        }
-        public IActionResult DoiMatKhau()
-        {
-            if (HttpContext.Session.GetString("user1") != null)
-            {
-                return View();
-            }
-            return NotFound();
         }
         [HttpGet]
         public IActionResult Logout()
@@ -143,30 +153,8 @@ namespace WebUserShop.Controllers
                 var user = JsonConvert.DeserializeObject<User>(b);
 
                 var res = await ApiClientFactory.Instance.GetOrder("");
-                var chitietdonhang = await ApiClientFactory.Instance.GetOrder_Detail("");
-                var size= await ApiClientFactory.Instance.GetProductSize("");
-                var sp = await ApiClientFactory.Instance.GetProduct("");
-                var nd = await ApiClientFactory.Instance.GetUser("");
-                var listChiTietOrder = from chitietorder in chitietdonhang
-                                       from donhang in res
-                                       from kichco in size
-                                       from sanpham in sp
-                                       from userdonhang in nd
-                                       where chitietorder.ID_Order == donhang.ID
-                                       where chitietorder.ID_Product == sanpham.ID
-                                       where kichco.ID == chitietorder.ID_Size
-                                       where donhang.ID_User==userdonhang.ID
-                                       where userdonhang.ID==user.ID
-                                       select new
-                                       {
-                                           MADN = donhang.ID,
-                                           TenSP = sanpham.Name,
-                                           KichCosp = kichco.Size,
-                                           DonGia = sanpham.Price,
-                                           Soluong = chitietorder.Quality,
+                
 
-                                       };
-                ViewBag.listChiTietOrder = listChiTietOrder;
 
                 //danh sách đơn hàng
                 var ListOrder= res.Where(s => s.ID_User == user.ID).ToList();
