@@ -8,7 +8,7 @@
        
         <div class="container-fluid">
             <div class="row content-box">
-                <h5>LOẠI SẢN PHẨM</h5>
+                <h5>Loại sản phẩm</h5>
             </div>
                 
             <div class="row content-box">
@@ -18,8 +18,7 @@
                 <div class="col-md-8 button_nav_record">
                     <div id="btnAdd" class="btnAdd"></div>
 
-                    <div id="btnSave" class="btnSave"></div>
-                    <div id="btnLoadData" class="btnLoadData"></div>
+                    
                     <div id="popup"></div>
                 </div>
             </div>
@@ -65,24 +64,7 @@
             }
         });
 
-        $("#btnSave").dxButton({
-            text: " Lưu ",
-            icon: "save",
-            onClick: function () {
-                //Save action
-                $("#gridList").dxDataGrid("instance").saveEditData();
-            }
-        });
-
-
-        $("#btnLoadData").dxButton({
-            text: "Nạp dữ liệu",
-            icon: "refresh",
-            onClick: function () {
-                //loadData();
-                loadGrid();
-            }
-        });
+       
 
     });
 
@@ -243,23 +225,30 @@
             //dataSource: jsonData,
             dataSource: transportStore,
 
-            showColumnLines: true,
-            showRowLines: true,
-            showBorders: true,
-
-            paging: {
-                pageSize: 5
-            },
-            pager: {
-                visible: true,
-                allowedPageSizes: ['ALL'],
-                showPageSizeSelector: false,
-                showInfo: false,
-                showNavigationButtons: false
-            },
             scrolling: {
                 useNative: true,
                 columnRenderingMode: 'virtual'
+            },
+            repaintChangesOnly: true,
+            showColumnLines: true,
+            showRowLines: true,
+            allowColumnReordering: true,
+            allowColumnResizing: true,
+            columnAutoWidth: true,
+            showBorders: true,
+            width: "auto",
+            columnResizingMode: 'widget',
+            columnsAutoWidth: true,
+            hoverStateEnabled: true,
+            paging: {
+                pageSize: 20
+            },
+            pager: {
+                visible: true,
+
+                showPageSizeSelector: false,
+                showInfo: false,
+                showNavigationButtons: false
             },
             filterRow: {
                 visible: true,
@@ -406,12 +395,7 @@
                             }).dxPopup("instance");
                             popup.show();
                         }
-                    },
-                        {
-                            hint: "delete",
-                            icon: "trash",
-
-                        }]
+                    }]
                 },
 
                 {

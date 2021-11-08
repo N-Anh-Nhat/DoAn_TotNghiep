@@ -30,54 +30,66 @@ namespace WebAdminShop.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            string json = userInfo.GetUserInfo(HttpContext);
+
+            if (json != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetlstUser()
         {
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            var res = await ApiClientFactory.Instance.GetUser("");
-            
-            return Json(res);
+            if (json != null)
+            {
+                var res = await ApiClientFactory.Instance.GetUser("");
+
+                return Json(res);
+            }
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpPost]
         public async Task<IActionResult> InsertlstUser([FromBody] User data)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
+            string json = userInfo.GetUserInfo(HttpContext);
 
-            //if (json != null)
-            //{
-            //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+            if (json != null)
+            {
+                //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
-            //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+                //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-            var res = await ApiClientFactory.Instance.InsertUser(data, "", "");
+                var res = await ApiClientFactory.Instance.InsertUser(data, "", "");
 
-            return Json(res);
-            ////}
-            //return null;
+                return Json(res);
+
+            }
+
+            return RedirectToAction("Index", "Login");
         }
-
         [HttpPost]
         public async Task<IActionResult> UpdatelstUser([FromBody] User data, [FromQuery] string value)
         {
-            //string json = userInfo.GetUserInfo(HttpContext);
+            string json = userInfo.GetUserInfo(HttpContext);
             JsonConvert.PopulateObject(value, data);
-            //if (json != null)
-            //{
-            //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
+            if (json != null)
+            {
+                //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
-            //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
+                //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-            var res = await ApiClientFactory.Instance.UpdateUser(data, "", "");
+                var res = await ApiClientFactory.Instance.UpdateUser(data, "", "");
 
-            return Json(res);
+                return Json(res);
 
-            //}
-            //return null;
+            }
+            return RedirectToAction("Index", "Login");
         }
         //[HttpDelete]
         //public async Task<IActionResult> DeletelstUser(string id)

@@ -34,11 +34,18 @@ namespace WebAdminShop.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var res = await ApiClientFactory.Instance.GetCategory("");
-            ViewBag.listCategory = res;
-            var Pro = await ApiClientFactory.Instance.GetProduct("");
-            ViewBag.listProduct = Pro;
-            return View();
+            string json = userInfo.GetUserInfo(HttpContext);
+
+            if (json != null)
+            {
+
+                var res = await ApiClientFactory.Instance.GetCategory("");
+                ViewBag.listCategory = res;
+                var Pro = await ApiClientFactory.Instance.GetProduct("");
+                ViewBag.listProduct = Pro;
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
 
 
