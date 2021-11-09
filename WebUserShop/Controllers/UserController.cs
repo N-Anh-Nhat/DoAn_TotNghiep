@@ -45,7 +45,7 @@ namespace WebUserShop.Controllers
                 ViewBag.Product = rsPro;
                 ViewBag.Size = rsSize;
                 var res = await ApiClientFactory.Instance.GetOrder_detailById(id,"");
-                ViewBag.listorder = res;
+                ViewBag.listorder = res;    
                 return PartialView();
             }
             else
@@ -166,6 +166,45 @@ namespace WebUserShop.Controllers
                 return NotFound();
             }
             
+        }
+        [HttpPost]
+        public async Task<IActionResult> InsertWishList([FromBody] WishList data)
+        {
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                string a = HttpContext.Session.GetString("user1");
+                var user = JsonConvert.DeserializeObject<User>(a);
+                var wl = await ApiClientFactory.Instance.GetWishList("");
+                var listSpWishList = wl.Where(s => s.ID_User == user.ID).ToList();
+                foreach (var item in listSpWishList)
+                {
+                    if (item.ID_Product==data.ID_Product)
+                    {
+                        return Json(false);
+                    }
+                }
+                data.ID_User = user.ID;
+                var res = await ApiClientFactory.Instance.InsertWishList(data, user.UserName, "");
+                return Json(true);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteWishList([FromBody] WishList data)
+        {
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                var wl = await ApiClientFactory.Instance.DeleteWishList(data,"","");
+                return Json(true);
+            }
+            else
+            {
+                return NotFound();
+            }
+
         }
     }
 }
