@@ -1,12 +1,13 @@
 ﻿   <!-- Start All Title Box -->
 @using X.PagedList.Mvc.Core;
 @using X.PagedList;
-
+@using Microsoft.AspNetCore.Http
 @{
     var listSP = (X.PagedList.IPagedList<WebAPI.Models.Product>)ViewBag.posts;
     // listCategory = (List<WebAPI.Models.Category>)ViewBag.totalSPCate;
     var totalspCa = ViewBag.totalSPCate;
-    var listLSP = (IEnumerable<WebAPI.Models.Category>)ViewBag.ListCategory; 
+    var listLSP = (IEnumerable<WebAPI.Models.Category>)ViewBag.ListCategory;
+    var a = (List<WebAPI.Models.WishList>)ViewBag.listWishList;
 
 }
 <div class="all-title-box">
@@ -52,7 +53,7 @@
                                         {
                                             <li>
                                                 <div class="radio radio-danger">
-                                                    <input name="categoryID" value="@item.ID" type="radio" @(ViewBag.categoryID== @item.ID? "checked" : "")>
+                                                    <input name="categoryID" value="@item.ID" type="radio" @(ViewBag.categoryID == @item.ID ? "checked" : "")>
                                                     <label for="Radios1"> @item.Name </label>
                                                 </div>
                                             </li>
@@ -68,25 +69,25 @@
                                     <ul>
                                         <li>
                                             <div class="radio radio-danger">
-                                                <input name="sort" value="PriceLowToHigh" type="radio" @(ViewBag.Sort=="PriceLowToHigh"? "checked" : "") >
+                                                <input name="sort" value="PriceLowToHigh" type="radio" @(ViewBag.Sort == "PriceLowToHigh" ? "checked" : "")>
                                                 <label for="Radios1"> Giá thấp đến cao </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="radio radio-danger">
-                                                <input name="sort" value="PriceHighToLow" type="radio" @(ViewBag.Sort=="PriceHighToLow"? "checked" : "")>
+                                                <input name="sort" value="PriceHighToLow" type="radio" @(ViewBag.Sort == "PriceHighToLow" ? "checked" : "")>
                                                 <label for="Radios2"> Giá cao đến thấp </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="radio radio-danger">
-                                                <input name="sort" value="CharA_Z" type="radio" @(ViewBag.Sort=="CharA_Z"? "checked" : "") >
+                                                <input name="sort" value="CharA_Z" type="radio" @(ViewBag.Sort == "CharA_Z" ? "checked" : "")>
                                                 <label for="Radios3"> Thứ tự chữ cái A-Z </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="radio radio-danger">
-                                                <input name="sort" value="CharZ_A" type="radio" @(ViewBag.Sort=="CharZ_A"? "checked" : "") >
+                                                <input name="sort" value="CharZ_A" type="radio" @(ViewBag.Sort == "CharZ_A" ? "checked" : "")>
                                                 <label for="Radios4"> Thứ tự chữ cái Z-A </label>
                                             </div>
                                         </li>
@@ -109,92 +110,125 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
                             <div class="row">
-                                    @if (listSP.Count() > 0)
+                                @if (listSP.Count() > 0)
+                                {
+                                    @foreach (var item in listSP)
                                     {
-                                        @foreach (var item in listSP)
-                                        {
-                                            TimeSpan time = DateTime.Now - item.CreatedDate;
-                                            decimal giaSale = item.Price * item.PromotionPrice / 100;
-                                            decimal GiaSpDaSale = item.Price - giaSale;
-                                            String ConvGiaSpDaSale = String.Format("{0:#,#.##}", GiaSpDaSale);
-                                            String ConvPrivcie = String.Format("{0:#,#.##}", item.Price);
-                                            var linkimg = "https://localhost:44363/" + item.Image;
-                                            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                                <div class="products-single fix">
-                                                    <div class="box-img-hover">
-                                                        @if (item.PromotionPrice > 0)
-                                                        {
-                                                            <div class="type-lb">
-                                                                <p class="sale">Giảm giá @item.PromotionPrice%</p>
-                                                            </div>
-                                                        }
-                                                        @if (time.Days < 7)
-                                                        {
-                                                            <div class="type-lb1">
-                                                                <p class="sale">Mới ra mắt</p>
-                                                            </div>
-                                                        }
-                                                        <img src="@linkimg" class="img-fluid" alt="Image" style="height:283px;">
-                                                        <div class="mask-icon">
-                                                            <ul>
-                                                                <li><a href="#" title="Yêu thích"><i class="far fa-heart"></i></a></li>
-                                                            </ul>
+                                        TimeSpan time = DateTime.Now - item.CreatedDate;
+                                        decimal giaSale = item.Price * item.PromotionPrice / 100;
+                                        decimal GiaSpDaSale = item.Price - giaSale;
+                                        String ConvGiaSpDaSale = String.Format("{0:#,#.##}", GiaSpDaSale);
+                                        String ConvPrivcie = String.Format("{0:#,#.##}", item.Price);
+                                        var linkimg = "https://localhost:44363/" + item.Image;
+                                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                            <div class="products-single fix">
+                                                <div class="box-img-hover">
+                                                    @if (item.PromotionPrice > 0)
+                                                    {
+                                                        <div class="type-lb">
+                                                            <p class="sale">Giảm giá @item.PromotionPrice%</p>
                                                         </div>
+                                                    }
+                                                    @if (time.Days < 7)
+                                                    {
+                                                        <div class="type-lb1">
+                                                            <p class="sale">Mới ra mắt</p>
+                                                        </div>
+                                                    }
+                                                    <img src="@linkimg" class="img-fluid" alt="Image" style="height:283px;">
+                                                    <div class="mask-icon">
+                                                        <ul>
+                                                            @if (Context.Session.GetString("user1") != null)
+                                                            {
+                                                                <li><a onclick="ProWishList(@item.ID)" title="Yêu thích"><i class="far fa-heart" title="Yêu thích"></i></a></li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+
+                                                            }
+
+                                                        </ul>
                                                     </div>
-                                                    <a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy">
-                                                        <div class="why-text">
-                                                            <h4>@item.Name</h4>
-                                                            <h5>@ConvGiaSpDaSale</h5>
-                                                            <h6>@ConvPrivcie</h6>
-                                                        </div>
-                                                    </a>
                                                 </div>
+                                                <a asp-controller="TheWayShop" asp-action="Product_detail" asp-route-id="@item.ID" asp-route-category="@item.ID_Catelogy">
+                                                    <div class="why-text">
+                                                        <h4>@item.Name</h4>
+                                                        <h5>@ConvGiaSpDaSale</h5>
+                                                        <h6>@ConvPrivcie</h6>
+                                                    </div>
+                                                </a>
                                             </div>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <div class="col-12">
-                                            <p>Rất tiếc, TheWayShop.com không tìm thấy kết quả nào phù hợp với từ khóa "@ViewBag.txtSearch"</p>
-                                        </div>
-                                        <div class="col-6 noSearchResult">
-                                            <h3>Để tìm được kết quả chính xác hơn, bạn vui lòng:</h3>
-                                            <ul>
-                                                <li>Kiểm tra lỗi chính tả của từ khóa đã nhập</li>
-                                                <li>Thử lại bằng từ khóa khác</li>
-                                                <li>Thử lại bằng những từ khóa tổng quát hơn</li>
-                                                <li>Thử lại bằng những từ khóa ngắn gọn hơn</li>
-                                            </ul>
-                                        </div>
-                                        <div class="container text-center m-auto col-6">
-                                            <i class="empty"></i>
-                                           
                                         </div>
                                     }
+                                }
+                                else
+                                {
+                                    <div class="col-12">
+                                        <p>Rất tiếc, TheWayShop.com không tìm thấy kết quả nào phù hợp với từ khóa "@ViewBag.txtSearch"</p>
+                                    </div>
+                                    <div class="col-6 noSearchResult">
+                                        <h3>Để tìm được kết quả chính xác hơn, bạn vui lòng:</h3>
+                                        <ul>
+                                            <li>Kiểm tra lỗi chính tả của từ khóa đã nhập</li>
+                                            <li>Thử lại bằng từ khóa khác</li>
+                                            <li>Thử lại bằng những từ khóa tổng quát hơn</li>
+                                            <li>Thử lại bằng những từ khóa ngắn gọn hơn</li>
+                                        </ul>
+                                    </div>
+                                    <div class="container text-center m-auto col-6">
+                                        <i class="empty"></i>
+
+                                    </div>
+                                }
 
                             </div>
                         </div>
                     </div>
                 </div>
                 @*phân trang*@
-            <div class="form-main">
-                Trang @(ViewBag.posts.PageCount < ViewBag.posts.PageNumber ? 0 : ViewBag.posts.PageNumber) / @ViewBag.posts.PageCount
-                <div class="card-footer">
-                    <nav aria-label="Page navigation example">
-                             @Html.PagedListPager((IPagedList)ViewBag.posts, page => Url.Action("Product", "TheWayShop", new { page, @txtSearch = @ViewBag.txtSearch, @categoryId = @ViewBag.categoryID,@sort= @ViewBag.Sort }))
-                    </nav>
+                <div class="form-main">
+                    Trang @(ViewBag.posts.PageCount < ViewBag.posts.PageNumber ? 0 : ViewBag.posts.PageNumber) / @ViewBag.posts.PageCount
+                    <div class="card-footer">
+                        <nav aria-label="Page navigation example">
+                            @Html.PagedListPager((IPagedList)ViewBag.posts, page => Url.Action("Product", "TheWayShop", new { page, @txtSearch = @ViewBag.txtSearch, @categoryId = @ViewBag.categoryID, @sort = @ViewBag.Sort }))
+                        </nav>
+                    </div>
+
+
                 </div>
-
-
             </div>
         </div>
     </div>
 </div>
-    </div>
 <!-- End Shop Page -->
 <script>
-    function myFunction(val) {
-        alert("The input value has changed. The new value is: " + val);
+    function ProWishList(ID)
+    {
+        var data =
+        {
+            ID_Product:ID
+        }
+        $.ajax({
+            "async": false,
+            "crossDomain": true,
+            "url": "../User/InsertWishList",
+            "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache"
+            },
+            "method": "POST",
+            "data": JSON.stringify(data),
+            success: function (res) {
+                if (res == true) {
+                    alert("Yêu thích sản phẩm thành công");
+                    window.location.reload();
+                }
+                if (res == false) {
+                    alert("Sản phẩm này đã yêu thích");
+                }
+            }
+        });
     }
-   
+
 </script>

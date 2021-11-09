@@ -193,9 +193,21 @@ namespace WebUserShop.Controllers
                 ViewBag.totalSpSearch = datasp.Count();              
                 ViewBag.posts = datasp.ToPagedList(PageNumber, pageSize);
             }
-            
 
 
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                //danh sach yêu thích
+                string b = HttpContext.Session.GetString("user1");
+                var user = JsonConvert.DeserializeObject<User>(b);
+
+                var wl = await ApiClientFactory.Instance.GetWishList("");
+                var sp = await ApiClientFactory.Instance.GetProduct("");
+                var listWishList = wl.Where(s => s.ID_User == user.ID).ToList();
+
+                ViewBag.listsp = sp;
+                ViewBag.listWishList = listWishList;
+            }
 
             return View();
         }
@@ -220,13 +232,27 @@ namespace WebUserShop.Controllers
             ViewBag.ProOfCategory = ProOfCategory.Where(s => s.Status == true).ToList();
             return View(proDetail);
         }
-        public IActionResult Wish_List()
+        public async Task<IActionResult> Wish_List()
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+                //danh sach yêu thích
+                string b = HttpContext.Session.GetString("user1");
+                var user = JsonConvert.DeserializeObject<User>(b);
+
+                var sp= await ApiClientFactory.Instance.GetProduct("");
+                var wl = await ApiClientFactory.Instance.GetWishList("");
+
+                var listWishList = wl.Where(s => s.ID_User == user.ID).ToList();
+
+                ViewBag.listWishList = listWishList;
+                ViewBag.dsSP = sp;
                 return View();
             }
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
         }
         public IActionResult Chinh_sach_doi_tra()
         {
