@@ -56,8 +56,8 @@ namespace WebAdminShop.Controllers
                 ViewData["CountDonChuaBan"] = DemDonChuaBan;
                 ViewData["CountDon"] = DemDonDaBan;
                 ViewData["DoanhThuThang"] = sum;
-                
-
+                var data = await ApiClientFactory.Instance.GetReportOrder(2021, "");
+                ViewBag.Report = data;
                 return View();
             }
             return RedirectToAction("Index", "Login");
@@ -77,6 +77,19 @@ namespace WebAdminShop.Controllers
                         data.Add(item);
                 }
                 return Json(data);
+            }
+            return RedirectToAction("Index", "Login");
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetReportOrder(int pYear)
+        {
+            string json = userInfo.GetUserInfo(HttpContext);
+
+            if (json != null)
+            {
+                var res = await ApiClientFactory.Instance.GetReportOrder(2021,"");
+                
+                return Json(res);
             }
             return RedirectToAction("Index", "Login");
         }

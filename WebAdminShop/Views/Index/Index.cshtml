@@ -57,13 +57,14 @@
                             
                             <h3>
                                 <i class="fas fa-cube"></i>
-                                Danh sách đơn hàng
+                                Thống kê số lượng sản phẩm đã bán
                             </h3>
                         </div>
                         <div class="card_body">
                             <div class="row">
                                 <div class="col-md-12" style="width: 100%">
-                                    <div id="gridList"></div>
+                                    <div id="pivotgrid-chart"></div>
+                                    <div id="pivotgrid"></div>
                                     
                                 </div>
 
@@ -80,182 +81,87 @@
 
 </div>
 <script>
+     var data =  @Html.Raw(Json.Serialize(ViewBag.Report));
+
     $(document).ready(function () {
-      
+
         loadGrid();
     });
-    function loadGrid(jsonData) {
+    function loadGrid() {
 
-        var transportStore = new DevExpress.data.CustomStore({
-            key: ["ID", "Name_order", "Type_ship", "Address",
-                "Email", "Phone", "Note", "ToTal_Money", "ID_User", "CreatedDate", "Status"],
-            load: function () {
-                return sendRequest("Index/GetlstOrder", "GET", "")
+        const pivotGridChart = $('#pivotgrid-chart').dxChart({
+            commonSeriesSettings: {
+                type: 'bar',
             },
-            insert: function (values) {
-
-                return sendRequest("Order/InsertlstOrder", "POST", JSON.stringify(values));
-            },
-            update: function (key, values) {
-
-                return sendRequest("Order/UpdatelstOrder?value=" + JSON.stringify(values), "POST", JSON.stringify(key));
-            },
-            //remove: function (key) {
-            //    return sendRequest("Category/DeletelstCategory?id=" + key, "DELETE", "");
-            //}
-        });
-
-        //Pref: https://js.devexpress.com/Documentation/Guide/UI_Components/DataGrid/Editing/
-
-        //Load grid
-        $("#gridList").dxDataGrid({
-            //dataSource: jsonData,
-            dataSource: transportStore,
-            scrolling: {
-                useNative: true,
-                columnRenderingMode: 'virtual'
-            },
-            repaintChangesOnly: true,
-            showColumnLines: true,
-            showRowLines: true,
-            allowColumnReordering: true,
-            allowColumnResizing: true,
-            columnAutoWidth: true,
-            showBorders: true,
-            width: "auto",
-            columnResizingMode: 'widget',
-            columnsAutoWidth: true,
-            hoverStateEnabled: true,
-            paging: {
-                pageSize: 20
-            },
-            pager: {
-                visible: true,
-
-                showPageSizeSelector: false,
-                showInfo: false,
-                showNavigationButtons: false
-            },
-            filterRow: {
-                visible: true,
-                applyFilter: "auto"
-            },
-           
-            onToolbarPreparing: function (e) {
-                e.toolbarOptions.visible = false;
-            },
-            onInitialized: function (e) {
-                dataGrid = e.component;
-            },
-            headerFilter: {
-                visible: true
-            },
-            columnFixing: {
-                enabled: true
-            },
-            columnChooser: {
+            tooltip: {
                 enabled: true,
-                mode: "select"
+                
+                customizeTooltip(args) {
+                    
+                    return {
+                        html: `${args.seriesName} | Total<div class='currency'>${args.valueText}</div>`,
+                    };
+                },
             },
-            onContextMenuPreparing: function (e) {
-                if (e.target == "header") {
-                    if (!e.items) e.items = [];
-
-                    //custom menu item in header
-                    e.items.push({
-                        text: "Hide",
-                        onItemClick: function () {
-                            $("#gridList").dxDataGrid("columnOption", e.column.name, "visible", false);
-                        }
-                    });
-
-                    e.items.push({
-                        text: "Unhide",
-                        onItemClick: function () {
-                            $("#gridList").dxDataGrid("instance").showColumnChooser()
-                        }
-                    });
-                }
+            size: {
+                height: 200,
             },
+            adaptiveLayout: {
+                width: 450,
+            },
+        }).dxChart('instance');
 
-            //Data type: Accepted Values: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime'
-            columns: [
-                {
-                    dataField: "Name_order",
-                    dataType: "string",
-                    alignment: "left",
-                    caption: "Tên đơn hàng",
-                },
-                {
-                    dataField: "Type_ship",
-                    dataType: "string",
-                    alignment: "left",
-                    caption: "Phương thức giao hàng",
-                },              
-                {
-                    dataField: "ToTal_Money",
-                    dataType: "number",
-                    alignment: "left",
-                    caption: "Tông tiền",
-                },
-                {
-                    dataField: "CreatedDate",
-                    dataType: "date",
-                    alignment: "left",
-                    format: "dd/MM/yyyy",
-                    caption: "Ngày đặt",
-                },
-
-
-                {
-                    dataField: "Status",
-                    dataType: "boolean",
-                    caption: "Trạng thái",
+        const pivotGrid = $('#pivotgrid').dxPivotGrid({
+            allowSortingBySummary: true,
+            allowFiltering: true,
+            showBorders: true,
+            showColumnGrandTotals: false,
+            showRowGrandTotals: false,
+            showRowTotals: false,
+            showColumnTotals: false,
+            fieldChooser: {
+                enabled: true,
+                height: 400,
+            },
+            dataSource: {
+                fields: [{
+                    caption: 'Loại sản phẩm',
+                    width: 120,
+                    dataField: 'Loai',
+                    area: 'row',
+                    sortBySummaryField: 'Total',
+                }, {
+                    caption: 'Tên sản phẩm',
+                    dataField: 'SanPham',
+                    width: 150,
+                    area: 'row',
+                }, {
+                    dataField: 'Ngayduyet',
+                    dataType: 'date',
+                    area: 'column',
+                }, {
+                    groupName: 'Ngayduyet',
+                    groupInterval: 'day',
+                    visible: false,
+                }, {
+                    caption: 'Số lượng',
+                    dataField: 'Soluong',
+                    dataType: 'number',
+                    summaryType: 'sum',
                     alignment: "center",
-                },
-
-            ],
-
-
-        }).dxDataGrid("instance");
-    };
-
-    function sendRequest(url, method, data) {
-        var d = $.Deferred();
-        $.ajax({
-            type: method,
-            url: url,
-            data: data,
-            cache: false,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-
-            success: function (res) {
-                d.resolve(res);
+                    area: 'data',
+                }],
+                store: data,
             },
+        }).dxPivotGrid('instance');
 
+        pivotGrid.bindChart(pivotGridChart, {
+            dataFieldsDisplayMode: 'splitPanes',
+            alternateDataFields: false,
         });
 
-        return d.promise().done(function (result) {
-            if (result.IsSuccess == 1) {
-                if (result.Data.Status == 1) {
+       
 
-                    DevExpress.ui.notify(result.Data.Message, "success", 3000);
-                }
-                else {
-                    DevExpress.ui.notify("Fail: " + result.Data.Message, "error", 3000);
-
-                }
-            }
-            if (result.Status == 1) {
-                DevExpress.ui.notify(result.Message, "success", 3000);
-            }
-            else if (result.Status == -1) {
-                DevExpress.ui.notify("Fail: " + result.Message, "error", 3000);
-            }
-
-
-
-        });
+        setTimeout(expand, 0);
     };
 </script>

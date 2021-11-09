@@ -27,6 +27,15 @@ namespace WebAdminShop.ApiCaller
 
             return x;
         }
+        public async Task<IEnumerable<object>> GetReportOrder(int pYear,string token)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "Order/ReportOrder?pYear=" + pYear));
+
+            var x = await GetAsync<IEnumerable<object>>(requestUrl, token);
+
+            return x;
+        }
         public async Task<Message<DataResults<object>>> InsertOrder(Orders data, string user, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
