@@ -50,5 +50,11 @@ namespace WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.UpdateOrder(Order, user));
         }
+        [HttpGet("ReportOrder")]
+        public async Task<IActionResult> ReportOrder(int pYear, string user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await dbContext.ReportOrder(pYear, user));
+        }
     }
 }

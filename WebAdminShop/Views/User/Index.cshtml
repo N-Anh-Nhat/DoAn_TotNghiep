@@ -4,13 +4,15 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row content-box">
+                <h5>Tài khoản</h5>
+            </div>
+            <div class="row content-box">
                 <div class="col-md-4">
 
                 </div>
                 <div class="col-md-8 button_nav_record">
                     <div id="btnAdd" class="btnAdd"></div>
-                    <div id="btnSave" class="btnSave"></div>
-                    <div id="btnLoadData" class="btnLoadData"></div>
+                   
                 </div>
             </div>
 
@@ -42,25 +44,7 @@
             }
         });
 
-        $("#btnSave").dxButton({
-            text: " Lưu ",
-            icon: "save",
-            onClick: function () {
-                //Save action
-                $("#gridList").dxDataGrid("instance").saveEditData();
-            }
-        });
-
-
-        $("#btnLoadData").dxButton({
-            text: "Nạp dữ liệu",
-            icon: "refresh",
-            onClick: function () {
-                //loadData();
-                loadGrid();
-            }
-        });
-
+        
     });
 
     $(document).ready(function () {
@@ -98,6 +82,10 @@
         $("#gridList").dxDataGrid({
             //dataSource: jsonData,
             dataSource: transportStore,
+            scrolling: {
+                useNative: true,
+                columnRenderingMode: 'virtual'
+            },
             repaintChangesOnly: true,
             showColumnLines: true,
             showRowLines: true,
@@ -106,20 +94,18 @@
             columnAutoWidth: true,
             showBorders: true,
             width: "auto",
+            columnResizingMode: 'widget',
             columnsAutoWidth: true,
             hoverStateEnabled: true,
             paging: {
-                pageSize: 100
+                pageSize: 20
             },
             pager: {
                 visible: true,
-                allowedPageSizes: ['ALL'],
+
                 showPageSizeSelector: false,
                 showInfo: false,
                 showNavigationButtons: false
-            },
-            scrolling: {
-                mode: "virtual"
             },
             filterRow: {
                 visible: true,

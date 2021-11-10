@@ -48,7 +48,7 @@ namespace WebAPI.Services.DataServices
                 data.ID_User,
                 data.ToTal_Money,
                 CreatedBy = user,
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.Now.ToString("yyyy-MM-dd"),
                 Status = false,
             };
             return await _servicesBase.Insert("Orders", obj, conString);
@@ -97,12 +97,41 @@ namespace WebAPI.Services.DataServices
         public async Task<DataResults<object>> DeleteOrder(Orders data, string user)
         {
             _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
-            object obj = new
-            {
-                Status = false,
-            };
+           
 
-            return await _servicesBase.Update("Orders", obj, conString, "ID", data.ID);
+            return await _servicesBase.Delete("Orders", obj, conString, "ID", data.ID);
+        }
+        public async Task<IEnumerable<object>> ReportOrder(int pyear, string user)
+        {
+           
+           
+            try
+            {
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
+                    var results = db.Query().SelectRaw("Product.Name as SanPham, Category.Name as Loai, COUNT(Order_Details.Quality) as Soluong,CAST(Orders.ModifiedDate AS DATE) as Ngayduyet,Order_Details.PromotionPrice,Order_Details.Price")
+                        .From("Orders")
+                        .GroupByRaw("Product.Name, Category.Name,CAST(Orders.ModifiedDate AS DATE),Order_Details.PromotionPrice,Order_Details.Price")
+                        .OrderByRaw("CAST(Orders.ModifiedDate AS DATE)")
+                        .Where("Orders.Status","true")
+                        .WhereDatePart("year", "Orders.ModifiedDate",pyear)
+                        .Join("Order_Details", "Order_Details.ID_Order", "Orders.ID")
+                        .Join("Product", "Product.ID", "Order_Details.ID_Product")
+                        .Join("Category", "Category.ID", "Product.ID_Catelogy");
+                        
+                        
+                    return await results.GetAsync<object>();
+                }
+               
+            }
+            catch (Exception e)
+            {
+                var mess = e;
+                return null;
+               
+            }
+           
         }
     }
 }
