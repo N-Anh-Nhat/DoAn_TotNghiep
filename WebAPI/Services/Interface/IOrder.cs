@@ -14,7 +14,7 @@ namespace WebAPI.Services.Interface
         Task<Orders> GetOrderByID(string Id);
         Task<DataResults<object>> InsertOrder(Orders data, string user);
         Task<DataResults<object>> UpdateOrder(Orders data, string user);
-        Task<DataResults<object>> DeleteOrder(Orders data, string user);
+        //Task<DataResults<object>> DeleteOrder(Orders data, string user);
         Task<IEnumerable<object>> ReportOrder(int pyear, string user);
     }
 }
