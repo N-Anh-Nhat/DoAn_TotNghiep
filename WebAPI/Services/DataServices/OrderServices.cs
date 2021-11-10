@@ -94,13 +94,13 @@ namespace WebAPI.Services.DataServices
             }
             return result;
         }
-        public async Task<DataResults<object>> DeleteOrder(Orders data, string user)
-        {
-            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
+        //public async Task<DataResults<object>> DeleteOrder(Orders data, string user)
+        //{
+        //    _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
            
 
-            return await _servicesBase.Delete("Orders", obj, conString, "ID", data.ID);
-        }
+        //    return await _servicesBase.Delete("Orders", obj, conString, "ID", data.ID);
+        //}
         public async Task<IEnumerable<object>> ReportOrder(int pyear, string user)
         {
            
