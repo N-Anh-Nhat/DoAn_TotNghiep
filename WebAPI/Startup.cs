@@ -39,6 +39,7 @@ namespace WebAPI
             services.AddTransient<INews, NewsServices>();
             services.AddTransient<IRole, RoleServices>();
             services.AddTransient<IWishList, WishListServices>();
+            services.AddTransient<ICMT, CMTServices>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopThoiTrangAPI", Version = "v1" });

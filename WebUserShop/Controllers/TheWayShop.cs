@@ -230,6 +230,11 @@ namespace WebUserShop.Controllers
             //sản phẩm cùng danh mục
             var ProOfCategory = a.Where(s => s.ID_Catelogy == category && !(s.ID==id)).Take(4);                        
             ViewBag.ProOfCategory = ProOfCategory.Where(s => s.Status == true).ToList();
+
+            var getCMT = await ApiClientFactory.Instance.GetCMT("");
+            ViewBag.getCMT = getCMT.OrderByDescending(s=>s.ID);
+
+            ViewBag.tongCMTofPro = getCMT.Where(s => s.ID_Product == id).Count();
             return View(proDetail);
         }
         public async Task<IActionResult> Wish_List()
@@ -245,7 +250,7 @@ namespace WebUserShop.Controllers
 
                 var listWishList = wl.Where(s => s.ID_User == user.ID).ToList();
 
-                ViewBag.listWishList = listWishList;
+                ViewBag.listWishList = listWishList.OrderByDescending(s=>s.ID);
                 ViewBag.dsSP = sp;
                 return View();
             }

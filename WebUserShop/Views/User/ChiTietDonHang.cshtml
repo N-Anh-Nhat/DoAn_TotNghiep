@@ -11,7 +11,7 @@
     </thead>
     @foreach (var item in ViewBag.listorder)
     {
-        
+
         Product data = new Product();
         foreach (var rs in ViewBag.Product)
         {
@@ -32,6 +32,7 @@
 
 
         }
+        String ConvPrivcie = String.Format("{0:#,#.##}", item.Price);
         var linkimg = "https://localhost:44363/" + data.Image;
         <tbody>
             <tr>
@@ -50,7 +51,7 @@
                     <p>@item.PromotionPrice %</p>
                 </td>
                 <td>
-                    <p>@item.Price</p>
+                    <p>@ConvPrivcie VND</p>
                 </td>
                 <td class="price-pr">
                     <p>@dataSize.Size</p>

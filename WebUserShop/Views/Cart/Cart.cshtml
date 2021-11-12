@@ -94,16 +94,24 @@
                                             <p>@item.PromotionPrice %</p>
                                         </td>
                                         <td>
-                                            <p>@SPrice VND</p>
+                                            @{
+                                                String ConvPrivcieSPrice = String.Format("{0:#,#.##}", SPrice);
+
+                                            }
+                                            <p>@ConvPrivcieSPrice VND</p>
                                         </td>
                                         <td class="price-pr">
                                             <p>@dataSize.Size</p>
                                         </td>
                                         <td class="quantity-box">
-                                            <input id="soluong-@dem" onchange="UpdateItem(@item.ID_Product,@item.ID_Size,@item.Price,@item.PromotionPrice,@dem,@dataSize.Quality,@countlist)" type="number" size="4" value="@item.Quality" max="@dataSize.Quality" min="0" step="1" class="c-input-text qty text">
+                                            <input id="soluong-@dem" onchange="UpdateItem(@item.ID_Product,@item.ID_Size,@item.Price,@item.PromotionPrice,@dem,@dataSize.Quality,@countlist)" type="number" size="4" value="@item.Quality" max="@dataSize.Quality" min="1" step="1" class="c-input-text qty text">
                                         </td>
-                                        <td >
-                                            <input style="width: 80%" type="number" disabled="disabled" id="TongGia1SP-@dem" value="@Tong" /> VND
+                                        <td>
+                                            @{
+                                                String ConvPrivciedem = String.Format("{0:#,#.##}", dem);
+
+                                            }
+                                            <input style="width: auto" type="number"  disabled="disabled" id="TongGia1SP-@ConvPrivciedem" value="@Tong" /> VND
                                         </td>
                                         <td class="remove-pr">
                                             <a onclick="RemoveItem(@data.ID,@countlist)">
@@ -116,9 +124,12 @@
 
                             </tbody>
                             <thead>
+                                @{ 
+                                    String ConvPrivcie = String.Format("{0:#,#.##}", TongHD);
+                                }
                                 <tr>
                                    <th colspan="7">Tổng</th>
-                                   <th id="SumHoaDon">@TongHD</th>
+                                   <th id="SumHoaDon">@ConvPrivcie VND</th>
                                    <th></th>
                                 </tr>
                             </thead>
@@ -196,7 +207,7 @@
                         <h3>Tổng hóa đơn</h3>
                         <div class="d-flex">
                             <h4></h4>
-                            <div id="HoaDon" class="ml-auto font-weight-bold"> @TongHD </div>
+                            <div id="HoaDon" class="ml-auto font-weight-bold"> @ConvPrivcie VND</div>
                         </div>
                        
                         <hr class="my-1">
@@ -212,7 +223,10 @@
                         <hr>
                         <div class="d-flex gr-total">
                             <h5>Thành tiền</h5>
-                            <div id="ThanhTien" class="ml-auto h5">@ThanhTien </div>
+                            @{
+                                String ConvPrivcieThanhTien = String.Format("{0:#,#.##}", ThanhTien);
+                            }
+                            <div id="ThanhTien" class="ml-auto h5">@ConvPrivcieThanhTien VND</div>
                         </div>
                         <hr>
                     </div>
@@ -257,9 +271,9 @@
         var IDTong = "TongGia1SP-" + iditem;
 
 
-        if (soluong > max || soluong < 0) {
+        if (soluong > max || soluong < 1) {
             document.getElementById(IDSoLuong).value = 1;
-            return alert("Số lượng không được vượt quá " + max + "hoặc nhỏ hơn 0")
+            return alert("Số lượng không được vượt quá " + max + " hoặc nhỏ hơn 1")
         }
 
 
@@ -277,27 +291,32 @@
                         var tinh = document.getElementById(NameIDTong).value;
                         SumHD = SumHD + parseFloat(tinh);
                     }
-                    document.getElementById("SumHoaDon").innerHTML = SumHD;
-                    document.getElementById("HoaDon").innerHTML = SumHD;
+                    var Tam = SumHD + " VND" 
+                    document.getElementById("SumHoaDon").innerHTML = Tam;
+                    document.getElementById("HoaDon").innerHTML = Tam;
                     var radios = document.getElementsByName('shipping-option');
 
                     for (var i = 0, length = radios.length; i < length; i++) {
 
                         if (radios[i].checked) {
-                            if (i == 0)
+                            if (i == 0) {
+                                SumHD += " VND"
                                 document.getElementById("ThanhTien").innerHTML = SumHD;
+                            }
+
                             if (i == 1) {
                                 SumHD += 30000;
+                                SumHD += " VND"
                                 document.getElementById("ThanhTien").innerHTML = SumHD;
 
                             }
                             if (i == 2) {
                                 SumHD += 60000;
+                                SumHD += " VND"
                                 document.getElementById("ThanhTien").innerHTML = SumHD;
                             }
                         }
-                        else
-                            document.getElementById("ThanhTien").innerHTML = SumHD;
+                       
                     }
                     return alert("Chỉnh sửa số lượng thành công");
                 }
@@ -322,16 +341,21 @@
 
         for (var i = 0, length = radios.length; i < length; i++) {
             if (radios[i].checked) {
-                if (i == 0)
+                if (i == 0) {
+                    SumHD += " VND"
                     document.getElementById("ThanhTien").innerHTML = SumHD;
+                }
+                   
                 if (i == 1) {
                     SumHD += 30000;
+                    SumHD += " VND"
                     document.getElementById("ThanhTien").innerHTML = SumHD;
                     document.getElementById("GiaoHang").innerHTML = "Giao hàng nhanh";
                     document.getElementById("TienGiaoHang").innerHTML = "30.000 VND";
                 }
                 if (i == 2) {
                     SumHD += 60000;
+                    SumHD += " VND"
                     document.getElementById("ThanhTien").innerHTML = SumHD;
                     document.getElementById("GiaoHang").innerHTML = "Giao hàng đặc biệt";
                     document.getElementById("TienGiaoHang").innerHTML = "60.000 VND";
@@ -363,17 +387,20 @@
 
                         if (radios[i].checked) {
                             if (i == 0) {
+                                SumHD += " VND"
                                 document.getElementById("ThanhTien").innerHTML = SumHD;
                                 break;
                             }
 
                             if (i == 1) {
                                 SumHD += 30000;
+                                SumHD += " VND"
                                 document.getElementById("ThanhTien").innerHTML = SumHD;
                                 break;
                             }
                             if (i == 2) {
                                 SumHD += 60000;
+                                SumHD += " VND"
                                 document.getElementById("ThanhTien").innerHTML = SumHD;
                                 break;
                             }

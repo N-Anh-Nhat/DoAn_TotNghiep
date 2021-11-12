@@ -41,6 +41,7 @@
                                     break;
                                 }
                             }
+                            String ConvPrivcie = String.Format("{0:#,#.##}", product.Price);
                             var linkimg = "https://localhost:44363/" + product.Image;
                             <tbody>
                                 <tr>
@@ -55,8 +56,9 @@
                                         </a>
                                     </td>
                                     <td class="name-pr">
-                                        <a >
-                                            @product.Price
+                                        <a>
+
+                                            @ConvPrivcie VND
                                         </a>
                                     </td>
                                     <td class="remove-pr">
@@ -77,27 +79,33 @@
 <!-- End Wishlist -->
 <script>
     function RemoveItem(ID) {
-        var data =
-        {
-            ID: ID
-        }
-        $.ajax({
-            "async": false,
-            "crossDomain": true,
-            "url": "../User/DeleteWishList",
-            "headers": {
-                "Content-Type": "application/json",
-                "cache-control": "no-cache"
-            },
-            "method": "POST",
-            "data": JSON.stringify(data),
-            success: function (res) {
-                if (res == true) {
-                    alert("Xóa sản phẩm yêu thích thành công");
-                    window.location.reload();
-                }
+        var result = confirm("Bạn có muốn xóa sản phẩm yêu thích này");
+        if (result == true) {
+            var data =
+            {
+                ID: ID
             }
-        });
+            $.ajax({
+                "async": false,
+                "crossDomain": true,
+                "url": "../User/DeleteWishList",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache"
+                },
+                "method": "POST",
+                "data": JSON.stringify(data),
+                success: function (res) {
+                    if (res == true) {
+                        alert("Xóa sản phẩm yêu thích thành công");
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+        else {
+            alert("Bạn không xóa");
+        }
     }
-
+    
 </script>

@@ -15,6 +15,8 @@ namespace WebAPI.Models
         public DateTime ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public bool Status { get; set; }
+        public int ID_Product { get; set; }
+        public int ID_User { get; set; }
     }
 }
 

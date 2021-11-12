@@ -206,5 +206,21 @@ namespace WebUserShop.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> InsertMessage([FromBody] CMT data)
+        {
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                string a = HttpContext.Session.GetString("user1");
+                var user = JsonConvert.DeserializeObject<User>(a);
+                data.ID_User = user.ID;
+                var insertCmt = await ApiClientFactory.Instance.InsertCMT(data, user.UserName, "");
+                return Json(true);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }

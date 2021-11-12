@@ -390,5 +390,47 @@
 		});
 	});
 
+	//Comment
+	$().ready(function () {
+		$("#BinhLuan").validate({
+			rules: {
+				"message": {
+					required: true,
+					maxlength: 100,
+				},
+			},
+			messages: {
+				"message": {
+					required: "Không được để trống Bình luận",
+					maxlength:"Tối đa 100 ký tự",
+				},
+			},
+			submitHandler: function () {
+				var inputMessage = $('#message').val();
+				var inputIdproduct = $('#ID_Product').val();
+				var data = {
+					ID_Product: inputIdproduct,
+					Content_CMT: inputMessage,
+				}
+				$.ajax({
+					"async": false,
+					"crossDomain": true,
+					"url": "../../User/InsertMessage",
+					"headers": {
+						"Content-Type": "application/json",
+						"cache-control": "no-cache"
+					},
+					"method": "POST",
+					"data": JSON.stringify(data),
+					success: function (res) {
+						if (res == true) {
+							alert("Bình luận sản phẩm thành công");
+							window.location.reload();
+						}
+					}
+				});
+			}
+		});
+	});
 
 }(jQuery));

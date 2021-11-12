@@ -1,13 +1,14 @@
 ﻿   <!-- Start All Title Box -->
 @model WebAPI.Models.Product
-@{ 
+@using Microsoft.AspNetCore.Http
+@{
     TimeSpan time = DateTime.Now - Model.CreatedDate;
     decimal giaChSale = Model.Price * Model.PromotionPrice / 100;
     decimal GiaSpDaSale = Model.Price - giaChSale;
     String ConvGiaSpDaSale = String.Format("{0:#,#.##}", GiaSpDaSale);
-    String ConvPrivcie = String.Format("{0:#,#.##}",Model.Price);
+    String ConvPrivcie = String.Format("{0:#,#.##}", Model.Price);
     var ProSize = (List<WebAPI.Models.ProductSize>)ViewBag.ProSize;
-    var ProOfCategory = (IEnumerable<WebAPI.Models.Product>) ViewBag.ProOfCategory;
+    var ProOfCategory = (IEnumerable<WebAPI.Models.Product>)ViewBag.ProOfCategory;
     var linkDetalimg = "https://localhost:44363/" + Model.Image;
 }
 <div class="all-title-box">
@@ -36,7 +37,7 @@
                 </div>
             </div>
             <div class="col-xl-7 col-lg-7 col-md-6">
-                
+
                 <div class="single-product-details">
                     <h2>@Model.Name</h2>
                     <h5> <del>@ConvPrivcie</del> @ConvGiaSpDaSale</h5>
@@ -57,22 +58,30 @@
                                         {
                                             <option value="@item.ID">@item.Size</option>
                                         }
-                                    </select>                                  
+                                    </select>
                                 </div>
                             }
-                            </li>
-                       
+                        </li>
+
                     </ul>
 
                     <div class="price-box-bar">
                         <div class="cart-and-bay-btn">
-                            <a class="btn hvr-hover" data-fancybox-close=""  onclick="AddCart(@Model.ID)" >Add to cart</a>
+                            <a class="btn hvr-hover" data-fancybox-close="" onclick="AddCart(@Model.ID)">Thêm vào giỏ hàng</a>
                         </div>
                     </div>
 
                     <div class="add-to-btn">
                         <div class="add-comp">
-                            <a class="btn hvr-hover" href="#"><i class="fas fa-heart"></i>Yêu thích</a>
+                            @if (Context.Session.GetString("user1") != null)
+                            {
+                            <a class="btn hvr-hover" onclick="ProWishList(@Model.ID)" title="Yêu thích">Yêu thích</a>
+                            }
+                            else
+                            {
+                                <a class="btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích">Yêu thích</a>
+
+                            }
                         </div>
                     </div>
                 </div>
@@ -123,39 +132,39 @@
                 </div>
             </div>
         </div>
+        @*bình luận*@
         <div class="row">
             <div class="col-md-7">
-                <form action="">
-                    <textarea class="form-control" id="message" placeholder="Mời bạn nhập bình luận&nbsp;(*)" rows="4" data-error="Write your message" required></textarea>
-                    <input class="input_cmt" type="submit" name="submit" value="Gửi thông tin">
-
-                </form>
+                @if (Context.Session.GetString("user1") != null)
+                {
+                    <form id="BinhLuan" method="post">
+                        <textarea class="form-control" id="message" name="message" placeholder="Mời bạn nhập bình luận&nbsp;(*)" rows="4" data-error="Write your message" required></textarea>
+                        <input type="hidden" id="ID_Product" value="@Model.ID" />
+                        <input class="input_cmt" type="submit" name="submit" value="Bình luận">
+                    </form>
+                }
+                else
+                {
+                    <a class="btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích">Đăng nhập</a>
+                }
                 <div class="total_cmt">
-                    <span class="_text_total_cmt">đã có <i style="color: red;">111</i>  bình luận cho sản phẩm này</span>
+                    <span class="_text_total_cmt">đã có <i style="color: red;">@ViewBag.tongCMTofPro</i>  bình luận cho sản phẩm này</span>
                 </div>
-                <ul class="list_cmt">
-                    <li class="info_cmt">
-                        <span class="name_user_cmt">Nguyện thị a</span>
-                        <span class="datetime_user_cmt">11/12/1111</span>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste accusamus minima dolore aut placeat earum ipsam? Aliquid deserunt, libero dolorem voluptas dolorum, laboriosam totam, ea repudiandae natus repellendus sit eligendi.</p>
-                        </div>
-                    </li>
-                    <li class="info_cmt">
-                        <span class="name_user_cmt">Nguyện thị a</span>
-                        <span class="datetime_user_cmt">11/12/1111</span>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste accusamus minima dolore aut placeat earum ipsam? Aliquid deserunt, libero dolorem voluptas dolorum, laboriosam totam, ea repudiandae natus repellendus sit eligendi.</p>
-                        </div>
-                    </li>
-                    <li class="info_cmt">
-                        <span class="name_user_cmt">Nguyện thị a</span>
-                        <span class="datetime_user_cmt">11/12/1111</span>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste accusamus minima dolore aut placeat earum ipsam? Aliquid deserunt, libero dolorem voluptas dolorum, laboriosam totam, ea repudiandae natus repellendus sit eligendi.</p>
-                        </div>
-                    </li>
-                </ul>
+                @foreach (var item in ViewBag.getCMT)
+                {
+                    if (Model.ID == item.ID_Product)
+                    {
+                        <ul class="list_cmt">
+                            <li class="info_cmt">
+                                <span class="name_user_cmt">@item.CreatedBy</span>
+                                <span class="datetime_user_cmt">@item.CreatedDate</span>
+                                <div>
+                                    <p>@item.Content_CMT</p>
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                }
             </div>
             <div class="col-md-5"></div>
         </div>
@@ -179,6 +188,32 @@
                 }
                 else {
                     alert("Thêm vào giỏ hàng thất bại");
+                }
+            }
+        });
+    }
+    function ProWishList(ID) {
+        var data =
+        {
+            ID_Product: ID
+        }
+        $.ajax({
+            "async": false,
+            "crossDomain": true,
+            "url": "../../User/InsertWishList",
+            "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache"
+            },
+            "method": "POST",
+            "data": JSON.stringify(data),
+            success: function (res) {
+                if (res == true) {
+                    alert("Yêu thích sản phẩm thành công");
+                    window.location.reload();
+                }
+                if (res == false) {
+                    alert("Sản phẩm này đã yêu thích");
                 }
             }
         });

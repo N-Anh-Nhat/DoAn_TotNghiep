@@ -41,7 +41,8 @@ namespace WebAPI.Services.DataServices
             object obj = new
             {
                 data.Content_CMT,
-                data.Name,
+                data.ID_Product,
+                data.ID_User,
                 CreatedBy = user,
             };
             return await _servicesBase.Insert("CMT", obj, conString);

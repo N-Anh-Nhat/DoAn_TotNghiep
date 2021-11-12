@@ -44,6 +44,7 @@
                         </thead>
                         @foreach (var item in ViewBag.ListOrder)
                         {
+                            String ConvPrivcie = String.Format("{0:#,#.##}", item.ToTal_Money);
                             <tbody>
                                 <tr>
                                     <td class="name-pr">
@@ -85,7 +86,7 @@
                                     </td>
                                     <td class="name-pr">
                                         <p>
-                                            @item.ToTal_Money
+                                            @ConvPrivcie VND
                                         </p>
                                     </td>
                                     <td class="name-pr">
