@@ -129,7 +129,15 @@
                                                 }
                                                 else
                                                 {
-                                                    <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                                    if (Context.Session.GetString("userAdmin") != null)
+                                                    {
+                                                        <li><a onclick="alert('Bạn phải đăng xuất tài khoản ADMIN trước')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                                    }
 
                                                 }
 
@@ -187,7 +195,15 @@
                                                 }
                                                 else
                                                 {
-                                                    <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                                    if (Context.Session.GetString("userAdmin") != null)
+                                                    {
+                                                        <li><a onclick="alert('Bạn phải đăng xuất tài khoản ADMIN trước')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                                    }
 
                                                 }
                                             </ul>
@@ -245,7 +261,15 @@
                                                 }
                                                 else
                                                 {
-                                                    <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                                    if (Context.Session.GetString("userAdmin") != null)
+                                                    {
+                                                        <li><a onclick="alert('Bạn phải đăng xuất tài khoản ADMIN trước')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                                    }
 
                                                 }
                                             </ul>

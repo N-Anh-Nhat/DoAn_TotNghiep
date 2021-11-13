@@ -47,12 +47,30 @@
                 }
                 else
                 {
-                    <div class="member">
-                        <a class="btn" onclick="showModal('@Url.Action("Index","User",null,Context.Request.Scheme)','Đăng ký tài khoản','Nhanh chóng và dễ dàng.')">Đăng ký</a>
-                        <span>/</span>
-                        <a class="btn" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đăng nhập</a>
-                    </div>
+                    @if (Context.Session.GetString("userAdmin") != null)
+                    {
+                        <div class="avatar">
+                            <a class="btn btn-avatar">
+                                Welcome, <span> @Context.Session.GetString("userHelloAdmin") </span>
+                            </a>
+                            <ul class="dropdown-menu-avatar">
+                                <li class="custom-li-avatar">
+                                    <a asp-controller="User" asp-action="Logout">ĐĂNG XUẤT</a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="member">
+                            <a class="btn" onclick="showModal('@Url.Action("Index","User",null,Context.Request.Scheme)','Đăng ký tài khoản','Nhanh chóng và dễ dàng.')">Đăng ký</a>
+                            <span>/</span>
+                            <a class="btn" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đăng nhập</a>
+                        </div>
+                    }
                 }
+
+
 
 
             </div>

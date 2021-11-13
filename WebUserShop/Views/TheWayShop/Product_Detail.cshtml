@@ -75,11 +75,19 @@
                         <div class="add-comp">
                             @if (Context.Session.GetString("user1") != null)
                             {
-                            <a class="btn hvr-hover" onclick="ProWishList(@Model.ID)" title="Yêu thích">Yêu thích</a>
+                                <a class="btn hvr-hover" onclick="ProWishList(@Model.ID)" title="Yêu thích">Yêu thích</a>
                             }
                             else
                             {
-                                <a class="btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích">Yêu thích</a>
+                                if (Context.Session.GetString("userAdmin") != null)
+                                {
+                                    <a class="btn hvr-hover" onclick="alert('Bạn phải đăng xuất tài khoản ADMIN trước')" title="Yêu thích">Yêu thích</a>
+
+                                }
+                                else
+                                {
+                                     <a class="btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích">Yêu thích</a>
+                                }
 
                             }
                         </div>
@@ -115,7 +123,24 @@
                                     <img src="@linkimg" class="img-fluid" alt="Image" style="height:283px;">
                                     <div class="mask-icon">
                                         <ul>
-                                            <li><a href="#" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                            @if (Context.Session.GetString("user1") != null)
+                                            {
+                                                <li><a onclick="ProWishList(@item.ID)" title="Yêu thích"><i class="far fa-heart" title="Yêu thích"></i></a></li>
+                                            }
+                                            else
+                                            {
+                                                if (Context.Session.GetString("userAdmin") != null)
+                                                {
+                                                    <li><a onclick="alert('Bạn phải đăng xuất tài khoản ADMIN trước')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+
+                                                }
+                                                else
+                                                {
+                                                    <li><a onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích"><i class="far fa-heart"></i></a></li>
+                                                }
+
+                                            }
+
                                         </ul>
                                     </div>
                                 </div>
@@ -145,7 +170,16 @@
                 }
                 else
                 {
-                    <a class="btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích">Đăng nhập</a>
+                    if (Context.Session.GetString("userAdmin") != null)
+                    {
+            <a class="btn hvr-hover" onclick="alert('Bạn phải đăng xuất tài khoản ADMIN trước')" title="Yêu thích">Đăng nhập để bình luận</a>
+
+                    }
+                    else
+                    {
+            <a class="btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')" title="Yêu thích">Đăng nhập để bình luận</a>
+                    }
+
                 }
                 <div class="total_cmt">
                     <span class="_text_total_cmt">đã có <i style="color: red;">@ViewBag.tongCMTofPro</i>  bình luận cho sản phẩm này</span>
@@ -158,6 +192,10 @@
                             <li class="info_cmt">
                                 <span class="name_user_cmt">@item.CreatedBy</span>
                                 <span class="datetime_user_cmt">@item.CreatedDate</span>
+                                @if (Context.Session.GetString("userAdmin") != null)
+                                {
+                                    <a onclick="DeleteCMT(@item.ID)" style="float:right;"><i class="far fa-trash-alt"></i></a>
+                                }
                                 <div>
                                     <p>@item.Content_CMT</p>
                                 </div>
@@ -172,9 +210,7 @@
 </div>
 <!-- End Cart -->
 <script>
-    function myFunction(val) {
-        alert("The input value has changed. The new value is: " + val);
-    }
+
     function AddCart(id) {
         var size = document.getElementById("basicSize").value;
         $.ajax({
@@ -191,6 +227,64 @@
                 }
             }
         });
+    }
+    function DeleteCMT(ID) {
+        var result = confirm("Bạn có muốn xóa sản phẩm yêu thích này");
+        if (result == true) {
+            var data =
+            {
+                ID: ID
+            }
+            $.ajax({
+                "async": false,
+                "crossDomain": true,
+                "url": "../../User/DeleteMessage",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache"
+                },
+                "method": "POST",
+                "data": JSON.stringify(data),
+                success: function (res) {
+                    if (res == true) {
+                        alert("Xóa bình luận thành công");
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+        else {
+            alert("Bạn không xóa");
+        }
+    }
+    function RemoveItem(ID) {
+        var result = confirm("Bạn có muốn xóa sản phẩm yêu thích này");
+        if (result == true) {
+            var data =
+            {
+                ID: ID
+            }
+            $.ajax({
+                "async": false,
+                "crossDomain": true,
+                "url": "../User/DeleteWishList",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache"
+                },
+                "method": "POST",
+                "data": JSON.stringify(data),
+                success: function (res) {
+                    if (res == true) {
+                        alert("Xóa sản phẩm yêu thích thành công");
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+        else {
+            alert("Bạn không xóa");
+        }
     }
     function ProWishList(ID) {
         var data =

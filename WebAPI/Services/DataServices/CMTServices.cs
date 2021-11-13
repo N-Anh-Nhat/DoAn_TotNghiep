@@ -86,17 +86,29 @@ namespace WebAPI.Services.DataServices
             }
             return result;
         }
-        public async Task<DataResults<object>> DeleteCMT(CMT data, string user)
+        public async Task<DataResults<int>> DeleteCMT(CMT data, string user)
         {
-            _servicesBase.CommonUpdate(data, user, CommonEnum.EnumMethod.Update);
-            object obj = new
+            var result = new DataResults<int>();
+            int changed = 0;
+            try
             {
-                CreatedBy = user,
-                ModifiedDate = DateTime.Now,
-                Status = false,
-            };
-
-            return await _servicesBase.Update("CMT", obj, conString, "ID", data.ID);
+                using (var sqlConnection = new SqlConnection(conString))
+                {
+                    sqlConnection.Open();
+                    sqlConnection.Query("delete CMT where ID = '" + data.ID + "'");
+                    result.Message = "succeeded";
+                    result.Status = 1;
+                    result.Data = changed;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+                result.Data = 0;
+                return result;
+            }
         }
     }
 }

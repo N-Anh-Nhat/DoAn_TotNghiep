@@ -74,12 +74,21 @@ namespace WebUserShop.Controllers
             var x = false;
             var res = await ApiClientFactory.Instance.GetUser("");
             var c_pass = Security.TextToMD5(mkLogin);
-            var data = res.Where(u => u.UserName.Equals(tkLogin) && u.Password.Equals(c_pass) && u.ID_Role == 2).FirstOrDefault<User>(); ;
+            var data = res.Where(u => u.UserName.Equals(tkLogin) && u.Password.Equals(c_pass) && u.ID_Role == 2).FirstOrDefault<User>();
+            var dataAdmin = res.Where(u => u.UserName.Equals(tkLogin) && u.Password.Equals(c_pass) && u.ID_Role == 1).FirstOrDefault<User>(); ;
             if (data != null)
             {
                 var str = JsonConvert.SerializeObject(data);
                 HttpContext.Session.SetString("user1", str);
                 HttpContext.Session.SetString("userHello", tkLogin);
+                x = true;
+                return Json(x);
+            }
+            if (dataAdmin != null)
+            {
+                var str = JsonConvert.SerializeObject(data);
+                HttpContext.Session.SetString("userAdmin", str);
+                HttpContext.Session.SetString("userHelloAdmin", tkLogin);
                 x = true;
                 return Json(x);
             }
@@ -93,9 +102,20 @@ namespace WebUserShop.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("user1");
-            HttpContext.Session.Remove("userHello");
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                HttpContext.Session.Remove("user1");
+                HttpContext.Session.Remove("userHello");
+                return RedirectToAction("Index", "TheWayShop");
+            }
+            else if (HttpContext.Session.GetString("userAdmin") != null)
+            {
+                HttpContext.Session.Remove("userAdmin");
+                HttpContext.Session.Remove("userHelloAdmin");
+                return RedirectToAction("Index", "TheWayShop");
+            }
             return RedirectToAction("Index", "TheWayShop");
+                
         }
 
         [HttpGet]
@@ -215,6 +235,18 @@ namespace WebUserShop.Controllers
                 var user = JsonConvert.DeserializeObject<User>(a);
                 data.ID_User = user.ID;
                 var insertCmt = await ApiClientFactory.Instance.InsertCMT(data, user.UserName, "");
+                return Json(true);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public async Task<IActionResult> DeleteMessage([FromBody] CMT data)
+        {
+            if (HttpContext.Session.GetString("userAdmin") != null)
+            {
+                var deleCmt = await ApiClientFactory.Instance.DeleteCMT(data, "", "");
                 return Json(true);
             }
             else

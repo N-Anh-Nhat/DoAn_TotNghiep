@@ -15,6 +15,6 @@ namespace WebAPI.Services.Interface
         Task<CMT> GetCMTByID(string Id);
         Task<DataResults<object>> InsertCMT(CMT data, string user);
         Task<DataResults<object>> UpdateCMT(CMT data, string user);
-        Task<DataResults<object>> DeleteCMT(CMT data, string user);
+        Task<DataResults<int>> DeleteCMT(CMT data, string user);
     }
 }

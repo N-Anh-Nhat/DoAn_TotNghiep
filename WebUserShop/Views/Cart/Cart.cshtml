@@ -238,7 +238,16 @@
                     }
                     else
                     {
-                        <button class="ml-auto btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đặt hàng</button>
+                        if (Context.Session.GetString("userAdmin") != null)
+                        {
+                            <button class="ml-auto btn hvr-hover" onclick="alert('Bạn phải đăng xuất tài khoản ADMIN trước')">Đặt hàng</button>
+
+                        }
+                        else
+                        {
+                            <button class="ml-auto btn hvr-hover" onclick="showModal('@Url.Action("LoginIndex","User",null,Context.Request.Scheme)','Đăng nhập tài khoản','Trải nghiệm mua hàng.')">Đặt hàng</button>
+
+                        }
                     }
 
                 </div>
