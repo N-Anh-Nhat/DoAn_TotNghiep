@@ -58,7 +58,7 @@
     function loadGrid(jsonData) {
 
         var transportStore = new DevExpress.data.CustomStore({
-            key: ["UserName", "Password", "Last_Name", "Frist_Name",
+            key: ["ID","UserName", "Password", "Last_Name", "Frist_Name",
                 "Address", "Email", "Phone", "CreatedDate", "ID_Role", "Status"],
             load: function () {
                 return sendRequest("User/GetlstUser", "GET", "")
@@ -126,8 +126,7 @@
                     height: 300
                 },
                 form: {
-                    items: ["UserName", "Password", "Last_Name", "Frist_Name",
-                        "Address", "Email", "Phone", "CreatedDate", "ID_Role", "Status"],
+                    items: ["UserName", "ID_Role", "Status"],
                 }
 
             },
@@ -230,18 +229,17 @@
                 {
                     dataField: "Status",
                     dataType: "boolean",
-                    caption: "Status",
+                    caption: "Hoạt động",
                     alignment: "center",
                 },
-
-
-
-
             ],
             onEditorPreparing: function (e) {
                 if (e.parentType == "dataRow" && e.isOnForm == true) {
-                    if (e.dataField == "ID" && typeof e.row.isNewRow == "undefined")
+                    if (e.dataField == "UserName" && typeof e.row.isNewRow == "undefined")
+                        e.editorOptions.readOnly = true                   
+                    if (e.dataField == "ID_Role" && typeof e.row.isNewRow == "undefined")
                         e.editorOptions.readOnly = true
+                    
                 }
             }
 

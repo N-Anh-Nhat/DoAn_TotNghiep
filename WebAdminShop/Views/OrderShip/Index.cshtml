@@ -96,7 +96,7 @@
             }
             var link = "/" + Pro.Image;
             $("<tr/>").append(
-                $('<td>  <img src="' + link + '" alt="Alternate Text" /> </td>'),
+                $('<td>  <img src="' + link + '" alt="Alternate Text" style="width: 100%;"/> </td>'),
                 $('<td>' + Pro.Name + '</td>'),
                 $('<td>' + listDetail[i].Price + '</td>'),
                 $('<td>' + Size.Size + '</td>'),
@@ -230,7 +230,7 @@
                             $(`<p> <b>Phương thức giao hàng:</b> <span>${e.row.key.Type_ship}</span></p>`),
                         ),
                         $("<div class='col-md-6'/>").append(
-                            $(`<p> <b>Tổng tiền:</b> <span>${e.row.key.ToTal_Money}</span></p>`),
+                            $(`<p> <b>Tổng tiền:</b> <span>${e.row.key.ToTal_Money} VND</span></p>`),
                         ),
                         $("<div class='col-md-12'/>").append(
                             $(`<p> <b>Địa chỉ:</b> <span>${e.row.key.Address}</span></p>`),

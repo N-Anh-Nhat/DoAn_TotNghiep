@@ -58,15 +58,9 @@ namespace WebAPI.Services.DataServices
            
             object obj = new
             {
-                data.UserName,
-                data.Password,
-                data.Last_Name,
-                data.Frist_Name,
-                data.Address,
-                data.Email,
-                data.Phone,
+               
                 data.ID_Role,
-                data.ModifiedDate
+                data.Status,
             };
             DataResults<object> result = new DataResults<object>();
             try
