@@ -268,6 +268,7 @@ namespace WebUserShop.Controllers
                             Subject = "Hủy đặt hàng thành công",
                             Body = "<p><strong>Đơn hàng của bạn đã được hủy </strong></p>" + "<p>Cảm ơn bạn đã ủng hộ shop!. Vui lòng liên hệ Admin SDT 0365742833 để biết thêm chi tiết.</p>"
                         };
+                        var send = await ApiClientFactory.Instance.SendMail(content, "");
                         return Json(res);
                     }
                     else
