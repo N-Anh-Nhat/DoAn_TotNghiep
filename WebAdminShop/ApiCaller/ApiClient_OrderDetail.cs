@@ -42,6 +42,13 @@ namespace WebAdminShop.ApiCaller
             var x = await PostAsync<DataResults<object>, Order_Details>(requestUrl, data, token);
             return x;
         }
+        public async Task<Message<DataResults<object>>> UpdatelstProductSize(List<ProductSize> data, string user, string token)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "ProductSize/UpdateListProductSize?user=" + user));
+            var x = await PostAsync<DataResults<object>, List<ProductSize>>(requestUrl, data, token);
+            return x;
+        }
 
 
     }

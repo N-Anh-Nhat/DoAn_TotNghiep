@@ -80,6 +80,12 @@
                     </a>
                 </li>
                 <li class="submenu">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="OrderShip"? "active":"")" href="@Url.Action("Index","OrderShip")">
+                        <i class="fas fa-check-double"></i>
+                        <span> Xác nhận đơn hàng thanh toán </span>
+                    </a>
+                </li>
+                <li class="submenu">
                     <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Category"? "active":"")" href="@Url.Action("Index","Category")">
                         <i class="fas fa-wallet"></i>
                         <span> Loại sản phẩm </span>
@@ -111,7 +117,7 @@
                     </a>
                 </li>
                 <li class="submenu">
-                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Mail_All"? "active":"")" href="@Url.Action("Mail_All","Mail_All")">
+                    <a class="@(ViewContext.RouteData.Values["Controller"].ToString() =="Feedback"? "active":"")" href="@Url.Action("Index","Feedback")">
                         <i class="fas fa-mail-bulk"></i>
                         <span> Phản hồi </span>
                     </a>

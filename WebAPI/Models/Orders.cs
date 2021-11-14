@@ -21,5 +21,6 @@ namespace WebAPI.Models
         public string ModifiedBy { get; set; }
         public bool Status { get; set; }
         public int ID_User { get; set; }
+        public int ID_TrangThaiDonHang { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using LIB.BaseModels;
 using LIB.Common;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,13 +13,13 @@ using WebAPI.Models;
 
 namespace WebAdminShop.Controllers
 {
-    public class OrderController : Controller
+    public class OrderShipController : Controller
     {
 
         private IOptionsSnapshot<MySettingsModel> appSettings;
         private IOptionsSnapshot<AuthenInfo> authenSettings;
         private readonly UserInfo userInfo;
-        public OrderController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen)
+        public OrderShipController(IOptionsSnapshot<MySettingsModel> app, IOptionsSnapshot<AuthenInfo> authen)
         {
 
             appSettings = app;
@@ -44,6 +43,7 @@ namespace WebAdminShop.Controllers
         }
        
 
+
         [HttpGet]
         public async Task<IActionResult> GetlstOrder()
         {
@@ -53,9 +53,9 @@ namespace WebAdminShop.Controllers
             {
                 var res = await ApiClientFactory.Instance.GetOrder("");
                 List<Orders> data = new List<Orders>();
-                foreach(var item in res)
+                foreach (var item in res)
                 {
-                    if (item.ID_TrangThaiDonHang == 1)
+                    if (item.ID_TrangThaiDonHang == 2)
                         data.Add(item);
                 }
                 return Json(data);
@@ -71,8 +71,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetOrder_detailById(id,"");
-               
+                var res = await ApiClientFactory.Instance.GetOrder_detailById(id, "");
+
                 return Json(res);
             }
             return RedirectToAction("Index", "Login");
@@ -96,21 +96,18 @@ namespace WebAdminShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatelstOrder([FromBody] Orders data,int TrangThai)
+        public async Task<IActionResult> UpdatelstOrder([FromBody] Orders data, int TrangThai)
         {
             string json = userInfo.GetUserInfo(HttpContext);
 
             if (json != null)
             {
-                
-                
-               var user = await ApiClientFactory.Instance.GetUserById(data.ID_User,"");
-              
+
                 data.Status = true;
-              
+
                 if (TrangThai == 4)
                 {
-                    var OderDetail = await ApiClientFactory.Instance.GetOrder_detailById(data.ID,"");
+                    var OderDetail = await ApiClientFactory.Instance.GetOrder_detailById(data.ID, "");
                     List<ProductSize> updatelist = new List<ProductSize>();
                     var listProductSize = await ApiClientFactory.Instance.GetProductSize("");
                     foreach (var item in listProductSize)
@@ -128,46 +125,19 @@ namespace WebAdminShop.Controllers
                     if (resUpdate.Data.Status == 1)
                     {
                         var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", "");
-                        MailContent content = new MailContent
-                        {
-                            To = user.Email,
-                            Subject = "Hủy đơn hàng",
-                            Body = "<p><strong>Đơn "+ data.Name_order + " hàng của bạn đã bị hủy </strong></p>" + "<p>Vui lòng liên hệ Admin SDT 0365742833 để biết thêm chi tiết.</p>"
-                        };
-                        var send = await ApiClientFactory.Instance.SendMail(content,"");
-
                         return Json(res);
                     }
                     else
                         return Json(resUpdate);
                 }
-                else if(TrangThai == 2)
+                else
                 {
-                    MailContent content = new MailContent
-                    {
-                        To = user.Email,
-                        Subject = "Duyệt đơn hàng",
-                        Body = "<p><strong>Đơn " + data.Name_order + " hàng của bạn đã được duyệt </strong></p>" + "<p>Hàng sẽ được giao đến trong vài ngày tới. Vui lòng liên hệ Admin SDT 0365742833 để biết thêm chi tiết.</p>"
-                    };
-                    var send = await ApiClientFactory.Instance.SendMail(content, "");
-                    var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", "");
-                    return Json(res);
-                }
-                else if(TrangThai == 3)
-                {
-                    MailContent content = new MailContent
-                    {
-                        To = user.Email,
-                        Subject = "Thanh toán thành công",
-                        Body = "<p><strong>Đơn " + data.Name_order + " hàng của bạn đã được thanh toán thành công </strong></p>" + "<p>Cảm ơn bạn đã ủng hộ shop!. Vui lòng liên hệ Admin SDT 0365742833 để biết thêm chi tiết.</p>"
-                    };
-                    var send = await ApiClientFactory.Instance.SendMail(content, "");
                     var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", "");
                     return Json(res);
                 }
             }
             return RedirectToAction("Index", "Login");
         }
-        
+
     }
 }

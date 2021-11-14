@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
             return Ok(await dbContext.GetUser());
         }
         [HttpGet("GetUserById")]
-        public async Task<IActionResult> GetUserById(string Id)
+        public async Task<IActionResult> GetUserById(int Id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetUserByID(Id));

@@ -182,11 +182,14 @@
             cache: false,
             type: "POST",
             success: function (res) {
+                if (res == 4) {
+                    alert("Sản phẩm đã hết thêm vào giỏ hàng thất bại");
+                }
                 if (res == true) {
                     alert("Thêm vào giỏ thành công");
                     window.location.reload();
                 }
-                else {
+                if (res == false) {
                     alert("Thêm vào giỏ hàng thất bại");
                 }
             }

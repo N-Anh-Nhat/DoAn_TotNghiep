@@ -13,20 +13,21 @@
     {
 
         Product data = new Product();
-        foreach (var rs in ViewBag.Product)
-        {
-            if (rs.ID == item.ID_Product)
-            {
-                data = rs;
-                break;
-            }
-        }
+
         ProductSize dataSize = new ProductSize();
         foreach (var rsS in ViewBag.Size)
         {
             if (rsS.ID == item.ID_Size)
             {
                 dataSize = rsS;
+                foreach (var rs in ViewBag.Product)
+                {
+                    if (rs.ID == rsS.ID_Product)
+                    {
+                        data = rs;
+                        break;
+                    }
+                }
                 break;
             }
 

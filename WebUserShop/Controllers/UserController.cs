@@ -95,6 +95,11 @@ namespace WebUserShop.Controllers
         {
             HttpContext.Session.Remove("user1");
             HttpContext.Session.Remove("userHello");
+            if (HttpContext.Session.GetString("Cart_Key") != null)
+            {
+                HttpContext.Session.Remove("Cart_Key");
+
+            }
             return RedirectToAction("Index", "TheWayShop");
         }
 
@@ -158,6 +163,7 @@ namespace WebUserShop.Controllers
 
                 //danh sách đơn hàng
                 var ListOrder= res.Where(s => s.ID_User == user.ID).ToList();
+               
                 ViewBag.ListOrder = ListOrder;
                 return View();
             }

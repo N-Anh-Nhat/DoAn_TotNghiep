@@ -35,13 +35,14 @@ namespace WebUserShop.ApiCaller
             return x;
         }
 
-        public async Task<Message<DataResults<object>>> UpdateOrder(Orders data, string user, string token)
+        public async Task<Message<DataResults<object>>> UpdateOrder(Orders data, int TrangThai, string user, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "Order/UpdateOrder?user=" + user));
+                "Order/UpdateOrder?user=" + user + "&TrangThai=" + TrangThai));
             var x = await PostAsync<DataResults<object>, Orders>(requestUrl, data, token);
             return x;
         }
+
 
 
     }

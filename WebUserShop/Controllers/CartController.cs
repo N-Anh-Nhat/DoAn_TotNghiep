@@ -54,47 +54,54 @@ namespace WebUserShop.Controllers
                 var rsSize = await ApiClientFactory.Instance.GetProductSize("");
                 var Pro = new Product();
                 Pro = rsPro.Where(x => x.ID == id).FirstOrDefault();
-                var listSize = new List<ProductSize>();
-                listSize = rsSize.Where(x => x.ID_Product == id).ToList();
-                if (HttpContext.Session.GetString(key_cart) == null)
+                var listSize = new ProductSize();
+                listSize = rsSize.Where(x => x.ID == size).FirstOrDefault();
+                if(listSize.Quality == 0)
                 {
-
-                    var listCartItem = new List<Order_Details>();
-                    var item = new Order_Details();
-                    item.ID_Product = Pro.ID;
-                    item.ID_Size = size;
-                    item.Price = Pro.Price;
-                    item.Quality = 1;
-                    item.Note = Pro.Name;
-                    item.PromotionPrice = Pro.PromotionPrice;
-                    listCartItem.Add(item);
-                    SaveCart(listCartItem);
-                    return Json(true);
+                    return Json(4);
                 }
                 else
                 {
-                    var lst = GetCartItem();
-                    var ktr = lst.Find(x => x.ID_Product == id && x.ID_Size == size);
-                    if (ktr != null)
+                    if (HttpContext.Session.GetString(key_cart) == null)
                     {
-                        ktr.Quality = ktr.Quality + 1;
-                        SaveCart(lst);
-                    }
-                    else
-                    {
+
+                        var listCartItem = new List<Order_Details>();
                         var item = new Order_Details();
-                        item.ID_Product = Pro.ID;
                         item.ID_Size = size;
                         item.Price = Pro.Price;
                         item.Quality = 1;
                         item.Note = Pro.Name;
                         item.PromotionPrice = Pro.PromotionPrice;
-                        lst.Add(item);
-                        SaveCart(lst);
+                        listCartItem.Add(item);
+                        SaveCart(listCartItem);
+                        return Json(true);
                     }
+                    else
+                    {
+                        var lst = GetCartItem();
+                        var ktr = lst.Find(x => x.ID_Size == size);
+                        if (ktr != null)
+                        {
+                            ktr.Quality = ktr.Quality + 1;
+                            SaveCart(lst);
+                        }
+                        else
+                        {
+                            var item = new Order_Details();
 
-                    return Json(true);
+                            item.ID_Size = size;
+                            item.Price = Pro.Price;
+                            item.Quality = 1;
+                            item.Note = Pro.Name;
+                            item.PromotionPrice = Pro.PromotionPrice;
+                            lst.Add(item);
+                            SaveCart(lst);
+                        }
+
+                        return Json(true);
+                    }
                 }
+               
             }
            catch(Exception e)
             {
@@ -111,7 +118,7 @@ namespace WebUserShop.Controllers
                 if (HttpContext.Session.GetString(key_cart) != null)
                 {
                     var listItem = GetCartItem();
-                    var item = listItem.Find(x => x.ID_Product == id);
+                    var item = listItem.Find(x => x.ID_Size == id);
                     if (item != null)
                         listItem.Remove(item);
                     if(listItem.Count > 0)
@@ -130,14 +137,14 @@ namespace WebUserShop.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateItemInCart(int id,int size, int soluong)
+        public async Task<IActionResult> UpdateItemInCart(int size, int soluong)
         {
             try
             {
                 if (HttpContext.Session.GetString(key_cart) != null)
                 {
                     var listItem = GetCartItem();
-                    var item = listItem.Find(x => x.ID_Product == id && x.ID_Size == size);
+                    var item = listItem.Find(x => x.ID_Size == size);
                     if (item != null)
                         item.Quality = soluong;
                     SaveCart(listItem);
@@ -176,6 +183,8 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+                string a = HttpContext.Session.GetString("user1");
+                var user = JsonConvert.DeserializeObject<User>(a);
                 var data = GetCartItem();
 
                
@@ -200,7 +209,17 @@ namespace WebUserShop.Controllers
                         var res = await ApiClientFactory.Instance.InsertOrder_Detail(data, "", "");
                         if (res.IsSuccess == true)
                             if (res.Data.Status == 1)
+                            {
                                 ClearCart();
+                                MailContent content = new MailContent
+                                {
+                                    To = user.Email,
+                                    Subject = "Đặt hàng thành công",
+                                    Body = "<p><strong>Đơn hàng của bạn đã được đặt </strong></p>" + "<p>Cảm ơn bạn đã ủng hộ shop!. Vui lòng liên hệ Admin SDT 0365742833 để biết thêm chi tiết.</p>"
+                                };
+                                var send = await ApiClientFactory.Instance.SendMail(content, "");
+                            }
+                                
                         return Json(res);
                     }
                     else
@@ -213,7 +232,51 @@ namespace WebUserShop.Controllers
             }
             return NotFound();
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdatelstOrder([FromBody] Orders data, int TrangThai)
+        {
+            if (HttpContext.Session.GetString("user1") != null)
+            {
+                string a = HttpContext.Session.GetString("user1");
+                var user = JsonConvert.DeserializeObject<User>(a);
 
+                data.Status = true;
+
+                if (TrangThai == 4)
+                {
+                    var OderDetail = await ApiClientFactory.Instance.GetOrder_detailById(data.ID, "");
+                    List<ProductSize> updatelist = new List<ProductSize>();
+                    var listProductSize = await ApiClientFactory.Instance.GetProductSize("");
+                    foreach (var item in listProductSize)
+                    {
+                        foreach (var rs in OderDetail)
+                        {
+                            if (rs.ID_Size == item.ID)
+                            {
+                                item.Quality = item.Quality + rs.Quality;
+                                updatelist.Add(item);
+                            }
+                        }
+                    }
+                    var resUpdate = await ApiClientFactory.Instance.UpdatelstProductSize(updatelist, "", "");
+                    if (resUpdate.Data.Status == 1)
+                    {
+                        var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", "");
+                        MailContent content = new MailContent
+                        {
+                            To = user.Email,
+                            Subject = "Hủy đặt hàng thành công",
+                            Body = "<p><strong>Đơn hàng của bạn đã được hủy </strong></p>" + "<p>Cảm ơn bạn đã ủng hộ shop!. Vui lòng liên hệ Admin SDT 0365742833 để biết thêm chi tiết.</p>"
+                        };
+                        return Json(res);
+                    }
+                    else
+                        return Json(resUpdate);
+                }
+               
+            }
+            return RedirectToAction("Index", "Login");
+        }
 
         #region Xử lí cart
         public void SaveCart(List<Order_Details> lst)

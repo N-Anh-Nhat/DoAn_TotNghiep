@@ -2,7 +2,7 @@
 
     <!-- Start content -->
     <div class="content">
-        
+
         <div class="container-fluid">
             <div class="row content-box">
                 <h5>Duyệt đơn hàng</h5>
@@ -116,14 +116,14 @@
                     location: "after",
                     toolbar: "bottom",
                     options: {
-                        text: "Duyệt",
+                        text: "Xác nhận",
                         type: "success",
                         onClick: function (e) {
 
                             $.ajax({
                                 "async": false,
                                 "crossDomain": true,
-                                "url": "@Url.Action("UpdatelstOrder", "Order")?TrangThai=2",
+                                "url": "@Url.Action("UpdatelstOrder", "Order")?TrangThai=3",
                                 "headers": {
                                     "Content-Type": "application/json",
                                     "cache-control": "no-cache"
@@ -136,7 +136,7 @@
                                     if (result.Data.Status == 1) {
                                         DanhGia.hide();
                                         $("#gridList").dxDataGrid("instance").refresh();
-                                        DevExpress.ui.notify("Duyệt hóa đơn thành công.", "success", 3000);
+                                        DevExpress.ui.notify("Hóa đơn giao thành công thành công.", "success", 3000);
 
                                     }
                                 }
@@ -193,7 +193,7 @@
                                             if (result.Data.Status == 1) {
                                                 DanhGia.hide();
                                                 $("#gridList").dxDataGrid("instance").refresh();
-                                                DevExpress.ui.notify("Huỷ hóa đơn thành công.", "success", 3000);
+                                                DevExpress.ui.notify("Duyệt hóa đơn thành công.", "success", 3000);
 
                                             }
                                         }
@@ -224,7 +224,7 @@
                             $(`<p> <b>Tên giỏ hàng:</b> <span>${e.row.key.Name_order}</span></p>`),
                         ),
                         $("<div class='col-md-3'/>").append(
-                            $(`<p> <b>Trạng thái:</b> <span>Đang chờ duyệt</span></p>`),
+                            $(`<p> <b>Trạng thái:</b> <span>Đang giao</span></p>`),
                         ),
                         $("<div class='col-md-6'/>").append(
                             $(`<p> <b>Phương thức giao hàng:</b> <span>${e.row.key.Type_ship}</span></p>`),
@@ -295,15 +295,15 @@
             key: ["ID", "Name_order", "Type_ship", "Address",
                 "Email", "Phone", "Note", "ToTal_Money", "ID_User", "CreatedDate","Status"],
             load: function () {
-                return sendRequest("Order/GetlstOrder", "GET", "")
+                return sendRequest("OrderShip/GetlstOrder", "GET", "")
             },
             insert: function (values) {
 
-                return sendRequest("Order/InsertlstOrder", "POST", JSON.stringify(values));
+                return sendRequest("OrderShip/InsertlstOrder", "POST", JSON.stringify(values));
             },
             update: function (key, values) {
 
-                return sendRequest("Order/UpdatelstOrder?value=" + JSON.stringify(values), "POST", JSON.stringify(key));
+                return sendRequest("OrderShip/UpdatelstOrder?value=" + JSON.stringify(values), "POST", JSON.stringify(key));
             },
             //remove: function (key) {
             //    return sendRequest("Category/DeletelstCategory?id=" + key, "DELETE", "");

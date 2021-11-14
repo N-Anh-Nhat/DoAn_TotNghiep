@@ -45,10 +45,10 @@ namespace WebAPI.Controllers
         //    return Ok(await dbContext.DeleteOrder(Order, user));
         //}
         [HttpPost("UpdateOrder")]
-        public async Task<IActionResult> UpdateOrder(Orders Order, string user)
+        public async Task<IActionResult> UpdateOrder(Orders Order,int TrangThai, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            return Ok(await dbContext.UpdateOrder(Order, user));
+            return Ok(await dbContext.UpdateOrder(Order,TrangThai, user));
         }
         [HttpGet("ReportOrder")]
         public async Task<IActionResult> ReportOrder(int pYear, string user)

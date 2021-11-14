@@ -30,9 +30,9 @@ namespace WebAPI.Services.DataServices
         {
             return await _servicesBase.GetList<User>("User", conString);
         }
-        public async Task<User> GetUserByID(string Id)
+        public async Task<User> GetUserByID(int Id)
         {
-            var results = await _servicesBase.GetById<User>("User", "ID", Id, conString);
+            var results = await _servicesBase.GetById<User>("User", "ID", Id.ToString(), conString);
             return results;
         }
         public async Task<DataResults<object>> InsertUser(User data, string user)
