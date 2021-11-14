@@ -38,7 +38,7 @@ namespace WebAdminShop.Controllers
                 decimal sum = 0;
                 foreach (var item in res)
                 {
-                    if (item.Status == true)
+                    if (item.ID_TrangThaiDonHang == 3)
                     {
                         DemDonDaBan++;
                         if(item.CreatedDate.Month == DateTime.Now.Month)
@@ -49,7 +49,7 @@ namespace WebAdminShop.Controllers
                         
                     }
                        
-                    if (item.Status == false)
+                    if (item.ID_TrangThaiDonHang == 1)
                         DemDonChuaBan++;
                 }
                 ViewData["CountProduct"] = res1.Count();

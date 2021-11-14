@@ -31,15 +31,17 @@
                     <table class="table">
                         <thead class="thead-ligh">
                             <tr>
+
+                                <th scope="col">Công cụ</th>
                                 <th scope="col">Mã đơn hàng</th>
                                 <th scope="col">Tên đơn hàng</th>
+                                <th scope="col">Trạng thái</th>
                                 <th scope="col">Giao hàng</th>
                                 <th scope="col">Địa chỉ</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Note</th>
                                 <th scope="col">Phone</th>
                                 <th scope="col">Tổng tiền</th>
-                                <th scope="col">Trạng thái</th>
                             </tr>
                         </thead>
                         @foreach (var item in ViewBag.ListOrder)
@@ -47,6 +49,18 @@
                             String ConvPrivcie = String.Format("{0:#,#.##}", item.ToTal_Money);
                             <tbody>
                                 <tr>
+                                    @if (@item.ID_TrangThaiDonHang == 1)
+                                    { var data = item;
+                                        <td class="name-pr">
+                                            <button onclick="HuyHD(@item.ID)" type="button" class="btn btn-danger">Hủy đơn</button>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="name-pr">
+                                            <button type="button" class="btn btn-danger" disabled>Hủy đơn</button>
+                                        </td>
+                                    }
                                     <td class="name-pr">
                                         <a class="btn" onclick="chiTietDonHang(@item.ID, 'Chi tiết hóa đơn', 'Mã đơn hàng: @item.ID')">
                                             <p>
@@ -58,6 +72,25 @@
                                         <p>
                                             @item.Name_order
                                         </p>
+                                    </td>
+                                    <td class="name-pr">
+
+                                        @if (@item.ID_TrangThaiDonHang == 1)
+                                        {
+                                            <p>Đang chờ duyệt</p>
+                                        }
+                                        @if (@item.ID_TrangThaiDonHang == 2)
+                                        {
+                                            <p>Đơn hàng đang được giao</p>
+                                        }
+                                        @if (@item.ID_TrangThaiDonHang == 3)
+                                        {
+                                            <p>Đơn hàng giao thành công</p>
+                                        }
+                                        @if (@item.ID_TrangThaiDonHang == 4)
+                                        {
+                                            <p>Đơn hàng đã bị hủy</p>
+                                        }
                                     </td>
                                     <td class="name-pr">
                                         <p>
@@ -89,19 +122,8 @@
                                             @ConvPrivcie VND
                                         </p>
                                     </td>
-                                    <td class="name-pr">
-                                        <p>
-                                            @if (@item.Status == true)
-                                            {
-                                            <p>ADMIN đã duyệt</p>
-                                        }
-                                            @if (@item.Status == false)
-                                            {
-                                                <p>Đang chờ duyệt</p>
-                                            }
-                                            </p>
-                                        </td>
-                                    </tr>
+
+                                </tr>
 
 
                                 </tbody>
@@ -126,8 +148,40 @@
                 $('#form-modal .modal-title').html(title);
                 $('#form-modal .modal-title2').html(title2);
                 $('#form-modal').modal('show');
-            
+
             }
         })
+    }
+    function HuyHD(id) {
+        var r = confirm("Bạn có muốn hủy đơn hàng này không?");
+        var data = {
+            ID : id
+        }
+        if (r == true) {
+           $.ajax({
+                "async": false,
+                "crossDomain": true,
+                "url": "@Url.Action("UpdatelstOrder", "Cart")?TrangThai=4",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache"
+               },
+                "method": "POST",
+                "data": JSON.stringify(data),
+
+            }).done(function (result) {
+                if (result.isSuccess == 1) {
+                    if (result.data.status == 1) {
+                        alert("Hủy đơn hàng thành công");
+                        window.location.reload();
+
+                    }
+                }
+
+            })
+        } else {
+            txt = "You pressed Cancel!";
+        }
+
     }
 </script>

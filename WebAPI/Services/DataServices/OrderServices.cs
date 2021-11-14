@@ -50,18 +50,17 @@ namespace WebAPI.Services.DataServices
                 CreatedBy = user,
                 CreatedDate = DateTime.Now.ToString("yyyy-MM-dd"),
                 Status = false,
+                ID_TrangThaiDonHang = 1,
             };
             return await _servicesBase.Insert("Orders", obj, conString);
         }
-        public async Task<DataResults<object>> UpdateOrder(Orders data, string user)
+        public async Task<DataResults<object>> UpdateOrder(Orders data,int TrangThai, string user)
         {
             object obj = new
             {
-                data.Name_order,
-                data.Type_ship,
-                data.ToTal_Money,
-                data.Status,
+                
                 ModifiedDate = DateTime.Now,
+                ID_TrangThaiDonHang = TrangThai
             };
             DataResults<object> result = new DataResults<object>();
             try
@@ -115,9 +114,11 @@ namespace WebAPI.Services.DataServices
                         .GroupByRaw("Product.Name, Category.Name,CAST(Orders.ModifiedDate AS DATE),Order_Details.PromotionPrice,Order_Details.Price")
                         .OrderByRaw("CAST(Orders.ModifiedDate AS DATE)")
                         .Where("Orders.Status","true")
+                        .Where("Orders.ID_TrangThaiDonHang",3)
                         .WhereDatePart("year", "Orders.ModifiedDate",pyear)
                         .Join("Order_Details", "Order_Details.ID_Order", "Orders.ID")
-                        .Join("Product", "Product.ID", "Order_Details.ID_Product")
+                        .Join("ProductSize", "ProductSize.ID", "Order_Details.ID_Size")
+                        .Join("Product", "Product.ID", "ProductSize.ID_Product")
                         .Join("Category", "Category.ID", "Product.ID_Catelogy");
                         
                         

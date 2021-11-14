@@ -29,7 +29,13 @@ namespace WebAdminShop.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            string json = userInfo.GetUserInfo(HttpContext);
+
+            if (json != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
 
 

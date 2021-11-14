@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Models;
 using WebAPI.Services.DataServices;
 using WebAPI.Services.Interface;
 
@@ -40,6 +41,10 @@ namespace WebAPI
             services.AddTransient<IRole, RoleServices>();
             services.AddTransient<IWishList, WishListServices>();
             services.AddTransient<ICMT, CMTServices>();
+            services.AddOptions();                                         // Kích hoạt Options
+            var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
+            services.Configure<MailSettings>(mailsettings);                // đăng ký để Inject
+            services.AddTransient<ISendMailServices, SendMailServices>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopThoiTrangAPI", Version = "v1" });

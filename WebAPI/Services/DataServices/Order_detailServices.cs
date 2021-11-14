@@ -78,7 +78,7 @@ namespace WebAPI.Services.DataServices
                     {
                         var obj = new
                         {
-                            item.ID_Product,
+                            
                             item.ID_Size,
                             item.Note,
                             item.Price,

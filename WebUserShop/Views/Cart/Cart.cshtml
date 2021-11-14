@@ -28,6 +28,9 @@
         int countlist = lst.Count();
         Decimal TongHD = 0;
         Decimal ThanhTien;
+        string DC = null;
+        string mail = null;
+        string sdt = null;
             <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -52,20 +55,21 @@
                                     dem++;
 
                                     Product data = new Product();
-                                    foreach (var rs in ViewBag.Product)
-                                    {
-                                        if (rs.ID == item.ID_Product)
-                                        {
-                                            data = rs;
-                                            break;
-                                        }
-                                    }
+
                                     ProductSize dataSize = new ProductSize();
                                     foreach (var rsS in ViewBag.Size)
                                     {
                                         if (rsS.ID == item.ID_Size)
                                         {
                                             dataSize = rsS;
+                                            foreach (var rs in ViewBag.Product)
+                                            {
+                                                if (rs.ID == rsS.ID_Product)
+                                                {
+                                                    data = rs;
+                                                    break;
+                                                }
+                                            }
                                             break;
                                         }
 
@@ -104,7 +108,7 @@
                                             <p>@dataSize.Size</p>
                                         </td>
                                         <td class="quantity-box">
-                                            <input id="soluong-@dem" onchange="UpdateItem(@item.ID_Product,@item.ID_Size,@item.Price,@item.PromotionPrice,@dem,@dataSize.Quality,@countlist)" type="number" size="4" value="@item.Quality" max="@dataSize.Quality" min="1" step="1" class="c-input-text qty text">
+                                            <input id="soluong-@dem" onchange="UpdateItem(@item.ID_Size,@item.Price,@item.PromotionPrice,@dem,@dataSize.Quality,@countlist)" type="number" size="4" value="@item.Quality" max="@dataSize.Quality" min="1" step="1" class="c-input-text qty text">
                                         </td>
                                         <td>
                                             @{
@@ -114,7 +118,7 @@
                                             <input style="width: auto" type="number"  disabled="disabled" id="TongGia1SP-@ConvPrivciedem" value="@Tong" /> VND
                                         </td>
                                         <td class="remove-pr">
-                                            <a onclick="RemoveItem(@data.ID,@countlist)">
+                                            <a onclick="RemoveItem(@item.ID_Size,@countlist)">
                                                 <i class="fas fa-times"></i>
                                             </a>
                                         </td>
@@ -141,7 +145,14 @@
             @{
                 ThanhTien = TongHD;
              }
-           
+           @if(Context.Session.GetString("user1") != null)
+           {
+               var jsuser = Context.Session.GetString("user1");
+               User resuser = JsonConvert.DeserializeObject<User>(jsuser);
+               DC = resuser.Address;
+               sdt = resuser.Phone;
+               mail = resuser.Email;
+           }
             <div class="row my-12">
                 <div class="col-lg-12 col-sm-12">
                     <div class="coupon-box">
@@ -151,15 +162,15 @@
                             <div class="row">
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Address">Địa chỉ giao hàng</label>
-                                    <input id="Address" class="form-control" placeholder="Nhập địa chỉ" aria-label="Coupon code" type="text">
+                                    <input id="Address" value="@DC" class="form-control" placeholder="Nhập địa chỉ" aria-label="Coupon code" type="text">
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Phone">Số điện thoại</label>
-                                    <input id="Phone" class="form-control" placeholder="Nhập số điện thoại" aria-label="Coupon code" type="number">
+                                    <input id="Phone" value="@sdt" class="form-control" placeholder="Nhập số điện thoại" aria-label="Coupon code" type="number">
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Email">Gmail</label>
-                                    <input id="Email" class="form-control" placeholder="Nhập email" aria-label="Coupon code" type="email">
+                                    <input id="Email" value="@mail" class="form-control" placeholder="Nhập email" aria-label="Coupon code" type="email">
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label for="Note">Ghi chú (Tên người nhận, lưu ý,...)</label>
@@ -272,7 +283,7 @@
 </div>
 <!-- End Cart -->
 <script>
-    function UpdateItem(id, size, price, proprice, iditem, max ,count) {
+    function UpdateItem(size, price, proprice, iditem, max ,count) {
         var IDSoLuong = "soluong-" + iditem;
         var soluong = document.getElementById(IDSoLuong).value;
         var SPrice = price - (price * (proprice / 100));
@@ -287,7 +298,7 @@
 
 
         $.ajax({
-            url: "../Cart/UpdateItemInCart?id=" + id + "&size=" + size + "&soluong=" + soluong,
+            url: "../Cart/UpdateItemInCart?size=" + size + "&soluong=" + soluong,
             cache: false,
             type: "POST",
             success: function (res) {

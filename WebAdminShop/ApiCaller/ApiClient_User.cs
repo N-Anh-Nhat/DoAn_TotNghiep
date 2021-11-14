@@ -8,7 +8,7 @@ namespace WebAdminShop.ApiCaller
 {
     public partial class ApiClient
     {
-        public async Task<User> GetUserById(string Id, string token)
+        public async Task<User> GetUserById(int Id, string token)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/GetUserById?Id=" + Id));

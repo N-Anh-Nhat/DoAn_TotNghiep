@@ -8,8 +8,7 @@ namespace WebAPI.Models
     public class Order_Details
     {
         public int ID { get; set; }
-        public int ID_Order { get; set; }
-        public int ID_Product { get; set; }
+        public int ID_Order { get; set; }      
         public int ID_Size { get; set; }
         public int Quality { get; set; }
         public string Note { get; set; }
