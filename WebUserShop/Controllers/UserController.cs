@@ -40,11 +40,12 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
-                var rsPro = await ApiClientFactory.Instance.GetProduct("");
-                var rsSize = await ApiClientFactory.Instance.GetProductSize("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var rsPro = await ApiClientFactory.Instance.GetProduct(Token);
+                var rsSize = await ApiClientFactory.Instance.GetProductSize(Token);
                 ViewBag.Product = rsPro;
                 ViewBag.Size = rsSize;
-                var res = await ApiClientFactory.Instance.GetOrder_detailById(id,"");
+                var res = await ApiClientFactory.Instance.GetOrder_detailById(id,Token);
                 ViewBag.listorder = res;    
                 return PartialView();
             }
@@ -56,9 +57,10 @@ namespace WebUserShop.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] User user)
         {
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
             user.Status = true;
             user.ID_Role = 2;
-            var KQ = await ApiClientFactory.Instance.InsertUser(user, "", "");
+            var KQ = await ApiClientFactory.Instance.InsertUser(user, "", Token);
             return Json(KQ);
 
 
@@ -71,8 +73,9 @@ namespace WebUserShop.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string tkLogin, string mkLogin)
          {
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
             var x = false;
-            var res = await ApiClientFactory.Instance.GetUser("");
+            var res = await ApiClientFactory.Instance.GetUser(Token);
             var c_pass = Security.TextToMD5(mkLogin);
             var data = res.Where(u => u.UserName.Equals(tkLogin) && u.Password.Equals(c_pass) && u.ID_Role == 2).FirstOrDefault<User>(); ;
             var dataAdmin = res.Where(u => u.UserName.Equals(tkLogin) && u.Password.Equals(c_pass) && u.ID_Role == 1).FirstOrDefault<User>(); ;
@@ -124,8 +127,8 @@ namespace WebUserShop.Controllers
         [HttpGet]
         public async Task<IActionResult> GetlstUser(string User)
         {
-
-            var res = await ApiClientFactory.Instance.GetUser("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var res = await ApiClientFactory.Instance.GetUser(Token);
             //kiem tra trung user
             var UserCount = res.Where(u => u.UserName.Equals(User)).Select(x => x.ID).Count();
             bool result=UserCount > 0 ? false : true;
@@ -136,6 +139,8 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+
+
                 bool result = true;
                 string b = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(b);
@@ -160,8 +165,8 @@ namespace WebUserShop.Controllers
         [HttpGet]
         public async Task<IActionResult> GetlstUserofMail(string mail)
         {
-
-            var resMail = await ApiClientFactory.Instance.GetUser("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var resMail = await ApiClientFactory.Instance.GetUser(Token);
             //kiem tra trung mail
             var mailCount = resMail.Where(u => u.Email.Equals(mail)).Select(x => x.ID).Count();
             bool result = mailCount > 0 ? false : true;
@@ -172,10 +177,11 @@ namespace WebUserShop.Controllers
         {
            if (HttpContext.Session.GetString("user1") != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 string b = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(b);
 
-                var res = await ApiClientFactory.Instance.GetOrder("");
+                var res = await ApiClientFactory.Instance.GetOrder(Token);
                 
 
 
@@ -196,9 +202,10 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 string a = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(a);
-                var wl = await ApiClientFactory.Instance.GetWishList("");
+                var wl = await ApiClientFactory.Instance.GetWishList(Token);
                 var listSpWishList = wl.Where(s => s.ID_User == user.ID).ToList();
                 foreach (var item in listSpWishList)
                 {
@@ -208,7 +215,7 @@ namespace WebUserShop.Controllers
                     }
                 }
                 data.ID_User = user.ID;
-                var res = await ApiClientFactory.Instance.InsertWishList(data, user.UserName, "");
+                var res = await ApiClientFactory.Instance.InsertWishList(data, user.UserName, Token);
                 return Json(true);
             }
             else
@@ -221,7 +228,8 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
-                var wl = await ApiClientFactory.Instance.DeleteWishList(data,"","");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var wl = await ApiClientFactory.Instance.DeleteWishList(data,"",Token);
                 return Json(true);
             }
             else
@@ -235,10 +243,11 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 string a = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(a);
                 data.ID_User = user.ID;
-                var insertCmt = await ApiClientFactory.Instance.InsertCMT(data, user.UserName, "");
+                var insertCmt = await ApiClientFactory.Instance.InsertCMT(data, user.UserName, Token);
                 return Json(true);
             }
             else 
@@ -250,7 +259,8 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("userAdmin") != null)
             {
-                var deleCmt = await ApiClientFactory.Instance.DeleteCMT(data, "", "");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var deleCmt = await ApiClientFactory.Instance.DeleteCMT(data, "", Token);
                 return Json(true);
             }
             else

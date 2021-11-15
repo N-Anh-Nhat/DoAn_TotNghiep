@@ -47,7 +47,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetUser("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetUser(Token);
 
                 return Json(res);
             }
@@ -64,8 +65,8 @@ namespace WebAdminShop.Controllers
                 //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
                 //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
-
-                var res = await ApiClientFactory.Instance.InsertUser(data, "", "");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.InsertUser(data, "", Token);
 
                 return Json(res);
 
@@ -80,11 +81,12 @@ namespace WebAdminShop.Controllers
             JsonConvert.PopulateObject(value, data);
             if (json != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
                 //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-                var res = await ApiClientFactory.Instance.UpdateUser(data, "", "");
+                var res = await ApiClientFactory.Instance.UpdateUser(data, "", Token);
 
                 return Json(res);
 

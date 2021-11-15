@@ -42,8 +42,8 @@ namespace WebAdminShop.Controllers
         [HttpGet]
         public async Task<IActionResult> GetlstFeedback()
         {
-
-            var res = await ApiClientFactory.Instance.GetFeedback("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var res = await ApiClientFactory.Instance.GetFeedback(Token);
 
             return Json(res);
         }

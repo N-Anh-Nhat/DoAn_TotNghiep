@@ -189,7 +189,7 @@ namespace WebAdminShop.ApiCaller
         
         public async Task<string> GetTokenAsync()
         {
-            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture, "Token/GetToken?u=Admin&p=ctco123"));
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture, "Token/GetToken?u=Admin&p=nhatphung&account=Admin"));
 
             var data = await GetAsync<string>(requestUrl);
             

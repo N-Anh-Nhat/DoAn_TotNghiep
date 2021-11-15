@@ -27,6 +27,7 @@ namespace WebUserShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<MySettingsModel>(Configuration.GetSection("my_setting2"));
+            services.Configure<AuthenInfo>(Configuration.GetSection("authen_setting"));
 
             services.AddSingleton(Configuration);
 

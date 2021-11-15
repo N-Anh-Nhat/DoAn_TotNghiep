@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,19 +20,21 @@ namespace WebAPI.Controllers
         public UserController(IUser dbcontext) => this.dbContext = dbcontext;
 
         [HttpGet("GetUser")]
+        [Authorize]
         public async Task<IActionResult> GetUser()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetUser());
         }
         [HttpGet("GetUserById")]
+        [Authorize]
         public async Task<IActionResult> GetUserById(int Id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetUserByID(Id));
         }
         [HttpPost("InsertsUser")]
-
+        [Authorize]
         public async Task<IActionResult> InsertsUser(User data, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -39,6 +42,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("UpdateUser")]
+        [Authorize]
         public async Task<IActionResult> UpdateUser(User users, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -46,6 +50,7 @@ namespace WebAPI.Controllers
         }
         //Login
         [HttpGet("GetCheckLogin")]
+        
         public async Task<IActionResult> GetCheckLogin(string username, string password)
         {
             if (string.IsNullOrEmpty(username)) ModelState.AddModelError("Username", "Username is required");

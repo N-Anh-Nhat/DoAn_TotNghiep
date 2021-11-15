@@ -33,9 +33,10 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetProduct("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetProduct(Token);
                 ViewBag.listproduct = res;
-                var res2 = await ApiClientFactory.Instance.GetProductSize("");
+                var res2 = await ApiClientFactory.Instance.GetProductSize(Token);
                 ViewBag.listsize = res2;
                 return View();
             }
@@ -51,7 +52,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetOrder("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetOrder(Token);
                 List<Orders> data = new List<Orders>();
                 foreach (var item in res)
                 {
@@ -71,7 +73,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetOrder_detailById(id, "");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetOrder_detailById(id, Token);
 
                 return Json(res);
             }
@@ -87,8 +90,8 @@ namespace WebAdminShop.Controllers
             //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
             //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
-
-            var res = await ApiClientFactory.Instance.InsertOrder(data, "", "");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var res = await ApiClientFactory.Instance.InsertOrder(data, "", Token);
 
             return Json(res);
             ////}
@@ -104,10 +107,10 @@ namespace WebAdminShop.Controllers
             {
 
                 data.Status = true;
-
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 if (TrangThai == 4)
                 {
-                    var OderDetail = await ApiClientFactory.Instance.GetOrder_detailById(data.ID, "");
+                    var OderDetail = await ApiClientFactory.Instance.GetOrder_detailById(data.ID, Token);
                     List<ProductSize> updatelist = new List<ProductSize>();
                     var listProductSize = await ApiClientFactory.Instance.GetProductSize("");
                     foreach (var item in listProductSize)
@@ -121,10 +124,10 @@ namespace WebAdminShop.Controllers
                             }
                         }
                     }
-                    var resUpdate = await ApiClientFactory.Instance.UpdatelstProductSize(updatelist, "", "");
+                    var resUpdate = await ApiClientFactory.Instance.UpdatelstProductSize(updatelist, "", Token);
                     if (resUpdate.Data.Status == 1)
                     {
-                        var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", "");
+                        var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", Token);
                         return Json(res);
                     }
                     else
@@ -132,7 +135,7 @@ namespace WebAdminShop.Controllers
                 }
                 else
                 {
-                    var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", "");
+                    var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", Token);
                     return Json(res);
                 }
             }

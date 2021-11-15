@@ -38,7 +38,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetCategory("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetCategory(Token);
                 ViewBag.listCategory = res;
                 return View();
             }
@@ -53,7 +54,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetNews("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetNews(Token);
 
                 return Json(res);
             }
@@ -68,7 +70,7 @@ namespace WebAdminShop.Controllers
             if (json != null)
             {
                 //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
-
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
                 Message<DataResults<Object>> err = new Message<DataResults<Object>>();
                 if (file != null)
@@ -90,7 +92,7 @@ namespace WebAdminShop.Controllers
 
                 }
 
-                var res = await ApiClientFactory.Instance.InsertNews(data, "", "");
+                var res = await ApiClientFactory.Instance.InsertNews(data, "", Token);
 
                 return Json(res);
             }
@@ -104,7 +106,7 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 Message<DataResults<Object>> err = new Message<DataResults<Object>>();
                 if (file != null)
                 {
@@ -125,7 +127,7 @@ namespace WebAdminShop.Controllers
 
                 }
 
-                var res = await ApiClientFactory.Instance.UpdateNews(data, "", "");
+                var res = await ApiClientFactory.Instance.UpdateNews(data, "", Token);
 
                 return Json(res);
 

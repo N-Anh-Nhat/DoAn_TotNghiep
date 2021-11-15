@@ -33,7 +33,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetProduct("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetProduct(Token);
                 ViewBag.Product = res;
                 return View();
             }
@@ -48,7 +49,8 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetProductSize("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetProductSize(Token);
                 return Json(res);
             }
             return RedirectToAction("Index", "Login");
@@ -61,11 +63,12 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 //UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
                 //curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
 
-                var res = await ApiClientFactory.Instance.InsertProductSize(data, "", "");
+                var res = await ApiClientFactory.Instance.InsertProductSize(data, "", Token);
 
                 return Json(res);
             }
@@ -82,8 +85,8 @@ namespace WebAdminShop.Controllers
                 //    UserInfoModel curUser = JsonConvert.DeserializeObject<UserInfoModel>(json);
 
                 //    curUser.token = await ApiClientFactory.Instance.RefeshToken(curUser);
-
-                var res = await ApiClientFactory.Instance.UpdateProductSize(data, "", "");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.UpdateProductSize(data, "", Token);
 
                 return Json(res);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,21 @@ namespace WebAPI.Controllers
         public ProductSizeController(IProductSize dbcontext) => this.dbContext = dbcontext;
 
         [HttpGet("GetProductSize")]
+        [Authorize]
         public async Task<IActionResult> GetProductSize()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetProductSize());
         }
         [HttpGet("GetProductSizeById")]
+        [Authorize]
         public async Task<IActionResult> GetProductSizeById(string Id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.GetProductSizeByID(Id));
         }
         [HttpPost("InsertProductSize")]
+        [Authorize]
 
         public async Task<IActionResult> InsertProductSize(ProductSize ProductSize, string user)
         {
@@ -39,12 +43,14 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("UpdateProductSize")]
+        [Authorize]
         public async Task<IActionResult> UpdateProductSize(ProductSize ProductSize, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await dbContext.UpdateProductSize(ProductSize, user));
         }
         [HttpPost("UpdateListProductSize")]
+        [Authorize]
         public async Task<IActionResult> UpdateListProductSize(List<ProductSize> data, string user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

@@ -36,8 +36,9 @@ namespace WebUserShop.Controllers
         }
         public async Task<IActionResult> Cart()
         {
-            var rsPro = await ApiClientFactory.Instance.GetProduct("");
-            var rsSize = await ApiClientFactory.Instance.GetProductSize("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var rsPro = await ApiClientFactory.Instance.GetProduct(Token);
+            var rsSize = await ApiClientFactory.Instance.GetProductSize(Token);
             ViewBag.Product = rsPro;
             ViewBag.Size = rsSize;
             return View();
@@ -50,8 +51,9 @@ namespace WebUserShop.Controllers
 
             try
             {
-                var rsPro = await ApiClientFactory.Instance.GetProduct("");
-                var rsSize = await ApiClientFactory.Instance.GetProductSize("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var rsPro = await ApiClientFactory.Instance.GetProduct(Token);
+                var rsSize = await ApiClientFactory.Instance.GetProductSize(Token);
                 var Pro = new Product();
                 Pro = rsPro.Where(x => x.ID == id).FirstOrDefault();
                 var listSize = new ProductSize();
@@ -164,7 +166,7 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
-               
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 string a = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(a);
                 data.ID_User = user.ID;
@@ -173,7 +175,7 @@ namespace WebUserShop.Controllers
                 data.Phone = data.Phone.Trim();
                 data.Note = data.Note.Trim();
                 data.Name_order = "Giỏ hàng ngày " + DateTime.Now + "của " + user.UserName;
-                var res = await ApiClientFactory.Instance.InsertOrder(data, user.UserName, "");
+                var res = await ApiClientFactory.Instance.InsertOrder(data, user.UserName, Token);
                 return Json(res);
             }
             return NotFound();
@@ -183,13 +185,14 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 string a = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(a);
                 var data = GetCartItem();
 
                
                 List<ProductSize> updatelist = new List<ProductSize>();
-                var listProductSize = await ApiClientFactory.Instance.GetProductSize("");
+                var listProductSize = await ApiClientFactory.Instance.GetProductSize(Token);
                 foreach(var item in listProductSize)
                 {
                     foreach(var rs in data)
@@ -201,12 +204,12 @@ namespace WebUserShop.Controllers
                         }
                     }
                 }
-                var resUpdate = await ApiClientFactory.Instance.UpdatelstProductSize(updatelist, "", "");
+                var resUpdate = await ApiClientFactory.Instance.UpdatelstProductSize(updatelist, "", Token);
                 if(resUpdate.IsSuccess == true)
                 {
                     if (resUpdate.Data.Status == 1)
                     {
-                        var res = await ApiClientFactory.Instance.InsertOrder_Detail(data, "", "");
+                        var res = await ApiClientFactory.Instance.InsertOrder_Detail(data, "", Token);
                         if (res.IsSuccess == true)
                             if (res.Data.Status == 1)
                             {
@@ -237,6 +240,7 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 string a = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(a);
 
@@ -244,9 +248,9 @@ namespace WebUserShop.Controllers
 
                 if (TrangThai == 4)
                 {
-                    var OderDetail = await ApiClientFactory.Instance.GetOrder_detailById(data.ID, "");
+                    var OderDetail = await ApiClientFactory.Instance.GetOrder_detailById(data.ID, Token);
                     List<ProductSize> updatelist = new List<ProductSize>();
-                    var listProductSize = await ApiClientFactory.Instance.GetProductSize("");
+                    var listProductSize = await ApiClientFactory.Instance.GetProductSize(Token);
                     foreach (var item in listProductSize)
                     {
                         foreach (var rs in OderDetail)
@@ -258,17 +262,17 @@ namespace WebUserShop.Controllers
                             }
                         }
                     }
-                    var resUpdate = await ApiClientFactory.Instance.UpdatelstProductSize(updatelist, "", "");
+                    var resUpdate = await ApiClientFactory.Instance.UpdatelstProductSize(updatelist, "", Token);
                     if (resUpdate.Data.Status == 1)
                     {
-                        var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", "");
+                        var res = await ApiClientFactory.Instance.UpdateOrder(data, TrangThai, "", Token);
                         MailContent content = new MailContent
                         {
                             To = user.Email,
                             Subject = "Hủy đặt hàng thành công",
                             Body = "<p><strong>Đơn hàng của bạn đã được hủy </strong></p>" + "<p>Cảm ơn bạn đã ủng hộ shop!. Vui lòng liên hệ Admin SDT 0365742833 để biết thêm chi tiết.</p>"
                         };
-                        var send = await ApiClientFactory.Instance.SendMail(content, "");
+                        var send = await ApiClientFactory.Instance.SendMail(content, Token);
                         return Json(res);
                     }
                     else

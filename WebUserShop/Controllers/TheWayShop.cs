@@ -36,13 +36,14 @@ namespace WebUserShop.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var category = await ApiClientFactory.Instance.GetCategory("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var category = await ApiClientFactory.Instance.GetCategory(Token);
             ViewBag.category = category.Where(s => s.Status == true).ToList();
-            var lnew = await ApiClientFactory.Instance.GetNews("");
+            var lnew = await ApiClientFactory.Instance.GetNews(Token);
             ViewBag.lnew = lnew.Where(s => s.Status == true).OrderBy(s=>s.CreatedDate).Take(3).ToList();
 
             //san phẩm sale nhiều
-            var product = await ApiClientFactory.Instance.GetProduct("");
+            var product = await ApiClientFactory.Instance.GetProduct(Token);
             ViewBag.productSaleNhieu = product.Where(s => s.Status == true).OrderByDescending(s=>s.PromotionPrice).Take(4).ToList();
 
             //san phẩm sale nhiều
@@ -68,9 +69,9 @@ namespace WebUserShop.Controllers
         [HttpPost]
         public async Task<IActionResult> SendFeedback([FromBody] Feedback feedback)
         {
-
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
             feedback.Status = true;
-            var sendFB = await ApiClientFactory.Instance.InsertFeedback(feedback, "", "");
+            var sendFB = await ApiClientFactory.Instance.InsertFeedback(feedback, "", Token);
             return Json(sendFB);
         }
         public IActionResult My_Account()
@@ -90,17 +91,19 @@ namespace WebUserShop.Controllers
         [HttpPost]
         public async Task<IActionResult> EditAccount([FromBody] User user)
         {
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
             user.ModifiedDate = DateTime.Now;
             user.Password = Security.TextToMD5(user.Password);
-            var editUser = await ApiClientFactory.Instance.UpdateUser(user, "", "");
+            var editUser = await ApiClientFactory.Instance.UpdateUser(user, "", Token);
             HttpContext.Session.Remove("user1");
             HttpContext.Session.Remove("userHello");
             return Json(true);
         }
         public async Task<IActionResult> NEWS()
         {
-            var listnews = await ApiClientFactory.Instance.GetNews("");
-            var category1 = await ApiClientFactory.Instance.GetCategory("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var listnews = await ApiClientFactory.Instance.GetNews(Token);
+            var category1 = await ApiClientFactory.Instance.GetCategory(Token);
 
             ViewBag.ListNews = listnews.Where(s => s.Status == true).ToList();
             return View();
@@ -111,7 +114,8 @@ namespace WebUserShop.Controllers
             {
                 return NotFound();
             }
-            var listNew = await ApiClientFactory.Instance.GetNews("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var listNew = await ApiClientFactory.Instance.GetNews(Token);
             var newDetail = listNew.FirstOrDefault(s => s.ID == id && s.Status==true);
             var NewOfCategory = listNew.Where(s => s.ID_Catelogy == cate && !(s.ID == id));
             ViewBag.NewOfCategory = NewOfCategory.Where(s => s.Status == true).ToList();
@@ -119,14 +123,15 @@ namespace WebUserShop.Controllers
         }
         public async Task<IActionResult> Product(string txtSearch,int? categoryID, int? page, string sort)
         {
-           
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+
             //danh sách sp
-            var product = await ApiClientFactory.Instance.GetProduct("");
+            var product = await ApiClientFactory.Instance.GetProduct(Token);
             ViewBag.TotalSp = product.Where(s => s.Status == true).Count();
             ViewBag.ListSp = product.Where(s => s.Status == true).ToList();
 
             //danh sách loại sp
-            var category = await ApiClientFactory.Instance.GetCategory("");
+            var category = await ApiClientFactory.Instance.GetCategory(Token);
             ViewBag.ListCategory = category.Where(s => s.Status == true).ToList();
 
             //tổng sản phẩm của loại sản phẩm
@@ -201,8 +206,8 @@ namespace WebUserShop.Controllers
                 string b = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(b);
 
-                var wl = await ApiClientFactory.Instance.GetWishList("");
-                var sp = await ApiClientFactory.Instance.GetProduct("");
+                var wl = await ApiClientFactory.Instance.GetWishList(Token);
+                var sp = await ApiClientFactory.Instance.GetProduct(Token);
                 var listWishList = wl.Where(s => s.ID_User == user.ID).ToList();
 
                 ViewBag.listsp = sp;
@@ -217,12 +222,13 @@ namespace WebUserShop.Controllers
             {
                 return NotFound();
             }
-            var a = await ApiClientFactory.Instance.GetProduct("");
+            var Token = await ApiClientFactory.Instance.GetTokenAsync();
+            var a = await ApiClientFactory.Instance.GetProduct(Token);
             var proDetail = a.FirstOrDefault(s => s.ID == id);
 
 
             //lấy kích thước sp
-            var b = await ApiClientFactory.Instance.GetProductSize("");
+            var b = await ApiClientFactory.Instance.GetProductSize(Token);
             var prosize = b.Where(s => s.ID_Product == id);
             ViewBag.TotalSize = prosize.Count();
             ViewBag.ProSize = prosize.Where(s => s.Status == true).ToList();
@@ -231,7 +237,7 @@ namespace WebUserShop.Controllers
             var ProOfCategory = a.Where(s => s.ID_Catelogy == category && !(s.ID==id)).Take(4);                        
             ViewBag.ProOfCategory = ProOfCategory.Where(s => s.Status == true).ToList();
 
-            var getCMT = await ApiClientFactory.Instance.GetCMT("");
+            var getCMT = await ApiClientFactory.Instance.GetCMT(Token);
             ViewBag.getCMT = getCMT.OrderByDescending(s=>s.ID);
 
             ViewBag.tongCMTofPro = getCMT.Where(s => s.ID_Product == id).Count();
@@ -241,12 +247,13 @@ namespace WebUserShop.Controllers
         {
             if (HttpContext.Session.GetString("user1") != null)
             {
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 //danh sach yêu thích
                 string b = HttpContext.Session.GetString("user1");
                 var user = JsonConvert.DeserializeObject<User>(b);
 
-                var sp= await ApiClientFactory.Instance.GetProduct("");
-                var wl = await ApiClientFactory.Instance.GetWishList("");
+                var sp= await ApiClientFactory.Instance.GetProduct(Token);
+                var wl = await ApiClientFactory.Instance.GetWishList(Token);
 
                 var listWishList = wl.Where(s => s.ID_User == user.ID).ToList();
 

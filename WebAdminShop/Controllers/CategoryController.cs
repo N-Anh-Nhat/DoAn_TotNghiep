@@ -51,7 +51,9 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                var res = await ApiClientFactory.Instance.GetCategory("");
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
+                var res = await ApiClientFactory.Instance.GetCategory(Token);
+               
 
                 return Json(res);
             }
@@ -65,7 +67,7 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-               
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 Message<DataResults<Object>> err = new Message<DataResults<Object>>();
                 if(file != null)
                 {
@@ -87,7 +89,7 @@ namespace WebAdminShop.Controllers
                 }
           
            
-                var res = await ApiClientFactory.Instance.InsertCategory(data, "", "");
+                var res = await ApiClientFactory.Instance.InsertCategory(data, "", Token);
 
                 return Json(res);
             }
@@ -102,7 +104,7 @@ namespace WebAdminShop.Controllers
 
             if (json != null)
             {
-                
+                var Token = await ApiClientFactory.Instance.GetTokenAsync();
                 Message<DataResults<Object>> err = new Message<DataResults<Object>>();
                 if (file != null)
                 {
@@ -123,7 +125,7 @@ namespace WebAdminShop.Controllers
 
                 }
 
-                var res = await ApiClientFactory.Instance.UpdateCategory(data, "", "");
+                var res = await ApiClientFactory.Instance.UpdateCategory(data, "", Token);
 
                 return Json(res);
             }

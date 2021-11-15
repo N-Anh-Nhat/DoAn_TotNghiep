@@ -28,7 +28,7 @@ namespace WebAdminShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<MySettingsModel>(Configuration.GetSection("my_setting"));
-           
+            services.Configure<AuthenInfo>(Configuration.GetSection("authen_setting"));
             services.AddSingleton(Configuration);
 
             services.AddDistributedMemoryCache(); //Add cache for session
