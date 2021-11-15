@@ -88,93 +88,89 @@
         return e;
     })
 
-    $(document).ready(function () {
+    
+    
 
-        loadGrid();
-    });
-    function loadGrid() {
-
-        const pivotGridChart = $('#pivotgrid-chart').dxChart({
-            commonSeriesSettings: {
-                type: 'bar',
-            },
-            tooltip: {
-                enabled: true,
+    const pivotGridChart = $('#pivotgrid-chart').dxChart({
+        commonSeriesSettings: {
+            type: 'bar',
+        },
+        tooltip: {
+            enabled: true,
                 
-                customizeTooltip(args) {
+            customizeTooltip(args) {
                     
-                    return {
-                        html: `${args.seriesName} | Total<div class='currency'>${args.valueText}</div>`,
-                    };
-                },
+                return {
+                    html: `${args.seriesName} | Total<div class='currency'>${args.valueText}</div>`,
+                };
             },
-            size: {
-                height: 200,
-            },
-            adaptiveLayout: {
-                width: 450,
-            },
-        }).dxChart('instance');
+        },
+        size: {
+            height: 200,
+        },
+        adaptiveLayout: {
+            width: 450,
+        },
+    }).dxChart('instance');
 
-        const pivotGrid = $('#pivotgrid').dxPivotGrid({
-            allowSortingBySummary: true,
-            allowFiltering: true,
-            showBorders: true,
-            showColumnGrandTotals: true,
-            showRowGrandTotals: true,
-            showRowTotals: true,
-            showColumnTotals: false,
-            fieldChooser: {
-                enabled: true,
-                height: 400,
+    const pivotGrid = $('#pivotgrid').dxPivotGrid({
+        allowSortingBySummary: true,
+        allowFiltering: true,
+        showBorders: true,
+        showColumnGrandTotals: true,
+        showRowGrandTotals: true,
+        showRowTotals: true,
+        showColumnTotals: true,
+        fieldChooser: {
+            enabled: true,
+            height: 400,
+        },
+        dataSource: {
+            fields: [{
+                caption: 'Loại sản phẩm',
+                width: 120,
+                dataField: 'Loai',
+                area: 'row',
+                sortBySummaryField: 'Total',
+            }, {
+                caption: 'Tên sản phẩm',
+                dataField: 'SanPham',
+                width: 150,
+                area: 'row',
+            }, {
+                dataField: 'Ngayduyet',
+                dataType: 'date',
+                area: 'column',
+            }, {
+                groupName: 'Ngayduyet',
+                groupInterval: 'day',
+                visible: false,
+            }, {
+                caption: 'Số lượng',
+                dataField: 'Soluong',
+                dataType: 'number',
+                summaryType: 'sum',
+                alignment: "center",
+                area: 'data',
             },
-            dataSource: {
-                fields: [{
-                    caption: 'Loại sản phẩm',
-                    width: 120,
-                    dataField: 'Loai',
-                    area: 'row',
-                    sortBySummaryField: 'Total',
-                }, {
-                    caption: 'Tên sản phẩm',
-                    dataField: 'SanPham',
-                    width: 150,
-                    area: 'row',
-                }, {
-                    dataField: 'Ngayduyet',
-                    dataType: 'date',
-                    area: 'column',
-                }, {
-                    groupName: 'Ngayduyet',
-                    groupInterval: 'day',
-                    visible: false,
-                }, {
-                    caption: 'Số lượng',
-                    dataField: 'Soluong',
-                    dataType: 'number',
-                    summaryType: 'sum',
-                    alignment: "center",
-                    area: 'data',
-                },
-                {
-                    caption: 'Tổng',
-                    dataField: 'Total',
-                    dataType: 'number',
-                    summaryType: 'sum',
-                    alignment: "center",
-                    area: 'data',
-                }],
-                    store: data,
-            },
-        }).dxPivotGrid('instance');
+            {
+                caption: 'Tổng',
+                dataField: 'Total',
+                dataType: 'number',
+                summaryType: 'sum',
+                alignment: "center",
+                area: 'data',
+            }],
+                store: data,
+        },
+    }).dxPivotGrid('instance');
 
-        pivotGrid.bindChart(pivotGridChart, {
-            dataFieldsDisplayMode: 'splitPanes',
-            alternateDataFields: false,
-        });
+    pivotGrid.bindChart(pivotGridChart, {
+        dataFieldsDisplayMode: 'splitPanes',
+        alternateDataFields: false,
+    });
 
        
 
-        setTimeout(expand, 0);
-    };
+    
 </script>

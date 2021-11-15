@@ -58,7 +58,7 @@ namespace WebAPI.Services.DataServices
         {
             object obj = new
             {
-                
+                Status = true,
                 ModifiedDate = DateTime.Now,
                 ID_TrangThaiDonHang = TrangThai
             };
