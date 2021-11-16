@@ -55,10 +55,16 @@ namespace WebAPI.Services.DataServices
         }
         public async Task<DataResults<object>> UpdateUser(User data, string user)
         {
-           
+            
             object obj = new
             {
-               
+                data.Password ,
+                data.UserName,
+                data.Last_Name,
+                data.Frist_Name,
+                data.Address,
+                data.Email,
+                data.Phone,
                 data.ID_Role,
                 data.Status,
             };
