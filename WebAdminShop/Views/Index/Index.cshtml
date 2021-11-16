@@ -13,7 +13,7 @@
 
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3" style="height: 100%; width: 100%">
-                    <div class="card-box noradius noborder bg-danger" >
+                    <div class="card-box noradius noborder bg-danger" style=" width: 272px; height: 160px;" >
                         <i class="fas fa-coins float-right text-white"  style="margin: 0"></i>
                         <h8 class="text-white text-uppercase mb-3">Tổng sản phẩm</h8>
                         <h3 class="mb-3 text-white counter">@ViewData["CountProduct"]</h3>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3"  style="height: 100%; width: 100%">
-                    <div class="card-box noradius noborder bg-success">
+                    <div class="card-box noradius noborder bg-success" style=" width: 272px; height: 160px;">
                         <i class="far fa-check-square float-right text-white" style="margin: 0"></i>
                         <h8 class="text-white text-uppercase mb-3">Đơn hàng đã bán</h8>
                         <h3 class="mb-3 text-white counter">@ViewData["CountDon"]</h3>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3"  style="height: 100%; width: 100%">
-                    <div class="card-box noradius noborder bg-warning">
+                    <div class="card-box noradius noborder bg-warning" style=" width: 272px; height: 160px;">
                         <i class="fas fa-cart-plus float-right text-white" style="margin: 0"></i>
                         <h8 class="text-white text-uppercase mb-3">Đơn hàng đợi duyệt</h8>
                         <h3 class="mb-3 text-white counter">@ViewData["CountDonChuaBan"]</h3>
@@ -37,10 +37,13 @@
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3"  style="height: 100%; width: 100%">
-                    <div class="card-box noradius noborder bg-info">
+                    <div class="card-box noradius noborder bg-info" style=" width: 272px; height: 160px;">
                         <i class="fas fa-hand-holding-usd float-right text-white" style="margin: 0"></i>
                         <h8 class="text-white text-uppercase ">Tiền thu vào tháng(VND)</h8>
-                        <h3 class="mb-3 text-white counter">@ViewData["DoanhThuThang"]</h3>
+                        @{ 
+                            String ConvPrivcie = String.Format("{0:#,#.##}", ViewData["DoanhThuThang"]);
+                        }
+                    <h3 class="mb-3 text-white counter">@ConvPrivcie VND</h3>
 
                     </div>
                 </div>
@@ -57,7 +60,7 @@
                             
                             <h3>
                                 <i class="fas fa-cube"></i>
-                                Thống kê số lượng sản phẩm đã bán
+                                Thống kê số lượng sản phẩm và doanh thu theo số lượng sản phẩm đã bán
                             </h3>
                         </div>
                         <div class="card_body">

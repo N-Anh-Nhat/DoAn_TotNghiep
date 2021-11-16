@@ -385,54 +385,60 @@
         }
     }
     function RemoveItem(id, count) {
-        $.ajax({
-            url: "../Cart/ClearItemInCart?id=" + id ,
-            cache: false,
-            type: "POST",
-            success: function (res) {
-                if (res == true) {
-                    window.location.reload();
-                    var SumHD = 0;
-                    for (var i = 1; i <= count; i++) {
+        var result = confirm("Bạn có muốn xóa sản phẩm này");
+        if (result == true) {
+            $.ajax({
+                url: "../Cart/ClearItemInCart?id=" + id,
+                cache: false,
+                type: "POST",
+                success: function (res) {
+                    if (res == true) {
+                        window.location.reload();
+                        var SumHD = 0;
+                        for (var i = 1; i <= count; i++) {
 
-                        var NameIDTong = "TongGia1SP-" + i;
-                        var tinh = document.getElementById(NameIDTong).value;
-                        SumHD = SumHD + parseFloat(tinh);
-                    }
-                    document.getElementById("SumHoaDon").innerHTML = SumHD;
-                    document.getElementById("HoaDon").innerHTML = SumHD;
-                    var radios = document.getElementsByName('shipping-option');
+                            var NameIDTong = "TongGia1SP-" + i;
+                            var tinh = document.getElementById(NameIDTong).value;
+                            SumHD = SumHD + parseFloat(tinh);
+                        }
+                        document.getElementById("SumHoaDon").innerHTML = SumHD;
+                        document.getElementById("HoaDon").innerHTML = SumHD;
+                        var radios = document.getElementsByName('shipping-option');
 
-                    for (var i = 0, length = radios.length; i < length; i++) {
+                        for (var i = 0, length = radios.length; i < length; i++) {
 
-                        if (radios[i].checked) {
-                            if (i == 0) {
-                                SumHD += " VND"
-                                document.getElementById("ThanhTien").innerHTML = SumHD;
-                                break;
-                            }
+                            if (radios[i].checked) {
+                                if (i == 0) {
+                                    SumHD += " VND"
+                                    document.getElementById("ThanhTien").innerHTML = SumHD;
+                                    break;
+                                }
 
-                            if (i == 1) {
-                                SumHD += 30000;
-                                SumHD += " VND"
-                                document.getElementById("ThanhTien").innerHTML = SumHD;
-                                break;
-                            }
-                            if (i == 2) {
-                                SumHD += 60000;
-                                SumHD += " VND"
-                                document.getElementById("ThanhTien").innerHTML = SumHD;
-                                break;
+                                if (i == 1) {
+                                    SumHD += 30000;
+                                    SumHD += " VND"
+                                    document.getElementById("ThanhTien").innerHTML = SumHD;
+                                    break;
+                                }
+                                if (i == 2) {
+                                    SumHD += 60000;
+                                    SumHD += " VND"
+                                    document.getElementById("ThanhTien").innerHTML = SumHD;
+                                    break;
+                                }
                             }
                         }
+                        return alert("Xóa sản phẩm ra khỏi giỏ hàng thành công");
                     }
-                    return alert("Xóa sản phẩm ra khỏi giỏ hàng thành công");
-                }
 
-                else
-                    return alert("Xóa sản phẩm ra khỏi giỏ hàng thất bại");
-            }
-        });
+                    else
+                        return alert("Xóa sản phẩm ra khỏi giỏ hàng thất bại");
+                }
+            });}
+        else {
+            alert("Bạn không xóa");
+        }
+        
     }
     function DatHang(count) {
         var valinputAddress = document.getElementById("Address").value;

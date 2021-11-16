@@ -109,7 +109,7 @@ namespace WebAPI.Services.DataServices
                 using (var sqlConnection = new SqlConnection(conString))
                 {
                     var db = new QueryFactory(sqlConnection, new SqlServerCompiler());
-                    var results = db.Query().SelectRaw("Product.Name as SanPham, Category.Name as Loai, COUNT(Order_Details.Quality) as Soluong,CAST(Orders.ModifiedDate AS DATE) as Ngayduyet,Order_Details.PromotionPrice,Order_Details.Price")
+                    var results = db.Query().SelectRaw("Product.Name as SanPham, Category.Name as Loai, SUM(Order_Details.Quality) as Soluong,CAST(Orders.ModifiedDate AS DATE) as Ngayduyet,Order_Details.PromotionPrice,Order_Details.Price")
                         .From("Orders")
                         .GroupByRaw("Product.Name, Category.Name,CAST(Orders.ModifiedDate AS DATE),Order_Details.PromotionPrice,Order_Details.Price")
                         .OrderByRaw("CAST(Orders.ModifiedDate AS DATE)")
