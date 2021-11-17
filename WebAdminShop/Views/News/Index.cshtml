@@ -158,9 +158,13 @@
                     $("#input-Detail").dxTextArea("instance").option("value", "");
 
                     $("#input-Status").dxCheckBox("instance").option("value", "");
-                    document.getElementById("photoUrl").value = "";
+                    if (document.getElementById("photoUrl"))
+                        document.getElementById("photoUrl").files[0].value = null;
                     popupAdd.hide();
-                    document.getElementById("IM").src ="";
+                    if (document.getElementById("IM"))
+                        document.getElementById("IM").src = "";
+                    if (document.getElementById("photoUrl"))
+                        document.getElementById("photoUrl").value = "";
 
 
                 }

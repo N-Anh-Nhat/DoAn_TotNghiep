@@ -163,10 +163,13 @@
                         $("#input-Price").dxNumberBox("instance").option("value", "");
 
                         $("#input-Promotion").dxNumberBox("instance").option("value", "");
-                        document.getElementById("photoUrl").files[0].value = null;
+                        if (document.getElementById("photoUrl"))
+                            document.getElementById("photoUrl").files[0].value = null;
                         popupAdd.hide();
-                        document.getElementById("IM").src ="";
-                        document.getElementById("photoUrl").value = "";
+                        if (document.getElementById("IM"))
+                            document.getElementById("IM").src = "";
+                        if (document.getElementById("photoUrl"))
+                            document.getElementById("photoUrl").value = "";
 
                     }
                 }

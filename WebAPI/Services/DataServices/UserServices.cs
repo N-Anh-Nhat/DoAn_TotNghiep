@@ -65,7 +65,7 @@ namespace WebAPI.Services.DataServices
                 data.Address,
                 data.Email,
                 data.Phone,
-                data.ModifiedDate,
+                ModifiedDate = DateTime.Now,
                 data.ID_Role,
                 data.Status,
             };
