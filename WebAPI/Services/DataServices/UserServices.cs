@@ -65,6 +65,7 @@ namespace WebAPI.Services.DataServices
                 data.Address,
                 data.Email,
                 data.Phone,
+                data.ModifiedDate,
                 data.ID_Role,
                 data.Status,
             };
